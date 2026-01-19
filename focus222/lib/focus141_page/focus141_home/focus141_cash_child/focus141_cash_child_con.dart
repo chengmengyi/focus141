@@ -1,0 +1,149 @@
+import 'package:focus111/focus141_enum/focus141_cash_type_enum.dart';
+import 'package:focus111/focus141_enum/focus141_loop_task_type_enum.dart';
+import 'package:focus111/focus141_event/focus141_event_code.dart';
+import 'package:focus111/focus141_event/focus141_event_utils.dart';
+import 'package:focus111/focus141_page/focus141_con.dart';
+import 'package:focus111/focus141_utils/focus141_ad_utils.dart';
+import 'package:focus111/focus141_utils/focus141_utils.dart';
+import 'package:focus222/focus141_bean/focus141_cash_loop_task_info_bean.dart';
+import 'package:focus222/focus141_bean/focus141_cash_money_list_bean.dart';
+import 'package:focus222/focus141_dialog/focus141_cash_task_dialog/focus141_cash_task_dialog.dart';
+import 'package:focus222/focus141_dialog/focus141_no_money_dialog/focus141_no_money_dialog.dart';
+import 'package:focus222/focus141_dialog/focus141_queue_dialog/focus141_queue_dialog.dart';
+import 'package:focus222/focus141_utils/focus141_cash_utils.dart';
+import 'package:focus222/focus141_utils/focus141_storage_data.dart';
+import 'package:focus222/focus141_utils/focus141_value_utils.dart';
+
+class Focus141CashChildCon extends Focus141Con{
+  List<Focus141CashMoneyListBean> cashMoneyList=[];
+  Focus141CashTypeEnum selectedCashType=Focus141CashTypeEnum.values.byName(bCashType.getData());
+  List<Focus141CashTypeEnum> cashTypeList=Focus141CashTypeEnum.values;
+
+  @override
+  void onReady() {
+    super.onReady();
+    _initCashMoneyList();
+  }
+
+  clickCashAppTab(Focus141CashTypeEnum typeEnum){
+    if(typeEnum==selectedCashType){
+      return;
+    }
+    selectedCashType=typeEnum;
+    bCashType.saveData(selectedCashType.name);
+    update(["tab","top_cash_type"]);
+    _initCashMoneyList();
+  }
+
+  clickCashBtn(Focus141CashMoneyListBean bean){
+    var myMoney = bFocus141Money.getData();
+    if(myMoney<bean.money){
+      showDialogFocus141(
+        child: Focus141NoMoneyDialog(
+          money: bean.money,
+          myMoney: myMoney,
+        ),
+      );
+      return;
+    }
+    Focus141CashUtils.instance.showInputAccountDialog(bean.money, selectedCashType);
+  }
+
+  toQuizTab(){
+    Focus141EventUtils.instance.sendMsg(focus141Code: Focus141EventCode.updateHomeTab,focus141Int: 0);
+  }
+
+  clickQueueBtn(Focus141CashMoneyListBean bean){
+    Focus141AdUtils.instance.showAdFocus141(
+      result: (give)async{
+        if(give){
+          Focus141CashUtils.instance.updateQueueTaskProgress(bean.focus141cashQueueInfoBean);
+        }
+      },
+    );
+  }
+
+  clickLoopTaskBtn(){
+    Focus141EventUtils.instance.sendMsg(focus141Code: Focus141EventCode.updateHomeTab,focus141Int: 0);
+  }
+
+  clickCashItem(Focus141CashMoneyListBean bean){
+    if(null!=bean.focus141cashQueueInfoBean){
+      showDialogFocus141(
+        child: Focus141QueueDialog(bean: bean),
+      );
+      return;
+    }
+    showDialogFocus141(
+      child: Focus141CashTaskDialog(bean: bean),
+    );
+  }
+
+  _initCashMoneyList()async{
+    cashMoneyList.clear();
+    for (var value in Focus141ValueUtils.instance.getCashList()) {
+      var focus141cashQuiz20InfoBean = await Focus141CashUtils.instance.queryCashQuiz20Info(value, selectedCashType);
+      var focus141cashQueueInfoBean = await Focus141CashUtils.instance.queryCashQueueInfo(value, selectedCashType);
+      var focus141cashQuiz50LoginInfoBean = await Focus141CashUtils.instance.queryCashQuiz50AndLoginInfo(value, selectedCashType);
+      var focus141cashLoopTaskInfoBean = await Focus141CashUtils.instance.queryCashLoopTaskInfo(value, selectedCashType);
+
+      var focus141cashMoneyListBean = Focus141CashMoneyListBean(
+          money: value,
+          focus141cashQuiz20InfoBean: focus141cashQuiz20InfoBean,
+          focus141cashQueueInfoBean: focus141cashQueueInfoBean,
+          focus141cashQuiz50LoginInfoBean: focus141cashQuiz50LoginInfoBean,
+          focus141cashLoopTaskInfoBean: focus141cashLoopTaskInfoBean
+      );
+      cashMoneyList.add(focus141cashMoneyListBean);
+    }
+    update(["cash_list"]);
+  }
+
+  String getLoopTaskLeftStr(Focus141CashLoopTaskInfoBean? bean){
+    try{
+      switch(_getLoopTaskTypeEnum(bean)){
+        case Focus141LoopTaskTypeEnum.quiz: return "Quiz ";
+        case Focus141LoopTaskTypeEnum.wheel: return "Spin ";
+        case Focus141LoopTaskTypeEnum.video: return "Watch ";
+      }
+    }catch(e){
+      return "";
+    }
+  }
+
+
+  String getLoopTaskRightStr(Focus141CashLoopTaskInfoBean? bean){
+    try{
+      switch(_getLoopTaskTypeEnum(bean)){
+        case Focus141LoopTaskTypeEnum.video: return " Ad Video";
+        default: return " Times";
+      }
+    }catch(e){
+      return "";
+    }
+  }
+
+  Focus141LoopTaskTypeEnum _getLoopTaskTypeEnum(Focus141CashLoopTaskInfoBean? bean){
+    try{
+      var tixianTask = Focus141ValueUtils.instance.getTixianTaskById(bean?.taskId);
+      return Focus141LoopTaskTypeEnum.values.byName(tixianTask?.title??"");
+    }catch(e){
+      return Focus141LoopTaskTypeEnum.quiz;
+    }
+  }
+
+  @override
+  bool focus141InitEvent() => true;
+
+  @override
+  focus141HandleEventMsg(int eventCode, int? intValue, String? strValue, anyValue) {
+    switch(eventCode){
+      case Focus141EventCode.updateCashInfo:
+        _initCashMoneyList();
+        break;
+      case Focus141EventCode.updateMoney:
+        update(["money"]);
+        break;
+    }
+  }
+}
