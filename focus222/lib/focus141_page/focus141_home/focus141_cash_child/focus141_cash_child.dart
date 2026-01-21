@@ -813,7 +813,7 @@ class Focus141CashChild extends Focus141Widget<Focus141CashChildCon>{
                               ),
                             ),
                             TextSpan(
-                              text: focus141Con.getLoopTaskLeftStr(bean.focus141cashLoopTaskInfoBean),
+                              text: getLoopTaskLeftStr(bean.focus141cashLoopTaskInfoBean),
                               style: TextStyle(
                                 fontSize: 15.sp,
                                 fontFamily: "woff",
@@ -829,7 +829,7 @@ class Focus141CashChild extends Focus141Widget<Focus141CashChildCon>{
                               ),
                             ),
                             TextSpan(
-                              text: focus141Con.getLoopTaskRightStr(bean.focus141cashLoopTaskInfoBean),
+                              text: getLoopTaskRightStr(bean.focus141cashLoopTaskInfoBean),
                               style: TextStyle(
                                 fontSize: 15.sp,
                                 fontFamily: "woff",

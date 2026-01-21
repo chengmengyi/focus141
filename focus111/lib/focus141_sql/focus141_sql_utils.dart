@@ -30,5 +30,6 @@ class Focus141SqlUtils{
     db.execute('CREATE TABLE ${Focus141SqlTableName.cashQueueInfo} (id INTEGER PRIMARY KEY AUTOINCREMENT, cashType TEXT, cashMoney INTEGER, cashStep TEXT, currentPro INTEGER, totalPro INTEGER)');
     db.execute('CREATE TABLE ${Focus141SqlTableName.cashQuiz50AndLogin7Info} (id INTEGER PRIMARY KEY AUTOINCREMENT, cashType TEXT, cashMoney INTEGER, cashStep TEXT, quizNum INTEGER, loginNum INTEGER,quizTotalNum INTEGER,loginTotalNum INTEGER)');
     db.execute('CREATE TABLE ${Focus141SqlTableName.cashLoopTaskInfo} (id INTEGER PRIMARY KEY AUTOINCREMENT, cashType TEXT, cashMoney INTEGER, cashStep TEXT, currentPro INTEGER, totalPro INTEGER, taskId INTEGER)');
+    db.execute('CREATE TABLE ${Focus141SqlTableName.cashAccountInfo} (id INTEGER PRIMARY KEY AUTOINCREMENT, cashType TEXT, cashAccount TEXT)');
   }
 }

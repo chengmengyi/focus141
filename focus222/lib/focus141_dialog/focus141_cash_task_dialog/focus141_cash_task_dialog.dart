@@ -9,6 +9,7 @@ import 'package:focus111/focus141_widget/focus141_local_images_widget.dart';
 import 'package:focus111/focus141_widget/focus141_text_widget.dart';
 import 'package:focus222/focus141_bean/focus141_cash_money_list_bean.dart';
 import 'package:focus222/focus141_dialog/focus141_cash_task_dialog/focus141_cash_task_dialog_con.dart';
+import 'package:focus222/focus141_utils/focus141_utils.dart';
 import 'package:focus222/focus141_widget/focus141_cash_type_money_widget.dart';
 
 class Focus141CashTaskDialog extends Focus141Widget<Focus141CashTaskDialogCon>{
@@ -18,7 +19,7 @@ class Focus141CashTaskDialog extends Focus141Widget<Focus141CashTaskDialogCon>{
   });
 
   @override
-  Focus141CashTaskDialogCon initFocus141Con() => Focus141CashTaskDialogCon();
+  Focus141CashTaskDialogCon initFocus141Con() => Focus141CashTaskDialogCon(bean: bean);
 
   @override
   Focus141WidgetType initFocus141Type() => Focus141WidgetType.dialog;
@@ -75,6 +76,12 @@ class Focus141CashTaskDialog extends Focus141Widget<Focus141CashTaskDialogCon>{
   _getTaskWidget(){
     if(null!=bean.focus141cashQuiz20InfoBean){
       return _quiz20Widget();
+    }
+    if(null!=bean.focus141cashQuiz50LoginInfoBean){
+      return _quiz50AndLogin7Widget();
+    }
+    if(null!=bean.focus141cashLoopTaskInfoBean){
+      return _loopTaskWidget();
     }
     return Container();
   }
@@ -160,11 +167,216 @@ class Focus141CashTaskDialog extends Focus141Widget<Focus141CashTaskDialogCon>{
     ),
   );
 
+  _quiz50AndLogin7Widget()=>Container(
+    width: double.infinity,
+    padding: EdgeInsets.all(10.w),
+    margin: EdgeInsets.only(left: 12.w,right: 12.w),
+    decoration: BoxDecoration(
+      color: Focus141Colors.colorE7E7E7,
+      borderRadius: BorderRadius.circular(12.w),
+    ),
+    child: Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          width: double.infinity,
+          padding: EdgeInsets.all(10.w),
+          decoration: BoxDecoration(
+            color: Focus141Colors.colorFFFFFF,
+            borderRadius: BorderRadius.circular(11.w),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Focus141TextWidget(
+                focus141TextContent: "Answer ${bean.focus141cashQuiz50LoginInfoBean?.quizTotalNum??0} questions correctly",
+                focus141TextSize: 16.sp,
+                focus141Height: 1.0,
+                focus141TextColor: Focus141Colors.colorEC2428,
+              ),
+              LayoutBuilder(
+                builder: (context,bc){
+                  var width = bc.maxWidth-(2.w);
+                  return Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      Container(
+                        width: double.infinity,
+                        height: 18.h,
+                        alignment: Alignment.centerLeft,
+                        padding: EdgeInsets.only(left: 1.w,right: 1.w),
+                        decoration: BoxDecoration(
+                          color: Focus141Colors.color474747,
+                          borderRadius: BorderRadius.circular(20.w),
+                        ),
+                        child: Container(
+                          width: width*getProgress(bean.focus141cashQuiz50LoginInfoBean?.quizNum??0, bean.focus141cashQuiz50LoginInfoBean?.quizTotalNum??0),
+                          height: 16.h,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20.w),
+                            gradient: LinearGradient(
+                                begin: Alignment.centerLeft,
+                                end: Alignment.centerRight,
+                                colors: [Focus141Colors.colorFF6F58,Focus141Colors.colorFFB19A,]
+                            ),
+                          ),
+                        ),
+                      ),
+                      Focus141TextWidget(focus141TextContent: "${bean.focus141cashQuiz50LoginInfoBean?.quizNum??0}/${bean.focus141cashQuiz50LoginInfoBean?.quizTotalNum??0}", focus141TextSize: 14.sp, focus141TextColor: Focus141Colors.colorFFFFFF,focus141LineColor: Focus141Colors.color000000,),
+                    ],
+                  );
+                },
+              ),
+            ],
+          ),
+        ),
+        SizedBox(height: 8.h,),
+        Container(
+          width: double.infinity,
+          padding: EdgeInsets.all(10.w),
+          decoration: BoxDecoration(
+            color: Focus141Colors.colorFFFFFF,
+            borderRadius: BorderRadius.circular(11.w),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Focus141TextWidget(
+                focus141TextContent: "Login app ${bean.focus141cashQuiz50LoginInfoBean?.loginTotalNum??0} days",
+                focus141TextSize: 16.sp,
+                focus141Height: 1.0,
+                focus141TextColor: Focus141Colors.colorEC2428,
+              ),
+              LayoutBuilder(
+                builder: (context,bc){
+                  var width = bc.maxWidth-(2.w);
+                  return Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      Container(
+                        width: double.infinity,
+                        height: 18.h,
+                        alignment: Alignment.centerLeft,
+                        padding: EdgeInsets.only(left: 1.w,right: 1.w),
+                        decoration: BoxDecoration(
+                          color: Focus141Colors.color474747,
+                          borderRadius: BorderRadius.circular(20.w),
+                        ),
+                        child: Container(
+                          width: width*getProgress(bean.focus141cashQuiz50LoginInfoBean?.loginNum??0, bean.focus141cashQuiz50LoginInfoBean?.loginTotalNum??0),
+                          height: 16.h,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20.w),
+                            gradient: LinearGradient(
+                                begin: Alignment.centerLeft,
+                                end: Alignment.centerRight,
+                                colors: [Focus141Colors.colorFF6F58,Focus141Colors.colorFFB19A,]
+                            ),
+                          ),
+                        ),
+                      ),
+                      Focus141TextWidget(focus141TextContent: "${bean.focus141cashQuiz50LoginInfoBean?.loginNum??0}/${bean.focus141cashQuiz50LoginInfoBean?.loginTotalNum??0}", focus141TextSize: 14.sp, focus141TextColor: Focus141Colors.colorFFFFFF,focus141LineColor: Focus141Colors.color000000,),
+                    ],
+                  );
+                },
+              ),
+            ],
+          ),
+        ),
+      ],
+    ),
+  );
+
+  _loopTaskWidget()=>Container(
+    margin: EdgeInsets.only(left: 20.w,right: 20.w),
+    child: Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        RichText(
+          textAlign: TextAlign.center,
+          text: TextSpan(
+              children: [
+                TextSpan(
+                  text: "Final Task：",
+                  style: TextStyle(
+                    fontSize: 15.sp,
+                    fontFamily: "woff",
+                    color: Focus141Colors.color000000,
+                  ),
+                ),
+                TextSpan(
+                  text: getLoopTaskLeftStr(bean.focus141cashLoopTaskInfoBean),
+                  style: TextStyle(
+                    fontSize: 15.sp,
+                    fontFamily: "woff",
+                    color: Focus141Colors.color000000,
+                  ),
+                ),
+                TextSpan(
+                  text: "${bean.focus141cashLoopTaskInfoBean?.currentPro??0}/${bean.focus141cashLoopTaskInfoBean?.totalPro??0}",
+                  style: TextStyle(
+                    fontSize: 15.sp,
+                    fontFamily: "woff",
+                    color: Focus141Colors.colorFF7E7E,
+                  ),
+                ),
+                TextSpan(
+                  text: getLoopTaskRightStr(bean.focus141cashLoopTaskInfoBean),
+                  style: TextStyle(
+                    fontSize: 15.sp,
+                    fontFamily: "woff",
+                    color: Focus141Colors.color000000,
+                  ),
+                ),
+              ]
+          ),
+        ),
+        LayoutBuilder(
+          builder: (context,bc){
+            var width = bc.maxWidth-(2.w);
+            return Stack(
+              alignment: Alignment.center,
+              children: [
+                Container(
+                  width: double.infinity,
+                  height: 18.h,
+                  alignment: Alignment.centerLeft,
+                  padding: EdgeInsets.only(left: 1.w,right: 1.w),
+                  decoration: BoxDecoration(
+                    color: Focus141Colors.color474747,
+                    borderRadius: BorderRadius.circular(20.w),
+                  ),
+                  child: Container(
+                    width: width*getProgress(bean.focus141cashLoopTaskInfoBean?.currentPro??0, bean.focus141cashLoopTaskInfoBean?.totalPro??0),
+                    height: 16.h,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20.w),
+                      gradient: LinearGradient(
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight,
+                          colors: [Focus141Colors.color58DEFF,Focus141Colors.color9AFFFF,]
+                      ),
+                    ),
+                  ),
+                ),
+                Focus141TextWidget(focus141TextContent: "${bean.focus141cashLoopTaskInfoBean?.currentPro??0}/${bean.focus141cashLoopTaskInfoBean?.totalPro??0}", focus141TextSize: 14.sp, focus141TextColor: Focus141Colors.colorFFFFFF,focus141LineColor: Focus141Colors.color000000,),
+              ],
+            );
+          },
+        ),
+      ],
+    ),
+  );
+
   _cashMoneyWidget()=>Column(
     mainAxisSize: MainAxisSize.min,
     children: [
       Focus141CashTypeMoneyWidget(
-        typeEnum: Focus141CashTypeEnum.values.byName(bean.focus141cashQuiz20InfoBean?.cashType??""),
+        typeEnum: focus141Con.getCashType(),
         money: bean.money,
         width: 158.w,
         height: 72.h,

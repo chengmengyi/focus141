@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import 'focus141_utils.dart';
 
@@ -78,6 +80,23 @@ extension Strint2Double on String{
   }
 }
 
+showToastFocus141({required String? text}) {
+  if ((text ?? "").isEmpty) {
+    return;
+  }
+  Fluttertoast.showToast(
+    msg: text ?? "",
+    toastLength: Toast.LENGTH_LONG,
+    gravity: ToastGravity.CENTER,
+    timeInSecForIosWeb: 1,
+    backgroundColor: Colors.black45,
+    textColor: Colors.white,
+  );
+}
+
+extension RandomList on List{
+  random()=> this[Random().nextInt(length)];
+}
 
 showDialogFocus141({required Widget child,}){
   Get.dialog(

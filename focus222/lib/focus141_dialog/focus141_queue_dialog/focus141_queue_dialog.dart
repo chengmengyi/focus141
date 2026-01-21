@@ -17,9 +17,8 @@ class Focus141QueueDialog extends Focus141Widget<Focus141QueueDialogCon>{
     required this.bean,
   });
 
-
   @override
-  Focus141QueueDialogCon initFocus141Con() => Focus141QueueDialogCon();
+  Focus141QueueDialogCon initFocus141Con() => Focus141QueueDialogCon(bean: bean);
 
   @override
   Focus141WidgetType initFocus141Type() => Focus141WidgetType.dialog;
@@ -59,127 +58,147 @@ class Focus141QueueDialog extends Focus141Widget<Focus141QueueDialogCon>{
     ),
   );
   
-  _rankWidget()=>Column(
-    mainAxisSize: MainAxisSize.min,
-    children: [
-      RichText(
-        textAlign: TextAlign.center,
-        text: TextSpan(
+  _rankWidget()=>GetBuilder<Focus141QueueDialogCon>(
+    id: "rank",
+    builder: (_)=>Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        RichText(
+          textAlign: TextAlign.center,
+          text: TextSpan(
+              children: [
+                TextSpan(
+                  text: "${focus141Con.myQueueInfo?.totalPro??0}",
+                  style: TextStyle(
+                    fontSize: 15.sp,
+                    fontFamily: "woff",
+                    color: Focus141Colors.colorEC2428,
+                  ),
+                ),
+                //228 in queue, Your Current rank: 22
+                TextSpan(
+                  text: " in queue, Your Current rank: ",
+                  style: TextStyle(
+                    fontSize: 15.sp,
+                    fontFamily: "woff",
+                    color: Focus141Colors.color7B7B7B,
+                  ),
+                ),
+                TextSpan(
+                  text: "${focus141Con.getMyRank()}",
+                  style: TextStyle(
+                    fontSize: 15.sp,
+                    fontFamily: "woff",
+                    color: Focus141Colors.colorEC2428,
+                  ),
+                ),
+              ]
+          ),
+        ),
+        Container(
+          width: double.infinity,
+          padding: EdgeInsets.all(6.w),
+          margin: EdgeInsets.only(left: 10.w,right: 10.w),
+          decoration: BoxDecoration(
+            color: Focus141Colors.colorD7E3F6,
+            borderRadius: BorderRadius.circular(12.w),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
-              TextSpan(
-                text: "${bean.focus141cashQueueInfoBean?.totalPro??0}",
-                style: TextStyle(
-                  fontSize: 15.sp,
-                  fontFamily: "woff",
-                  color: Focus141Colors.colorEC2428,
+              Container(
+                width: double.infinity,
+                height: 18.h,
+                decoration: BoxDecoration(
+                  color: Focus141Colors.colorA6C2F2,
+                  borderRadius: BorderRadius.circular(10.w),
+                ),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Center(
+                        child: Focus141TextWidget(focus141TextContent: "User ID", focus141TextSize: 12.sp, focus141TextColor: Focus141Colors.color000000,focus141Height: 1.0,),
+                      ),
+                    ),
+                    Expanded(
+                      child: Center(
+                        child: Focus141TextWidget(focus141TextContent: "Account", focus141TextSize: 12.sp, focus141TextColor: Focus141Colors.color000000,focus141Height: 1.0,),
+                      ),
+                    ),
+                    Expanded(
+                      child: Center(
+                        child: Focus141TextWidget(focus141TextContent: "Amount", focus141TextSize: 12.sp, focus141TextColor: Focus141Colors.color000000,focus141Height: 1.0,),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              //228 in queue, Your Current rank: 22
-              TextSpan(
-                text: " in queue, Your Current rank: ",
-                style: TextStyle(
-                  fontSize: 15.sp,
-                  fontFamily: "woff",
-                  color: Focus141Colors.color7B7B7B,
+              SizedBox(height: 5.h,),
+              SizedBox(
+                width: double.infinity,
+                height: 121.h,
+                child: ListView.separated(
+                  itemCount: focus141Con.rankList.length,
+                  controller: focus141Con.scrollController,
+                  itemBuilder: (context,index){
+                    var bean = focus141Con.rankList[index];
+                    return Container(
+                      width: double.infinity,
+                      height: 28.h,
+                      alignment: Alignment.centerLeft,
+                      decoration: BoxDecoration(
+                        color: Focus141Colors.colorFFFFFF,
+                        borderRadius: BorderRadius.circular(10.w),
+                      ),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Center(
+                              child: Focus141TextWidget(
+                                focus141TextContent: "${bean.userId??0}",
+                                focus141TextSize: 12.sp,
+                                focus141TextColor: bean.isMe==true?Focus141Colors.colorEC2428:Focus141Colors.color000000,
+                                focus141Height: 1.0,
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: Center(
+                              child: Focus141TextWidget(
+                                focus141TextContent: bean.account??"",
+                                focus141TextSize: 12.sp,
+                                focus141TextColor: bean.isMe==true?Focus141Colors.colorEC2428:Focus141Colors.color000000,
+                                focus141Height: 1.0,
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: Center(
+                              child: Focus141TextWidget(
+                                focus141TextContent: "${bean.amount??0}",
+                                focus141TextSize: 12.sp,
+                                focus141TextColor: bean.isMe==true?Focus141Colors.colorEC2428:Focus141Colors.color000000,
+                                focus141Height: 1.0,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                  separatorBuilder: (BuildContext context, int index) => SizedBox(height: 3.h,),
                 ),
-              ),
-              TextSpan(
-                text: "${bean.focus141cashQueueInfoBean?.currentPro??0}",
-                style: TextStyle(
-                  fontSize: 15.sp,
-                  fontFamily: "woff",
-                  color: Focus141Colors.colorEC2428,
-                ),
-              ),
-            ]
+              )
+            ],
+          ),
         ),
-      ),
-      Container(
-        width: double.infinity,
-        padding: EdgeInsets.all(6.w),
-        margin: EdgeInsets.only(left: 10.w,right: 10.w),
-        decoration: BoxDecoration(
-          color: Focus141Colors.colorD7E3F6,
-          borderRadius: BorderRadius.circular(12.w),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              width: double.infinity,
-              height: 18.h,
-              decoration: BoxDecoration(
-                color: Focus141Colors.colorA6C2F2,
-                borderRadius: BorderRadius.circular(10.w),
-              ),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Center(
-                      child: Focus141TextWidget(focus141TextContent: "User ID", focus141TextSize: 12.sp, focus141TextColor: Focus141Colors.color000000,focus141Height: 1.0,),
-                    ),
-                  ),
-                  Expanded(
-                    child: Center(
-                      child: Focus141TextWidget(focus141TextContent: "Account", focus141TextSize: 12.sp, focus141TextColor: Focus141Colors.color000000,focus141Height: 1.0,),
-                    ),
-                  ),
-                  Expanded(
-                    child: Center(
-                      child: Focus141TextWidget(focus141TextContent: "Amount", focus141TextSize: 12.sp, focus141TextColor: Focus141Colors.color000000,focus141Height: 1.0,),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(height: 5.h,),
-            SizedBox(
-              width: double.infinity,
-              height: 121.h,
-              child: ListView.separated(
-                itemCount: 10,
-                itemBuilder: (context,index){
-                  return Container(
-                    width: double.infinity,
-                    height: 28.h,
-                    alignment: Alignment.centerLeft,
-                    decoration: BoxDecoration(
-                      color: Focus141Colors.colorFFFFFF,
-                      borderRadius: BorderRadius.circular(10.w),
-                    ),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Center(
-                            child: Focus141TextWidget(focus141TextContent: "User ID", focus141TextSize: 12.sp, focus141TextColor: Focus141Colors.color000000,focus141Height: 1.0,),
-                          ),
-                        ),
-                        Expanded(
-                          child: Center(
-                            child: Focus141TextWidget(focus141TextContent: "Account", focus141TextSize: 12.sp, focus141TextColor: Focus141Colors.color000000,focus141Height: 1.0,),
-                          ),
-                        ),
-                        Expanded(
-                          child: Center(
-                            child: Focus141TextWidget(focus141TextContent: "Amount", focus141TextSize: 12.sp, focus141TextColor: Focus141Colors.color000000,focus141Height: 1.0,),
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
-                },
-                separatorBuilder: (BuildContext context, int index) => SizedBox(height: 3.h,),
-              ),
-            )
-          ],
-        ),
-      ),
-    ],
+      ],
+    ),
   );
 
   _skipBtnWidget()=>Focus141ClickWidget(
     focus141OnTap: (){
-
+      focus141Con.clickSkip();
     },
     child: Stack(
       alignment: Alignment.center,

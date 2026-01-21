@@ -99,39 +99,6 @@ class Focus141CashChildCon extends Focus141Con{
     update(["cash_list"]);
   }
 
-  String getLoopTaskLeftStr(Focus141CashLoopTaskInfoBean? bean){
-    try{
-      switch(_getLoopTaskTypeEnum(bean)){
-        case Focus141LoopTaskTypeEnum.quiz: return "Quiz ";
-        case Focus141LoopTaskTypeEnum.wheel: return "Spin ";
-        case Focus141LoopTaskTypeEnum.video: return "Watch ";
-      }
-    }catch(e){
-      return "";
-    }
-  }
-
-
-  String getLoopTaskRightStr(Focus141CashLoopTaskInfoBean? bean){
-    try{
-      switch(_getLoopTaskTypeEnum(bean)){
-        case Focus141LoopTaskTypeEnum.video: return " Ad Video";
-        default: return " Times";
-      }
-    }catch(e){
-      return "";
-    }
-  }
-
-  Focus141LoopTaskTypeEnum _getLoopTaskTypeEnum(Focus141CashLoopTaskInfoBean? bean){
-    try{
-      var tixianTask = Focus141ValueUtils.instance.getTixianTaskById(bean?.taskId);
-      return Focus141LoopTaskTypeEnum.values.byName(tixianTask?.title??"");
-    }catch(e){
-      return Focus141LoopTaskTypeEnum.quiz;
-    }
-  }
-
   @override
   bool focus141InitEvent() => true;
 
@@ -143,6 +110,11 @@ class Focus141CashChildCon extends Focus141Con{
         break;
       case Focus141EventCode.updateMoney:
         update(["money"]);
+        break;
+      case Focus141EventCode.changeCashType:
+        if(anyValue is Focus141CashTypeEnum){
+          clickCashAppTab(anyValue);
+        }
         break;
     }
   }

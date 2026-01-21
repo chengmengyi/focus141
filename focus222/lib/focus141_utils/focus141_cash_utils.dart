@@ -12,6 +12,7 @@ import 'package:focus222/focus141_bean/focus141_cash_quiz20_info_bean.dart';
 import 'package:focus222/focus141_bean/focus141_cash_quiz50_login_info_bean.dart';
 import 'package:focus222/focus141_dialog/focus141_ad_review_dialog/focus141_ad_review_dialog.dart';
 import 'package:focus222/focus141_dialog/focus141_ad_review_fail_dialog/focus141_ad_review_fail_dialog.dart';
+import 'package:focus222/focus141_dialog/focus141_input_account_dialog/focus141_input_account_dialog.dart';
 import 'package:focus222/focus141_dialog/focus141_reach_cash_money_dialog/focus141_reach_cash_money_dialog.dart';
 import 'package:focus222/focus141_utils/focus141_info_utils.dart';
 import 'package:focus222/focus141_utils/focus141_value_utils.dart';
@@ -27,14 +28,27 @@ class Focus141CashUtils{
         money: money,
         typeEnum: typeEnum,
         callback: (){
-          showAdReviewPendingDialog(money,typeEnum);
+          showInputAccountDialog(money,typeEnum);
         },
       ),
     );
   }
 
-  showInputAccountDialog(int money,Focus141CashTypeEnum typeEnum){
-    showAdReviewPendingDialog(money, typeEnum);
+  showInputAccountDialog(int money,Focus141CashTypeEnum typeEnum)async{
+    var account = await queryCashAccount(typeEnum.name);
+    if(account.isEmpty){
+      showDialogFocus141(
+        child: Focus141InputAccountDialog(
+          money: money,
+          typeEnum: typeEnum,
+          callback: (){
+            showAdReviewPendingDialog(money, typeEnum);
+          },
+        ),
+      );
+    }else{
+      showAdReviewPendingDialog(money, typeEnum);
+    }
   }
 
   //广告审核弹窗
@@ -275,5 +289,32 @@ class Focus141CashUtils{
     if(sendEventMsg){
       Focus141EventUtils.instance.sendMsg(focus141Code: Focus141EventCode.updateCashInfo,);
     }
+  }
+
+  Future<Focus141CashQueueInfoBean?> queryMyQueueInfo(int? cashMoney,String? cashType)async{
+    var database = await Focus141SqlUtils.instance.initSql();
+    var list = await database.query(Focus141SqlTableName.cashQueueInfo,where: '"cashType" = ? AND "cashMoney" = ?',whereArgs: [cashType,cashMoney]);
+    if(list.isEmpty){
+      return null;
+    }
+    return Focus141CashQueueInfoBean.fromJson(list.first);
+  }
+
+  saveCashAccount(Focus141CashTypeEnum typeEnum,String account)async{
+    var database = await Focus141SqlUtils.instance.initSql();
+    var list = await database.query(Focus141SqlTableName.cashAccountInfo,where: '"cashType" = ? ',whereArgs: [typeEnum.name]);
+    if(list.isNotEmpty){
+      return;
+    }
+    await database.insert(Focus141SqlTableName.cashAccountInfo, {"cashType":typeEnum.name,"cashAccount":account});
+  }
+
+  Future<String> queryCashAccount(String? typeEnum)async{
+    var database = await Focus141SqlUtils.instance.initSql();
+    var list = await database.query(Focus141SqlTableName.cashAccountInfo,where: '"cashType" = ? ',whereArgs: [typeEnum]);
+    if(list.isEmpty){
+      return "";
+    }
+    return list.first["cashAccount"] as String;
   }
 }
