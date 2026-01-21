@@ -116,13 +116,13 @@ class Wheel {
     if (json['check_prize'] != null) {
       checkPrize = [];
       json['check_prize'].forEach((v) {
-        checkPrize?.add(CheckPrize.fromJson(v));
+        checkPrize?.add(QuizPrize.fromJson(v));
       });
     }
   }
   WheelPoint? wheelPoint;
   Task? task;
-  List<CheckPrize>? checkPrize;
+  List<QuizPrize>? checkPrize;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -135,31 +135,6 @@ class Wheel {
     if (checkPrize != null) {
       map['check_prize'] = checkPrize?.map((v) => v.toJson()).toList();
     }
-    return map;
-  }
-
-}
-
-class CheckPrize {
-  CheckPrize({
-      this.firstNumber, 
-      this.prize, 
-      this.endNumber,});
-
-  CheckPrize.fromJson(dynamic json) {
-    firstNumber = json['first_number'];
-    prize = json['prize'] != null ? json['prize'].cast<int>() : [];
-    endNumber = json['end_number'];
-  }
-  int? firstNumber;
-  List<int>? prize;
-  int? endNumber;
-
-  Map<String, dynamic> toJson() {
-    final map = <String, dynamic>{};
-    map['first_number'] = firstNumber;
-    map['prize'] = prize;
-    map['end_number'] = endNumber;
     return map;
   }
 

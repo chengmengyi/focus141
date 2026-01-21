@@ -4,6 +4,7 @@ import 'package:focus111/focus141_page/focus141_widget_type.dart';
 import 'package:focus111/focus141_utils/focus141_colors.dart';
 import 'package:focus111/focus141_utils/focus141_utils.dart';
 import 'package:focus111/focus141_widget/focus141_click_widget.dart';
+import 'package:focus111/focus141_widget/focus141_finger_widget.dart';
 import 'package:focus111/focus141_widget/focus141_local_images_widget.dart';
 import 'package:focus111/focus141_widget/focus141_text_widget.dart';
 import 'package:focus222/focus141_bean/focus141_home_pro_bean.dart';
@@ -21,16 +22,21 @@ class Focus141QuizChild extends Focus141Widget<Focus141QuizChildCon>{
   Focus141WidgetType initFocus141Type() => Focus141WidgetType.child;
 
   @override
-  Widget initFocus141Widget() => SafeArea(
-    child: Column(
-      children: [
-        _topWidget(),
-        SizedBox(height: 48.h,),
-        _progressWidget(),
-        SizedBox(height: 26.h,),
-        _quizWidget(),
-      ],
-    ),
+  Widget initFocus141Widget() => Stack(
+    children: [
+      SafeArea(
+        child: Column(
+          children: [
+            _topWidget(),
+            SizedBox(height: 48.h,),
+            _progressWidget(),
+            SizedBox(height: 26.h,),
+            _quizWidget(),
+          ],
+        ),
+      ),
+      _fingerWidget(),
+    ],
   );
 
   _quizWidget()=>Expanded(
@@ -108,16 +114,16 @@ class Focus141QuizChild extends Focus141Widget<Focus141QuizChildCon>{
         builder: (_)=>Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            _quizAnswerItemWidget("a",quizBean,quizTypeBean),
+            _quizAnswerItemWidget("a",quizBean,quizTypeBean,focus141Con.answerAGlobalKey),
             SizedBox(height: 29.h,),
-            _quizAnswerItemWidget("b",quizBean,quizTypeBean),
+            _quizAnswerItemWidget("b",quizBean,quizTypeBean,focus141Con.answerBGlobalKey),
           ],
         ),
       ),
     ),
   );
 
-  _quizAnswerItemWidget(String index, Focus141QuizBean quizBean,Focus141QuizTypeBean quizTypeBean){
+  _quizAnswerItemWidget(String index, Focus141QuizBean quizBean,Focus141QuizTypeBean quizTypeBean,GlobalKey globalKey){
     var answerResultImage = focus141Con.getAnswerResultImage(index, quizBean);
     return Focus141ClickWidget(
       focus141OnTap: (){
@@ -126,6 +132,7 @@ class Focus141QuizChild extends Focus141Widget<Focus141QuizChildCon>{
       child: Container(
         width: double.infinity,
         height: 50.h,
+        key: globalKey,
         margin: EdgeInsets.only(left: 40.w,right: 40.w),
         child: Stack(
           children: [
@@ -322,5 +329,25 @@ class Focus141QuizChild extends Focus141Widget<Focus141QuizChildCon>{
       ),
       SizedBox(width: 10.w,),
     ],
+  );
+
+  _fingerWidget()=>GetBuilder<Focus141QuizChildCon>(
+    id: "finger",
+    builder: (_){
+      if(null==focus141Con.fingerOffset){
+        return Container();
+      }
+      var dx = (focus141Con.fingerOffset?.dx??0)+200.w;
+      var dy = (focus141Con.fingerOffset?.dy??0)+20.h;
+      return Container(
+        margin: EdgeInsets.only(top: dy,left: dx),
+        child: Focus141ClickWidget(
+          focus141OnTap: (){
+            focus141Con.clickFinger();
+          },
+          child: Focus141FingerWidget(focus141Width: 80.w, focus141Height: 80.w),
+        ),
+      );
+    },
   );
 }

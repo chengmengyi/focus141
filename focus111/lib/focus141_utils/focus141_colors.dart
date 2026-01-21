@@ -49,4 +49,9 @@ class Focus141Colors{
   static const Color colorA6C2F2 = Color(0xFFA6C2F2);
   static const Color colorD0D9E3 = Color(0xFFD0D9E3);
   static const Color color8F99A3 = Color(0xFF8F99A3);
+  static const Color color20C5E3 = Color(0xFF20C5E3);
+  static const Color color0F8418 = Color(0xFF0F8418);
+  static const Color color434343 = Color(0xFF434343);
+  static const Color colorD68620 = Color(0xFFD68620);
+  static const Color color7F7F7F = Color(0xFF7F7F7F);
 }

@@ -6,6 +6,7 @@ import 'package:focus111/focus141_utils/focus141_utils.dart';
 import 'package:focus222/focus141_utils/focus141_home_pro_utils.dart';
 import 'package:focus222/focus141_utils/focus141_routers_list.dart';
 import 'package:focus222/focus141_utils/focus141_value_utils.dart';
+import 'package:spine_flutter/spine_flutter.dart';
 
 void main() async{
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,6 +22,7 @@ void main() async{
       )
   );
   await GetStorage.init();
+  await initSpineFlutter();
 
   //b
   Focus141HomeProUtils.instance.initProgress();

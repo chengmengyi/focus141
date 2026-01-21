@@ -1,7 +1,11 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:focus111/focus141_enum/focus141_cash_type_enum.dart';
 import 'package:focus111/focus141_enum/focus141_loop_task_type_enum.dart';
+import 'package:focus111/focus141_event/focus141_event_code.dart';
+import 'package:focus111/focus141_event/focus141_event_utils.dart';
 import 'package:focus111/focus141_page/focus141_con.dart';
 import 'package:focus111/focus141_routers/focus141_router_address.dart';
 import 'package:focus111/focus141_utils/focus141_utils.dart';
@@ -9,12 +13,15 @@ import 'package:focus222/focus141_bean/focus141_home_pro_bean.dart';
 import 'package:focus222/focus141_bean/focus141_quiz_bean.dart';
 import 'package:focus222/focus141_bean/focus141_quiz_type_bean.dart';
 import 'package:focus222/focus141_dialog/focus141_box_dialog/focus141_box_dialog.dart';
+import 'package:focus222/focus141_dialog/focus141_new_user_dialog/focus141_new_user_dialog.dart';
+import 'package:focus222/focus141_dialog/focus141_old_user_dialog/focus141_old_user_dialog.dart';
 import 'package:focus222/focus141_dialog/focus141_reach_cash_money_dialog/focus141_reach_cash_money_dialog.dart';
 import 'package:focus222/focus141_dialog/focus141_reward_dialog/focus141_reward_dialog.dart';
 import 'package:focus222/focus141_utils/focus141_cash_utils.dart';
 import 'package:focus222/focus141_utils/focus141_home_pro_utils.dart';
 import 'package:focus222/focus141_utils/focus141_info_utils.dart';
 import 'package:focus222/focus141_utils/focus141_quiz_utils.dart';
+import 'package:focus222/focus141_utils/focus141_user_guide_utils.dart';
 import 'package:focus222/focus141_utils/focus141_value_utils.dart';
 
 class Focus141QuizChildCon extends Focus141Con{
@@ -23,6 +30,11 @@ class Focus141QuizChildCon extends Focus141Con{
 
   List<Focus141HomeProBean> progressList=[];
   ScrollController scrollController=ScrollController();
+
+  Timer? _rightAnswerTimer;
+  Offset? fingerOffset;
+  GlobalKey answerAGlobalKey=GlobalKey();
+  GlobalKey answerBGlobalKey=GlobalKey();
 
   @override
   void onInit() {
@@ -144,7 +156,8 @@ class Focus141QuizChildCon extends Focus141Con{
     }
     _canClick=false;
     currentChooseAnswer=index;
-    update(["answer"]);
+    fingerOffset = null;
+    update(["answer","finger"]);
     await Future.delayed(Duration(milliseconds: 1000));
     var result = quizBean.answer==index;
     if(result){
@@ -179,6 +192,37 @@ class Focus141QuizChildCon extends Focus141Con{
     }
     _canClick=true;
     update(["quiz"]);
+    _startRightAnswerTimer();
+  }
+
+  _startRightAnswerTimer(){
+    _endRightAnswerTimer();
+    _rightAnswerTimer=Timer(Duration(milliseconds: 5000), (){
+      try{
+        var focus141quizBean = quizTypeList[quizTypeIndex].list[quizIndex];
+        var globalKey = focus141quizBean.answer=="a"?answerAGlobalKey:answerBGlobalKey;
+        var renderBox = globalKey.currentContext?.findRenderObject() as RenderBox;
+        fingerOffset = renderBox.localToGlobal(Offset.zero);
+        update(["finger"]);
+      }catch(e){
+
+      }
+    },);
+  }
+
+  _endRightAnswerTimer(){
+    _rightAnswerTimer?.cancel();
+    _rightAnswerTimer=null;
+  }
+
+  clickFinger(){
+    try{
+      var focus141quizTypeBean = quizTypeList[quizTypeIndex];
+      var focus141quizBean = focus141quizTypeBean.list[quizIndex];
+      clickAnswer(focus141quizBean.answer??"a", focus141quizBean, focus141quizTypeBean);
+    }catch(e){
+
+    }
   }
 
   test()async{
@@ -192,12 +236,16 @@ class Focus141QuizChildCon extends Focus141Con{
     // Focus141InfoUtils.instance.updateMoney(2000);
     // Focus141CashUtils.instance.showReachCashMoneyDialog(800,Focus141CashTypeEnum.cashapp);
     // Focus141CashUtils.instance.updateLoopTask(taskType: Focus141LoopTaskTypeEnum.wheel);
-    Focus141CashUtils.instance.updateLogin7TaskProgress();
+    // Focus141CashUtils.instance.updateQuizTaskProgress();
+    // Focus141EventUtils.instance.sendMsg(focus141Code: Focus141EventCode.showMoneyReward,focus141Dynamic: 220);
+    // Focus141UserGuideUtils.instance.showNewUserGuide();
+    Focus141UserGuideUtils.instance.test();
   }
 
   @override
   void onClose() {
     scrollController.dispose();
+    _endRightAnswerTimer();
     super.onClose();
   }
 

@@ -21,6 +21,7 @@ export 'package:connectivity_plus/connectivity_plus.dart';
 export 'package:app_settings/app_settings.dart';
 export 'package:permission_handler/permission_handler.dart';
 export 'package:flutter_tba_info/flutter_tba_info.dart';
+export 'package:shake_animation_widget/shake_animation_widget.dart';
 
 
 extension StringBase64 on String{
@@ -96,6 +97,11 @@ showToastFocus141({required String? text}) {
 
 extension RandomList on List{
   random()=> this[Random().nextInt(length)];
+}
+
+String getTodayTime(){
+  var dateTime = DateTime.now();
+  return "${dateTime.year}-${dateTime.month}-${dateTime.day}";
 }
 
 showDialogFocus141({required Widget child,}){

@@ -10,6 +10,8 @@ class Focus141TextWidget extends StatelessWidget{
   FontWeight? focus141FontWeight;
   double? focus141Height;
   TextAlign? focus141TextAlign;
+  TextDecoration? focus141Decoration;
+  Color? focus141DecorationColor;
 
   Focus141TextWidget({
     required this.focus141TextContent,
@@ -19,6 +21,8 @@ class Focus141TextWidget extends StatelessWidget{
     this.focus141FontWeight,
     this.focus141Height,
     this.focus141TextAlign,
+    this.focus141Decoration,
+    this.focus141DecorationColor,
 });
 
   @override
@@ -31,6 +35,8 @@ class Focus141TextWidget extends StatelessWidget{
         height: focus141Height??0,
         fontWeight: focus141FontWeight,
         fontFamily: "woff",
+        decoration: focus141Decoration,
+        decorationColor: focus141DecorationColor,
       ),
       textAlign: focus141TextAlign,
     ),

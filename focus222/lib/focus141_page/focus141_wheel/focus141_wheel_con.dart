@@ -8,7 +8,7 @@ import 'package:focus222/focus141_dialog/focus141_reward_dialog/focus141_reward_
 import 'package:focus222/focus141_utils/focus141_value_utils.dart';
 
 class Focus141WheelCon extends Focus141Con with GetSingleTickerProviderStateMixin{
-  var wheelReward=0,canClick=true;
+  var wheelReward=0,canClick=true,fromOldUser=false;
   List<int> wheelList=[20,100,50,10,80,10,5,0];
   late AnimationController _wheelAnimationController;
   Animation<double>? wheelAnimation;
@@ -17,6 +17,8 @@ class Focus141WheelCon extends Focus141Con with GetSingleTickerProviderStateMixi
   @override
   void onInit() {
     super.onInit();
+    var map = Get.arguments as Map<String, dynamic>;
+    fromOldUser=map["fromOld"]??false;
     _initAnimator();
     _initWheelReward();
   }
@@ -47,19 +49,28 @@ class Focus141WheelCon extends Focus141Con with GetSingleTickerProviderStateMixi
     _wheelAnimationController.addStatusListener(_statusListener);
   }
 
-  _wheelCompleted(){
-    canClick=true;
+  _wheelCompleted()async{
+    await Future.delayed(Duration(milliseconds: 1000));
     Focus141AdUtils.instance.showAdFocus141(
       result: (give){
-        showDialogFocus141(
-          child: Focus141RewardDialog(
-            reward: wheelReward.toDouble(),
-            callback: (){
-              backFocus141(params: {});
-            },
-          ),
+        canClick=true;
+        if(fromOldUser){
+          backFocus141(params: {"reward":wheelReward.toDouble()});
+          return;
+        }
+        Focus141AdUtils.instance.showAdFocus141(
+            result: (give){
+              showDialogFocus141(
+                child: Focus141RewardDialog(
+                  reward: wheelReward.toDouble(),
+                  callback: (){
+                    backFocus141(params: {});
+                  },
+                ),
+              );
+            }
         );
-      }
+      },
     );
   }
 

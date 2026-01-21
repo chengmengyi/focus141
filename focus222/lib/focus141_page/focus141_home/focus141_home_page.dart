@@ -5,8 +5,10 @@ import 'package:focus111/focus141_utils/focus141_colors.dart';
 import 'package:focus111/focus141_utils/focus141_utils.dart';
 import 'package:focus111/focus141_widget/focus141_click_widget.dart';
 import 'package:focus111/focus141_widget/focus141_local_images_widget.dart';
+import 'package:focus111/focus141_widget/focus141_spine_widget.dart';
 import 'package:focus111/focus141_widget/focus141_text_widget.dart';
 import 'package:focus222/focus141_page/focus141_home/focus141_home_con.dart';
+import 'package:focus222/focus141_widget/focus141_money_reward_2s_widget.dart';
 
 class Focus141HomePage extends Focus141Widget<Focus141HomeCon>{
   @override
@@ -33,6 +35,16 @@ class Focus141HomePage extends Focus141Widget<Focus141HomeCon>{
           ],
         ),
       ),
+      Align(
+        alignment: Alignment.center,
+        child: Focus141MoneyReward2sWidget(),
+      ),
+      // Focus141SpineWidget(focus141Atlas: "zibaoxiangkaiqi", focus141Json: "zibaoxiangkaiqi", focus141AnimatorName: "open", focus141Folder: "CD1"),
+      // Align(
+      //   alignment: Alignment.topCenter,
+      //   child: Focus141SpineWidget(focus141Atlas: "skeleton", focus141Json: "skeleton", focus141AnimatorName: "animation", focus141Folder: "CD2",),
+      // ),
+      // Focus141SpineWidget(focus141Atlas: "skeleton", focus141Json: "skeleton", focus141AnimatorName: "animation", focus141Folder: "CD3",),
     ],
   );
 
