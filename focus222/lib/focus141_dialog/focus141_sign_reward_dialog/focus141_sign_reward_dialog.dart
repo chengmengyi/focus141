@@ -19,11 +19,11 @@ class Focus141SignRewardDialog extends Focus141Widget<Focus141SignRewardDialogCo
   @override
   Widget initFocus141Widget() => Container(
     width: double.infinity,
-    height: 460.h,
+    height: 448.h,
     margin: EdgeInsets.only(left: 20.w,right: 20.w),
     child: Stack(
       children: [
-        Focus141LocalImagesWidget(focus141ImagesName: "wheel_sign_reward1", focus141Width: double.infinity, focus141Height: double.infinity,),
+        Focus141LocalImagesWidget(focus141ImagesName: "sign_reward1", focus141Width: double.infinity, focus141Height: double.infinity,),
         _titleWidget(),
         _iconWidget(),
         _btnWidget(),
@@ -84,22 +84,16 @@ class Focus141SignRewardDialog extends Focus141Widget<Focus141SignRewardDialogCo
     alignment: Alignment.topCenter,
     child: Container(
       margin: EdgeInsets.only(top: 142.h),
-      child: Row(
+      child: Column(
         mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          Column(
+          Focus141LocalImagesWidget(focus141ImagesName: "wheel_sign_reward4", focus141Width: 118.w, focus141Height: 128.h),
+          Focus141TextWidget(focus141TextContent: "daily check reward", focus141TextSize: 16.sp, focus141TextColor: Focus141Colors.color000000,),
+          Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Focus141LocalImagesWidget(focus141ImagesName: "wheel_sign_reward4", focus141Width: 86.w, focus141Height: 86.h),
-              Focus141TextWidget(focus141TextContent: "daily check reward", focus141TextSize: 12.sp, focus141TextColor: Focus141Colors.color000000,),
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Focus141LocalImagesWidget(focus141ImagesName: "icon_money2", focus141Width: 46.w, focus141Height: 31.h),
-                  Focus141TextWidget(focus141TextContent: "+\$${focus141Con.signReward}", focus141TextSize: 24.sp, focus141TextColor: Focus141Colors.color9EF356,focus141LineColor: Focus141Colors.color055305,),
-                ],
-              ),
+              Focus141LocalImagesWidget(focus141ImagesName: "icon_money2", focus141Width: 46.w, focus141Height: 31.h),
+              Focus141TextWidget(focus141TextContent: "+\$${focus141Con.signReward}", focus141TextSize: 24.sp, focus141TextColor: Focus141Colors.color9EF356,focus141LineColor: Focus141Colors.color055305,),
             ],
           ),
         ],

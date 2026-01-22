@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:focus/focus141_launch/focus141_launch_page.dart';
 import 'package:focus111/focus141_routers/focus141_router_address.dart';
+import 'package:focus111/focus141_utils/focus141_firebase_config_utils.dart';
+import 'package:focus111/focus141_utils/focus141_tba_utils.dart';
 import 'package:focus111/focus141_utils/focus141_utils.dart';
 import 'package:focus222/focus141_utils/focus141_home_pro_utils.dart';
 import 'package:focus222/focus141_utils/focus141_routers_list.dart';
@@ -27,6 +29,8 @@ void main() async{
   //b
   Focus141HomeProUtils.instance.initProgress();
   Focus141ValueUtils.instance.initValue();
+  Focus141FirebaseConfigUtils.instance.initFirebaseConfig();
+  Focus141TbaUtils.instance.uploadInstall();
 
   runApp(const MyApp());
 }

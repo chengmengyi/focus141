@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:focus111/focus141_event/focus141_event_code.dart';
+import 'package:focus111/focus141_event/focus141_event_utils.dart';
 import 'package:focus111/focus141_page/focus141_stateful_widget.dart';
 import 'package:focus111/focus141_utils/focus141_colors.dart';
 import 'package:focus111/focus141_utils/focus141_utils.dart';
+import 'package:focus111/focus141_widget/focus141_click_widget.dart';
 import 'package:focus111/focus141_widget/focus141_local_images_widget.dart';
 import 'package:focus111/focus141_widget/focus141_text_widget.dart';
 import 'package:focus222/focus141_utils/focus141_storage_data.dart';
@@ -37,18 +39,23 @@ class _Focus141MoneyWidgetState extends Focus141StatefulState<Focus141MoneyWidge
                 focus141FontWeight: FontWeight.bold,
               ),
               SizedBox(width: 25.w,),
-              Stack(
-                alignment: Alignment.center,
-                children: [
-                  Focus141LocalImagesWidget(focus141ImagesName: "cash_btn_bg", focus141Width: 68.w, focus141Height: 24.h),
-                  Focus141TextWidget(
-                    focus141TextContent: "Withdraw",
-                    focus141TextSize: 13.sp,
-                    focus141TextColor: Focus141Colors.colorFFFFFF,
-                    focus141FontWeight: FontWeight.bold,
-                    focus141LineColor: Focus141Colors.colorCD4038,
-                  ),
-                ],
+              Focus141ClickWidget(
+                focus141OnTap: (){
+                  Focus141EventUtils.instance.sendMsg(focus141Code: Focus141EventCode.updateHomeTab,focus141Int: 1);
+                },
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    Focus141LocalImagesWidget(focus141ImagesName: "cash_btn_bg", focus141Width: 68.w, focus141Height: 24.h),
+                    Focus141TextWidget(
+                      focus141TextContent: "Withdraw",
+                      focus141TextSize: 13.sp,
+                      focus141TextColor: Focus141Colors.colorFFFFFF,
+                      focus141FontWeight: FontWeight.bold,
+                      focus141LineColor: Focus141Colors.colorCD4038,
+                    ),
+                  ],
+                ),
               ),
               SizedBox(width: 5.w,),
             ],

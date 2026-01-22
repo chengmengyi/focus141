@@ -33,29 +33,14 @@ class Focus141UserGuideUtils {
             if(clickDouble){
               _toWheel();
             }else{
-
+              showDialogFocus141(
+                child: Focus141SignRewardDialog(),
+              );
             }
           },
         ),
       );
     }
-  }
-
-  test(){
-    showDialogFocus141(
-      child: Focus141OldUserDialog(
-        callback: (bool clickDouble){
-          Focus141CashUtils.instance.updateLogin7TaskProgress();
-          if(clickDouble){
-            _toWheel();
-          }else{
-            showDialogFocus141(
-              child: Focus141SignRewardDialog(),
-            );
-          }
-        },
-      ),
-    );
   }
 
   _toWheel()async{

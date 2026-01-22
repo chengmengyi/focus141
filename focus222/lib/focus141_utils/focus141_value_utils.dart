@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:math';
 
+import 'package:focus111/focus141_utils/focus141_firebase_config_utils.dart';
 import 'package:focus111/focus141_utils/focus141_local_quiz.dart';
 import 'package:focus111/focus141_utils/focus141_utils.dart';
 import 'package:focus222/focus141_bean/focus141_value_bean.dart';
@@ -13,8 +14,22 @@ class Focus141ValueUtils{
   Focus141ValueBean? _valueBean;
 
   initValue(){
+    Focus141FirebaseConfigUtils.instance.valueConfigCallback=(String s){
+      if(bValueFirebaseConfig.getData().isEmpty){
+        bValueFirebaseConfig.saveData(s);
+        _init();
+      }
+    };
+    _init();
+  }
+
+  _init(){
     try{
-      _valueBean=Focus141ValueBean.fromJson(jsonDecode(Focus141LocalQuiz.localValueStrBase64.base64()));
+      var data = bValueFirebaseConfig.getData();
+      if(data.isEmpty){
+        data=Focus141LocalQuiz.localValueStrBase64.base64();
+      }
+      _valueBean=Focus141ValueBean.fromJson(jsonDecode(data));
     }catch(e){
       _valueBean=Focus141ValueBean.fromJson(jsonDecode(Focus141LocalQuiz.localValueStrBase64.base64()));
     }
