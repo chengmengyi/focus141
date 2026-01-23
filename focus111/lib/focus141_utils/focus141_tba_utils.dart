@@ -5,8 +5,10 @@ import 'package:flutter_android_ad_plugins/data/ad_money_info_bean.dart';
 import 'package:flutter_android_ad_plugins/hep/hep.dart';
 import 'package:flutter_check_adjust/dio/dio_hep.dart';
 import 'package:flutter_tba_info/flutter_tba_info.dart';
+import 'package:focus111/focus141_utils/focus141_ad_enum.dart';
 import 'package:focus111/focus141_utils/focus141_common_storage.dart';
 import 'package:focus111/focus141_utils/focus141_local_quiz.dart';
+import 'package:focus111/focus141_utils/focus141_point_enum.dart';
 
 class Focus141TbaUtils {
   static final Focus141TbaUtils _focus141tbaUtils=Focus141TbaUtils();
@@ -57,14 +59,54 @@ class Focus141TbaUtils {
     }
   }
 
-  // uploadAd({
-  //   required AdMoneyInfoBean? ad,
-  //   required TreaAdPosIdEnumDwidjwm posId,
-  //   required AdInfoData? adInfoData,
-  //   int tryNum=5,
-  // })async{
-  //
-  // }
+  uploadAd({
+    required AdMoneyInfoBean? ad,
+    required Focus141AdEnum focus141AdEnum,
+    required AdInfoData? adInfoData,
+    int tryNum=5,
+  })async{
+    var logId = await FlutterTbaInfo.instance.getLogId();
+    var map = await _getCommonMap(logId);
+    map["sequent"]={
+      "exclaim":(ad?.revenue ?? 0) * 1000000,
+      "spangle": "USD",
+      "admire":ad?.networkName ?? "",
+      "anguish":adInfoData?.adPlat ?? "",
+      "nimbus":adInfoData?.adId ?? "",
+      "faze":focus141AdEnum.name,
+      "thud":adInfoData?.adType.name,
+      "angle":ad?.revenuePrecision ?? "",
+    };
+    "tba--->ad--->start--->params--->$map".log();
+    var dioResult = await DioHep.instance.requestPost(path: _getUrl(logId), data: map,header: _headMap());
+    "tba--->ad--->result--->${dioResult.success}---->params--->$map".log();
+    if(!dioResult.success){
+      await Future.delayed(Duration(milliseconds: 1000));
+      uploadAd(ad: ad, focus141AdEnum: focus141AdEnum, adInfoData: adInfoData,tryNum: tryNum-1);
+    }
+  }
+
+  uploadPoint({
+    required Focus141PointEnum focus141PointEnum,
+    Map<String,dynamic>? params,
+    int tryNum=5
+  })async{
+    var logId = await FlutterTbaInfo.instance.getLogId();
+    var map = await _getCommonMap(logId);
+    map["inflater"]=focus141PointEnum.name;
+    if(null!=params){
+      for (var value in params.keys) {
+        map["sexton#$value"]=params[value];
+      }
+    }
+    "tba--->point--->start--->params--->$map".log();
+    var dioResult = await DioHep.instance.requestPost(path: _getUrl(logId), data: map,header: _headMap());
+    "tba--->point--->result--->${dioResult.success}---->params--->$map".log();
+    if(!dioResult.success){
+      await Future.delayed(Duration(milliseconds: 1000));
+      uploadPoint(focus141PointEnum: focus141PointEnum,params: params,tryNum: tryNum-1);
+    }
+  }
 
   Future<Map<String,dynamic>> _getCommonMap(String logId)async => {
     "brew":{

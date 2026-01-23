@@ -38,6 +38,8 @@ dependencies:
   flutter_custom_facebook: 0.0.5
   url_launcher: 6.3.2
   shake_animation_widget: 3.0.4
+  flutter_risk_control_plugins:
+    path: /Users/trinhquach/StudioProjects/flutter_risk_control_plugins
 
 dev_dependencies:
   flutter_test:

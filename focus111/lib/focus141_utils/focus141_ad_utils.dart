@@ -3,11 +3,17 @@ import 'dart:convert';
 import 'package:flutter_android_ad_plugins/data/ad_info_data.dart';
 import 'package:flutter_android_ad_plugins/data/config_ad_data.dart';
 import 'package:flutter_android_ad_plugins/flutter_android_ad_plugins.dart';
+import 'package:flutter_android_ad_plugins/hep/ios_ad_callback.dart';
 import 'package:flutter_android_ad_plugins/hep/ios_load_ad_result_callback.dart';
+import 'package:focus111/focus141_utils/focus141_ad_enum.dart';
+import 'package:focus111/focus141_utils/focus141_check_adjust_utils.dart';
 import 'package:focus111/focus141_utils/focus141_common_storage.dart';
 import 'package:focus111/focus141_utils/focus141_feng_utils.dart';
 import 'package:focus111/focus141_utils/focus141_local_quiz.dart';
+import 'package:focus111/focus141_utils/focus141_point_enum.dart';
+import 'package:focus111/focus141_utils/focus141_tba_utils.dart';
 import 'package:focus111/focus141_utils/focus141_utils.dart';
+import 'package:focus111/focus141_utils/focus141_voice_utils.dart';
 
 class Focus141AdUtils {
   static final Focus141AdUtils _focus141adUtils=Focus141AdUtils();
@@ -42,11 +48,107 @@ class Focus141AdUtils {
   }
 
   showAdFocus141({
-    required Function(bool giveReard) result,
-}){
-    result.call(true);
+    required AdType adType,
+    required Focus141AdEnum focus141AdEnum,
+    required bool showAd,
+    required Function(bool giveReward) result,
+    bool isOpenAd=false,
+  }){
+    if(!showAd){
+      result.call(adType==AdType.interstitial);
+      return;
+    }
+    Focus141TbaUtils.instance.uploadPoint(focus141PointEnum: Focus141PointEnum.fkskv_ad_chance,params: {"ad_pos_id":focus141AdEnum.name});
+
+    var resultData = FlutterAndroidAdPlugins.instance.getCacheResultData(adType);
+    if(null==resultData){
+      Focus141TbaUtils.instance.uploadPoint(
+        focus141PointEnum: Focus141PointEnum.fkskv_ad_impression_fail,
+        params: {
+          "ad_pos_id":focus141AdEnum.name,
+          "reason":"no cache",
+        },
+      );
+      FlutterAndroidAdPlugins.instance.loadAdWhenNoCache(adType);
+      if(isOpenAd||adType==AdType.interstitial){
+        result.call(true);
+        return;
+      }
+      // HissRoutersUtils.instance.showDialog(
+      //   child: LoadAdFailDialog(
+      //     tryAgainCallback: (){
+      //       var data = FlutterAndroidAdPlugins.instance.getCacheResultData(adType);
+      //       if(null==data){
+      //         result.call(adType==AdType.interstitial);
+      //         return;
+      //       }
+      //       _showAd(adType: adType, hissAdEnum: hissAdEnum, showAd: showAd, result: result,isOpen: isOpen,);
+      //     },
+      //     closeCallback: (){
+      //       result.call(adType==AdType.interstitial);
+      //     },
+      //   ),
+      // );
+      return;
+    }
+    _showAdFocus141(adType: adType, focus141AdEnum: focus141AdEnum, showAd: showAd, result: result,isOpenAd: isOpenAd,);
+
   }
 
+  _showAdFocus141({
+    required AdType adType,
+    required Focus141AdEnum focus141AdEnum,
+    required bool showAd,
+    required Function(bool giveReward) result,
+    bool isOpenAd=false,
+  }){
+    FlutterAndroidAdPlugins.instance.showAd(
+      adType: adType,
+      iosAdCallback: IosAdCallback(
+        showSuccess: (ad,info){
+          Focus141VoiceUtils.instance.pauseBgmFocus141();
+          FlutterRiskControlPlugins.instance.handleShowAdSuccess(adType==AdType.reward);
+          Focus141CheckAdjustUtils.instance.uploadRevenueFocus141(ad);
+          Focus141TbaUtils.instance.uploadAd(ad: ad, focus141AdEnum: focus141AdEnum, adInfoData: info);
+        },
+        showFail: (){
+          Focus141TbaUtils.instance.uploadPoint(
+            focus141PointEnum: Focus141PointEnum.fkskv_ad_impression_fail,
+            params: {
+              "ad_pos_id":focus141AdEnum.name,
+              "reason":"impfail",
+            },
+          );
+          if(isOpenAd){
+            result.call(false);
+            return;
+          }
+          if(adType==AdType.reward){
+            showToastFocus141(text: "Advertisement display failed, please try again later");
+          }else{
+            result.call(false);
+          }
+        },
+        closeAd: (ad,info,hasReward){
+          Focus141VoiceUtils.instance.playBgmFocus141();
+          Focus141TbaUtils.instance.uploadPoint(
+            focus141PointEnum: Focus141PointEnum.fkskv_ad_imp_close,
+            params: {
+              "ad_code_id":info?.adId,
+              "ad_format":info?.adType.name,
+              "ad_platform":info?.adPlat,
+              "ad_pos_id":focus141AdEnum.name,
+            },
+          );
+          FlutterRiskControlPlugins.instance.handleCloseAd(adType==AdType.reward);
+          result.call(true);
+        },
+        revenuePaid: (ad,info){
+          FlutterRiskControlPlugins.instance.handleRevenuePaidAd(adType==AdType.reward);
+        },
+      ),
+    );
+  }
 
   ConfigAdData _createAdDataFocus141(){
     var data = bAdFirebaseConfig.getData();

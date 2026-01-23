@@ -4,3 +4,4 @@ StorageData<bool> bUploadInstallEvent=StorageData<bool>(key: "bUploadInstallEven
 
 
 StorageData<String> bAdFirebaseConfig=StorageData<String>(key: "bAdFirebaseConfig", defaultValue: "");
+StorageData<String> bFengkongFirebaseConfig=StorageData<String>(key: "bFengkongFirebaseConfig", defaultValue: "");

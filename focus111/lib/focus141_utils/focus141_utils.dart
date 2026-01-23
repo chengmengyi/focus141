@@ -22,6 +22,8 @@ export 'package:app_settings/app_settings.dart';
 export 'package:permission_handler/permission_handler.dart';
 export 'package:flutter_tba_info/flutter_tba_info.dart';
 export 'package:shake_animation_widget/shake_animation_widget.dart';
+export 'package:flutter_risk_control_plugins/flutter_risk_control_plugins.dart';
+export 'package:flutter_risk_control_plugins/bean/risk_control_ip_config_bean.dart';
 
 
 extension StringBase64 on String{

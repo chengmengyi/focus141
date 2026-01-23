@@ -374,6 +374,13 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "5.0.0"
+  flutter_risk_control_plugins:
+    dependency: transitive
+    description:
+      path: "/Users/trinhquach/StudioProjects/flutter_risk_control_plugins"
+      relative: false
+    source: path
+    version: "0.0.1"
   flutter_screenutil:
     dependency: transitive
     description:
