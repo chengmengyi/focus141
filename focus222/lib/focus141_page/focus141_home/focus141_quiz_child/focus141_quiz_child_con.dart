@@ -8,6 +8,7 @@ import 'package:focus111/focus141_event/focus141_event_code.dart';
 import 'package:focus111/focus141_event/focus141_event_utils.dart';
 import 'package:focus111/focus141_page/focus141_con.dart';
 import 'package:focus111/focus141_routers/focus141_router_address.dart';
+import 'package:focus111/focus141_utils/focus141_local_quiz.dart';
 import 'package:focus111/focus141_utils/focus141_tba_utils.dart';
 import 'package:focus111/focus141_utils/focus141_utils.dart';
 import 'package:focus222/focus141_bean/focus141_home_pro_bean.dart';
@@ -240,7 +241,9 @@ class Focus141QuizChildCon extends Focus141Con{
     // Focus141CashUtils.instance.updateQuizTaskProgress();
     // Focus141EventUtils.instance.sendMsg(focus141Code: Focus141EventCode.showMoneyReward,focus141Dynamic: 220);
     // Focus141UserGuideUtils.instance.showNewUserGuide();
-    Focus141TbaUtils.instance.uploadSession();
+    // Focus141TbaUtils.instance.uploadSession();
+    
+    print(decrypt(Focus141LocalQuiz.shuMengKeyEn, 141));
   }
 
   @override

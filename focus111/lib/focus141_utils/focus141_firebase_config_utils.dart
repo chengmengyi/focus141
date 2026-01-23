@@ -1,5 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_remote_config/firebase_remote_config.dart';
+import 'package:focus111/focus141_utils/focus141_ad_utils.dart';
+import 'package:focus111/focus141_utils/focus141_common_storage.dart';
 
 class Focus141FirebaseConfigUtils{
   static final Focus141FirebaseConfigUtils _configUtils=Focus141FirebaseConfigUtils();
@@ -29,6 +31,11 @@ class Focus141FirebaseConfigUtils{
     var qland_number = remoteConfig.getString("qland_number");
     if(qland_number.isNotEmpty){
       valueConfigCallback?.call(qland_number);
+    }
+    var fkskv_ad_config = remoteConfig.getString("fkskv_ad_config");
+    if(fkskv_ad_config.isNotEmpty){
+      bAdFirebaseConfig.saveData(fkskv_ad_config);
+      Focus141AdUtils.instance.updateAdInfo();
     }
   }
 }
