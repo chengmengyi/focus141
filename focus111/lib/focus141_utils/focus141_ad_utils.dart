@@ -32,16 +32,16 @@ class Focus141AdUtils {
       },
       iosLoadAdResultCallback: IosLoadAdResultCallback(
         startLoadAdCallback: (info){
-          // TreaTttIwjodwm.instance.pointEventdjwijiwo(point: TreaPointEnumDjwidjo.ad_request,params: {"ad_code_id":info?.adId,"ad_format":info?.adType.name,"ad_platform":info?.adPlat});
+          Focus141TbaUtils.instance.uploadPoint(focus141PointEnum: Focus141PointEnum.ad_request,params: {"ad_code_id":info?.adId,"ad_format":info?.adType.name,"ad_platform":info?.adPlat});
         },
         loadAdSuccessCallback: (maxAd,info,loadTime){
-          // TreaTttIwjodwm.instance.pointEventdjwijiwo(point: TreaPointEnumDjwidjo.ytmcp_ad_return,params: {"ad_code_id":info?.adId,"ad_format":info?.adType.name,"ad_platform":info?.adPlat,"ad_request_time":loadTime});
+          Focus141TbaUtils.instance.uploadPoint(focus141PointEnum: Focus141PointEnum.fkskv_ad_return,params: {"ad_code_id":info?.adId,"ad_format":info?.adType.name,"ad_platform":info?.adPlat,"ad_request_time":loadTime});
         },
         loadAdFailCallback: (info,failReason){
-          // TreaTttIwjodwm.instance.pointEventdjwijiwo(point: TreaPointEnumDjwidjo.ytmcp_ad_return_fail,params: {"ad_code_id":info?.adId,"ad_format":info?.adType.name,"ad_platform":info?.adPlat});
+          Focus141TbaUtils.instance.uploadPoint(focus141PointEnum: Focus141PointEnum.fkskv_ad_return_fail,params: {"ad_code_id":info?.adId,"ad_format":info?.adType.name,"ad_platform":info?.adPlat});
         },
         initSdkSuccess: (time,platform){
-          // TreaTttIwjodwm.instance.pointEventdjwijiwo(point: TreaPointEnumDjwidjo.ytmcp_ad_initsuc,params: {"ad_platform":platform,"oxrsl_ad_init_time":time});
+          // Focus141TbaUtils.instance.uploadPoint(focus141PointEnum: Focus141PointEnum.ytmcp_ad_initsuc,params: {"ad_platform":platform,"oxrsl_ad_init_time":time});
         },
       ),
     );
@@ -125,9 +125,8 @@ class Focus141AdUtils {
           }
           if(adType==AdType.reward){
             showToastFocus141(text: "Advertisement display failed, please try again later");
-          }else{
-            result.call(false);
           }
+          result.call(false);
         },
         closeAd: (ad,info,hasReward){
           Focus141VoiceUtils.instance.playBgmFocus141();

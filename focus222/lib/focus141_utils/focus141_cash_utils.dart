@@ -5,6 +5,8 @@ import 'package:focus111/focus141_event/focus141_event_code.dart';
 import 'package:focus111/focus141_event/focus141_event_utils.dart';
 import 'package:focus111/focus141_sql/focus141_sql_table_name.dart';
 import 'package:focus111/focus141_sql/focus141_sql_utils.dart';
+import 'package:focus111/focus141_utils/focus141_point_enum.dart';
+import 'package:focus111/focus141_utils/focus141_tba_utils.dart';
 import 'package:focus111/focus141_utils/focus141_utils.dart';
 import 'package:focus222/focus141_bean/focus141_cash_loop_task_info_bean.dart';
 import 'package:focus222/focus141_bean/focus141_cash_queue_info_bean.dart';
@@ -92,6 +94,7 @@ class Focus141CashUtils{
       totalQuizNum: 20,
     );
     await database.insert(Focus141SqlTableName.cashQuiz20Info, focus141cashInfoBean.toJson());
+    Focus141TbaUtils.instance.uploadPoint(focus141PointEnum: Focus141PointEnum.cash_page_c,params: {"status":"process"});
     Focus141InfoUtils.instance.updateMoney(-money);
     Focus141EventUtils.instance.sendMsg(focus141Code: Focus141EventCode.updateCashInfo,);
   }
@@ -111,6 +114,7 @@ class Focus141CashUtils{
       totalPro: Focus141ValueUtils.instance.getAllQueueNum(),
     );
     await database.insert(Focus141SqlTableName.cashQueueInfo, focus141cashQueueInfoBean.toJson());
+    Focus141TbaUtils.instance.uploadPoint(focus141PointEnum: Focus141PointEnum.cash_page_c,params: {"status":"queue"});
   }
 
   //创建答题50登录7天提现任务信息
@@ -130,6 +134,7 @@ class Focus141CashUtils{
       loginTotalNum: Focus141ValueUtils.instance.getQuiz50Login7TaskLoginTotalNum(),
     );
     await database.insert(Focus141SqlTableName.cashQuiz50AndLogin7Info, focus141cashQuiz50LoginInfoBean.toJson());
+    Focus141TbaUtils.instance.uploadPoint(focus141PointEnum: Focus141PointEnum.cash_page_c,params: {"status":"verify"});
   }
 
   insertLoopTaskCashInfo(int money,String typeEnum)async{
@@ -148,6 +153,7 @@ class Focus141CashUtils{
       taskId: tixianTask.id,
     );
     await database.insert(Focus141SqlTableName.cashLoopTaskInfo, focus141cashLoopTaskInfoBean.toJson());
+    Focus141TbaUtils.instance.uploadPoint(focus141PointEnum: Focus141PointEnum.cash_page_c,params: {"status":"final"});
   }
 
   Future<Focus141CashQuiz20InfoBean?> queryCashQuiz20Info(int money,Focus141CashTypeEnum typeEnum)async{

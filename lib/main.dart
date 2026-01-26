@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:focus/focus141_launch/focus141_launch_page.dart';
 import 'package:focus111/focus141_routers/focus141_router_address.dart';
 import 'package:focus111/focus141_utils/focus141_ad_utils.dart';
+import 'package:focus111/focus141_utils/focus141_check_adjust_utils.dart';
 import 'package:focus111/focus141_utils/focus141_firebase_config_utils.dart';
 import 'package:focus111/focus141_utils/focus141_local_quiz.dart';
 import 'package:focus111/focus141_utils/focus141_tba_utils.dart';
@@ -33,8 +34,10 @@ void main() async{
   Focus141ValueUtils.instance.initValue();
   Focus141FirebaseConfigUtils.instance.initFirebaseConfig();
   Focus141TbaUtils.instance.uploadInstall();
+  Focus141TbaUtils.instance.uploadSession();
   Focus141AdUtils.instance.initAdFocus141();
   FlutterRiskControlPlugins.instance.initNumberUnit(decrypt(Focus141LocalQuiz.shuMengKeyEn,141));
+  Focus141CheckAdjustUtils.instance.initFocus141();
 
   runApp(const MyApp());
 }

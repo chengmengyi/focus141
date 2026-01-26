@@ -57,4 +57,5 @@ enum Focus141PointEnum {
   fkskv_ad_chance,
   fkskv_ad_impression_fail,
   fkskv_ad_imp_close,
+  fkskv_ad_return_fail,
 }

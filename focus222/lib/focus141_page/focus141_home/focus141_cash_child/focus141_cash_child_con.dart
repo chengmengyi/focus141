@@ -3,7 +3,10 @@ import 'package:focus111/focus141_enum/focus141_loop_task_type_enum.dart';
 import 'package:focus111/focus141_event/focus141_event_code.dart';
 import 'package:focus111/focus141_event/focus141_event_utils.dart';
 import 'package:focus111/focus141_page/focus141_con.dart';
+import 'package:focus111/focus141_utils/focus141_ad_enum.dart';
 import 'package:focus111/focus141_utils/focus141_ad_utils.dart';
+import 'package:focus111/focus141_utils/focus141_point_enum.dart';
+import 'package:focus111/focus141_utils/focus141_tba_utils.dart';
 import 'package:focus111/focus141_utils/focus141_utils.dart';
 import 'package:focus222/focus141_bean/focus141_cash_loop_task_info_bean.dart';
 import 'package:focus222/focus141_bean/focus141_cash_money_list_bean.dart';
@@ -50,11 +53,16 @@ class Focus141CashChildCon extends Focus141Con{
   }
 
   toQuizTab(){
+    Focus141TbaUtils.instance.uploadPoint(focus141PointEnum: Focus141PointEnum.cash_page_go,);
     Focus141EventUtils.instance.sendMsg(focus141Code: Focus141EventCode.updateHomeTab,focus141Int: 0);
   }
 
   clickQueueBtn(Focus141CashMoneyListBean bean){
+    Focus141TbaUtils.instance.uploadPoint(focus141PointEnum: Focus141PointEnum.cash_page_speedup,);
     Focus141AdUtils.instance.showAdFocus141(
+      adType: AdType.reward,
+      showAd: Focus141ValueUtils.instance.showAd(AdType.reward),
+      focus141AdEnum: Focus141AdEnum.fkskv_queue_rv,
       result: (give)async{
         if(give){
           Focus141CashUtils.instance.updateQueueTaskProgress(bean.focus141cashQueueInfoBean);

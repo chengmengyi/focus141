@@ -4,18 +4,21 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:focus111/focus141_enum/focus141_cash_type_enum.dart';
 import 'package:focus111/focus141_enum/focus141_loop_task_type_enum.dart';
+import 'package:focus111/focus141_enum/focus141_reward_type.dart';
 import 'package:focus111/focus141_event/focus141_event_code.dart';
 import 'package:focus111/focus141_event/focus141_event_utils.dart';
 import 'package:focus111/focus141_page/focus141_con.dart';
 import 'package:focus111/focus141_routers/focus141_router_address.dart';
 import 'package:focus111/focus141_utils/focus141_feng_utils.dart';
 import 'package:focus111/focus141_utils/focus141_local_quiz.dart';
+import 'package:focus111/focus141_utils/focus141_point_enum.dart';
 import 'package:focus111/focus141_utils/focus141_tba_utils.dart';
 import 'package:focus111/focus141_utils/focus141_utils.dart';
 import 'package:focus222/focus141_bean/focus141_home_pro_bean.dart';
 import 'package:focus222/focus141_bean/focus141_quiz_bean.dart';
 import 'package:focus222/focus141_bean/focus141_quiz_type_bean.dart';
 import 'package:focus222/focus141_dialog/focus141_box_dialog/focus141_box_dialog.dart';
+import 'package:focus222/focus141_dialog/focus141_first_answer_quiz_dialog/focus141_first_answer_quiz_dialog.dart';
 import 'package:focus222/focus141_dialog/focus141_new_user_dialog/focus141_new_user_dialog.dart';
 import 'package:focus222/focus141_dialog/focus141_old_user_dialog/focus141_old_user_dialog.dart';
 import 'package:focus222/focus141_dialog/focus141_reach_cash_money_dialog/focus141_reach_cash_money_dialog.dart';
@@ -24,11 +27,12 @@ import 'package:focus222/focus141_utils/focus141_cash_utils.dart';
 import 'package:focus222/focus141_utils/focus141_home_pro_utils.dart';
 import 'package:focus222/focus141_utils/focus141_info_utils.dart';
 import 'package:focus222/focus141_utils/focus141_quiz_utils.dart';
+import 'package:focus222/focus141_utils/focus141_storage_data.dart';
 import 'package:focus222/focus141_utils/focus141_user_guide_utils.dart';
 import 'package:focus222/focus141_utils/focus141_value_utils.dart';
 
 class Focus141QuizChildCon extends Focus141Con{
-  var quizIndex=0,quizTypeIndex=0,currentChooseAnswer="",_canClick=true;
+  var quizIndex=0,quizTypeIndex=0,currentChooseAnswer="",_canClick=true,firstAnswerQuiz=false;
   List<Focus141QuizTypeBean> quizTypeList=[];
 
   List<Focus141HomeProBean> progressList=[];
@@ -42,6 +46,7 @@ class Focus141QuizChildCon extends Focus141Con{
   @override
   void onInit() {
     super.onInit();
+    firstAnswerQuiz=bFirstAnswer.getData();
     _initProgressList();
   }
 
@@ -150,6 +155,7 @@ class Focus141QuizChildCon extends Focus141Con{
     quizTypeList.addAll(initQuizList);
     if(initQuizList.isNotEmpty){
       update(["quiz"]);
+      _startRightAnswerTimer();
     }
   }
 
@@ -163,17 +169,34 @@ class Focus141QuizChildCon extends Focus141Con{
     update(["answer","finger"]);
     await Future.delayed(Duration(milliseconds: 1000));
     var result = quizBean.answer==index;
+    Focus141TbaUtils.instance.uploadPoint(focus141PointEnum: result?Focus141PointEnum.answer_true:Focus141PointEnum.answer_wrong,);
     if(result){
-      showDialogFocus141(
-        child: Focus141RewardDialog(
-          reward: Focus141ValueUtils.instance.getQuizReward(),
-          callback: (){
-            _updateNextQuiz(typeBean);
-            Focus141InfoUtils.instance.updateAnswerRightNum();
-            update(["progress"]);
-          },
-        ),
-      );
+      if(firstAnswerQuiz){
+        firstAnswerQuiz=false;
+        bFirstAnswer.saveData(false);
+        showDialogFocus141(
+          child: Focus141FirstAnswerQuizDialog(
+            reward: Focus141ValueUtils.instance.getQuizReward(),
+            callback: (){
+              _updateNextQuiz(typeBean);
+              Focus141InfoUtils.instance.updateAnswerRightNum();
+              update(["progress"]);
+            },
+          ),
+        );
+      }else{
+        showDialogFocus141(
+          child: Focus141RewardDialog(
+            focus141rewardType: Focus141RewardType.quiz,
+            reward: Focus141ValueUtils.instance.getQuizReward(),
+            callback: (){
+              _updateNextQuiz(typeBean);
+              Focus141InfoUtils.instance.updateAnswerRightNum();
+              update(["progress"]);
+            },
+          ),
+        );
+      }
     }else{
       _updateNextQuiz(typeBean);
     }
@@ -207,6 +230,7 @@ class Focus141QuizChildCon extends Focus141Con{
         var renderBox = globalKey.currentContext?.findRenderObject() as RenderBox;
         fingerOffset = renderBox.localToGlobal(Offset.zero);
         update(["finger"]);
+        Focus141TbaUtils.instance.uploadPoint(focus141PointEnum: Focus141PointEnum.quiz_guide_c,params: {"source":"other"});
       }catch(e){
 
       }
@@ -254,8 +278,9 @@ class Focus141QuizChildCon extends Focus141Con{
     //     ),
     // );
 
-    Focus141FengUtils.instance.initFeng();
+    // Focus141FengUtils.instance.initFeng();
     // FlutterRiskControlPlugins.instance.initNumberUnit(decrypt(Focus141LocalQuiz.shuMengKeyEn,141));
+    // showDialogFocus141(child: Focus141FirstAnswerQuizDialog());
   }
 
   @override

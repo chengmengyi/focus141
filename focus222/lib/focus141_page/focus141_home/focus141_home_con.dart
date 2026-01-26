@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:focus111/focus141_event/focus141_event_code.dart';
 import 'package:focus111/focus141_page/focus141_con.dart';
 import 'package:focus111/focus141_utils/focus141_feng_utils.dart';
+import 'package:focus111/focus141_utils/focus141_point_enum.dart';
+import 'package:focus111/focus141_utils/focus141_tba_utils.dart';
 import 'package:focus222/focus141_bean/focus141_home_tab_bean.dart';
 import 'package:focus222/focus141_page/focus141_home/focus141_cash_child/focus141_cash_child.dart';
 import 'package:focus222/focus141_page/focus141_home/focus141_quiz_child/focus141_quiz_child.dart';
@@ -18,6 +20,7 @@ class Focus141HomeCon extends Focus141Con{
   void onInit() {
     super.onInit();
     Focus141FengUtils.instance.initFeng();
+    Focus141TbaUtils.instance.uploadPoint(focus141PointEnum: Focus141PointEnum.quiz_page,params: {"source_from":"inform"});
   }
 
   clickTab(int index){
@@ -26,6 +29,12 @@ class Focus141HomeCon extends Focus141Con{
     }
     tabIndex=index;
     update(["page"]);
+    if(index==0){
+      Focus141TbaUtils.instance.uploadPoint(focus141PointEnum: Focus141PointEnum.quiz_page,params: {"source_from":"inform"});
+    }
+    if(index==1){
+      Focus141TbaUtils.instance.uploadPoint(focus141PointEnum: Focus141PointEnum.cash_page);
+    }
   }
 
   @override
@@ -35,7 +44,15 @@ class Focus141HomeCon extends Focus141Con{
   focus141HandleEventMsg(int eventCode, int? intValue, String? strValue, anyValue) {
     switch(eventCode){
       case Focus141EventCode.updateHomeTab:
-        clickTab(intValue??0);
+        var index = intValue??0;
+        if(tabIndex==index){
+          return;
+        }
+        tabIndex=index;
+        update(["page"]);
+        if(index==0){
+          Focus141TbaUtils.instance.uploadPoint(focus141PointEnum: Focus141PointEnum.quiz_page,params: {"source_from":"task"});
+        }
         break;
     }
   }

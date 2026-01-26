@@ -2,7 +2,10 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:focus111/focus141_page/focus141_con.dart';
+import 'package:focus111/focus141_utils/focus141_ad_enum.dart';
 import 'package:focus111/focus141_utils/focus141_ad_utils.dart';
+import 'package:focus111/focus141_utils/focus141_point_enum.dart';
+import 'package:focus111/focus141_utils/focus141_tba_utils.dart';
 import 'package:focus111/focus141_utils/focus141_utils.dart';
 import 'package:focus222/focus141_bean/focus141_cash_money_list_bean.dart';
 import 'package:focus222/focus141_bean/focus141_cash_queue_info_bean.dart';
@@ -21,6 +24,11 @@ class Focus141QueueDialogCon extends Focus141Con{
     required this.bean,
   });
 
+  @override
+  void onInit() {
+    super.onInit();
+    Focus141TbaUtils.instance.uploadPoint(focus141PointEnum: Focus141PointEnum.cash_queue_pop);
+  }
 
   @override
   void onReady() {
@@ -88,7 +96,11 @@ class Focus141QueueDialogCon extends Focus141Con{
   }
 
   clickSkip()async{
+    Focus141TbaUtils.instance.uploadPoint(focus141PointEnum: Focus141PointEnum.cash_queue_po_c);
     Focus141AdUtils.instance.showAdFocus141(
+      adType: AdType.reward,
+      showAd: Focus141ValueUtils.instance.showAd(AdType.reward),
+      focus141AdEnum: Focus141AdEnum.fkskv_queue_rv,
       result: (give)async{
         if(give){
           await Focus141CashUtils.instance.updateQueueTaskProgress(bean.focus141cashQueueInfoBean);

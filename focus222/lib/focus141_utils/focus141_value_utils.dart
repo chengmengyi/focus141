@@ -40,8 +40,13 @@ class Focus141ValueUtils{
   double getQuizReward()=>_getReward(_valueBean?.quizPrize??[]);
   double getBoxReward()=>_getReward(_valueBean?.boxPrize??[]);
   double getSignReward()=>_getReward(_valueBean?.wheel?.checkPrize??[]);
+  double getBubbleReward()=>_getReward(_valueBean?.floatPrize??[]);
 
   List<int> getCashList()=>_valueBean?.qlandRange??[800, 1000, 1500, 2000];
+
+  bool showAd(AdType adType){
+    return true;
+  }
 
   int getWheelAddNum(){
     var point = _valueBean?.wheel?.wheelPoint;

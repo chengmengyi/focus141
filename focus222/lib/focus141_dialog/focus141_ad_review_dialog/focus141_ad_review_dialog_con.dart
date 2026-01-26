@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'package:focus111/focus141_page/focus141_con.dart';
+import 'package:focus111/focus141_utils/focus141_point_enum.dart';
+import 'package:focus111/focus141_utils/focus141_tba_utils.dart';
 import 'package:focus111/focus141_utils/focus141_utils.dart';
 
 class Focus141AdReviewDialogCon extends Focus141Con{
@@ -8,6 +10,12 @@ class Focus141AdReviewDialogCon extends Focus141Con{
   Timer? _endTimer;
   Function() callback;
   Focus141AdReviewDialogCon(this.callback);
+
+  @override
+  void onInit() {
+    super.onInit();
+    Focus141TbaUtils.instance.uploadPoint(focus141PointEnum: Focus141PointEnum.ad_review_pop);
+  }
 
   @override
   void onReady() {

@@ -12,6 +12,7 @@ import 'package:focus222/focus141_bean/focus141_quiz_bean.dart';
 import 'package:focus222/focus141_bean/focus141_quiz_type_bean.dart';
 import 'package:focus222/focus141_page/focus141_home/focus141_quiz_child/focus141_quiz_child_con.dart';
 import 'package:focus222/focus141_utils/focus141_storage_data.dart';
+import 'package:focus222/focus141_widget/focus141_bubble_widget.dart';
 import 'package:focus222/focus141_widget/focus141_money_widget.dart';
 
 class Focus141QuizChild extends Focus141Widget<Focus141QuizChildCon>{
@@ -36,6 +37,7 @@ class Focus141QuizChild extends Focus141Widget<Focus141QuizChildCon>{
         ),
       ),
       _fingerWidget(),
+      Focus141BubbleWidget(),
     ],
   );
 
@@ -154,7 +156,21 @@ class Focus141QuizChild extends Focus141Widget<Focus141QuizChildCon>{
                 margin: EdgeInsets.only(right: 20.w),
                 child: Focus141LocalImagesWidget(focus141ImagesName: answerResultImage, focus141Width: 27.w, focus141Height: 27.w,),
               ),
-            )
+            ),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Visibility(
+                visible: index==quizBean.answer&&focus141Con.firstAnswerQuiz,
+                child: Container(
+                  margin: EdgeInsets.only(left: 20.w),
+                  child: Focus141LocalImagesWidget(
+                    focus141ImagesName: "icon_money1",
+                    focus141Width: 43.w,
+                    focus141Height: 30.h,
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       ),

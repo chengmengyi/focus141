@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:focus111/focus141_enum/focus141_reward_type.dart';
 import 'package:focus111/focus141_page/focus141_widget.dart';
 import 'package:focus111/focus141_page/focus141_widget_type.dart';
 import 'package:focus111/focus141_utils/focus141_colors.dart';
@@ -11,14 +12,18 @@ import 'package:focus222/focus141_widget/focus141_ad_btn_widget.dart';
 
 class Focus141RewardDialog extends Focus141Widget<Focus141RewardDialogCon>{
   double reward;
+  Focus141RewardType focus141rewardType;
   Function() callback;
 
   Focus141RewardDialog({
     required this.reward,
+    required this.focus141rewardType,
     required this.callback,
 });
   @override
-  Focus141RewardDialogCon initFocus141Con() => Focus141RewardDialogCon();
+  Focus141RewardDialogCon initFocus141Con() => Focus141RewardDialogCon(
+    focus141rewardType: focus141rewardType,
+  );
 
   @override
   Focus141WidgetType initFocus141Type() => Focus141WidgetType.dialog;

@@ -9,9 +9,15 @@ class Focus141StorageData{
   static const String bNewUserGuideTime="bNewUserGuideTime";
   static const String bOldUserGuideTime="bOldUserGuideTime";
   static const String bValueFirebaseConfig="bValueFirebaseConfig";
+  static const String bFirstAnswer="bFirstAnswer";
+  static const String bFirstClickBubble="bFirstClickBubble";
 }
 
 StorageData<double> bFocus141Money=StorageData<double>(key: Focus141StorageData.bFocus141Money, defaultValue: 0.0);
+
+
+StorageData<bool> bFirstAnswer=StorageData<bool>(key: Focus141StorageData.bFirstAnswer, defaultValue: true);
+StorageData<bool> bFirstClickBubble=StorageData<bool>(key: Focus141StorageData.bFirstClickBubble, defaultValue: true);
 
 
 StorageData<int> bFocus141AnswerRightNum=StorageData<int>(key: Focus141StorageData.bFocus141AnswerRightNum, defaultValue: 0);

@@ -9,6 +9,7 @@ class Focus141FirebaseConfigUtils{
   static Focus141FirebaseConfigUtils get instance => _configUtils;
 
   Function(String s)? valueConfigCallback;
+  int floatDis=10;
 
   initFirebaseConfig()async{
     // try{
@@ -42,6 +43,10 @@ class Focus141FirebaseConfigUtils{
     if(risk_control.isNotEmpty){
       bFengkongFirebaseConfig.saveData(risk_control);
       Focus141FengUtils.instance.initFeng();
+    }
+    var float_dis = remoteConfig.getInt("float_dis");
+    if(float_dis>0){
+      floatDis=float_dis;
     }
   }
 }

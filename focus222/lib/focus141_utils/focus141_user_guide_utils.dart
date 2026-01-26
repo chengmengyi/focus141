@@ -1,6 +1,8 @@
 import 'package:focus111/focus141_event/focus141_event_code.dart';
 import 'package:focus111/focus141_event/focus141_event_utils.dart';
 import 'package:focus111/focus141_routers/focus141_router_address.dart';
+import 'package:focus111/focus141_utils/focus141_point_enum.dart';
+import 'package:focus111/focus141_utils/focus141_tba_utils.dart';
 import 'package:focus111/focus141_utils/focus141_utils.dart';
 import 'package:focus222/focus141_dialog/focus141_new_user_dialog/focus141_new_user_dialog.dart';
 import 'package:focus222/focus141_dialog/focus141_old_user_dialog/focus141_old_user_dialog.dart';
@@ -21,6 +23,7 @@ class Focus141UserGuideUtils {
         child: Focus141NewUserDialog(
           callback: (double reard){
             Focus141EventUtils.instance.sendMsg(focus141Code: Focus141EventCode.showMoneyReward,focus141Dynamic: reard);
+            Focus141TbaUtils.instance.uploadPoint(focus141PointEnum: Focus141PointEnum.quiz_guide_c,params: {"source":"new"});
           },
         ),
       );

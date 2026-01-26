@@ -1,5 +1,8 @@
 import 'package:focus111/focus141_page/focus141_con.dart';
+import 'package:focus111/focus141_utils/focus141_ad_enum.dart';
 import 'package:focus111/focus141_utils/focus141_ad_utils.dart';
+import 'package:focus111/focus141_utils/focus141_point_enum.dart';
+import 'package:focus111/focus141_utils/focus141_tba_utils.dart';
 import 'package:focus111/focus141_utils/focus141_utils.dart';
 import 'package:focus222/focus141_utils/focus141_info_utils.dart';
 import 'package:focus222/focus141_utils/focus141_value_utils.dart';
@@ -18,6 +21,7 @@ class Focus141NewUserDialogCon extends Focus141Con{
   @override
   void onInit() {
     super.onInit();
+    Focus141TbaUtils.instance.uploadPoint(focus141PointEnum: Focus141PointEnum.new_user_pop);
     spineWidgetController=SpineWidgetController(
       onInitialized: (controller) {
         // controller.skeleton.setToSetupPose();
@@ -43,7 +47,11 @@ class Focus141NewUserDialogCon extends Focus141Con{
   }
 
   clickDouble(Function(double reard) callback){
+    Focus141TbaUtils.instance.uploadPoint(focus141PointEnum: Focus141PointEnum.new_user_pop_c);
     Focus141AdUtils.instance.showAdFocus141(
+      adType: AdType.reward,
+      focus141AdEnum: Focus141AdEnum.fkskv_newuser_wheel_rv,
+      showAd: Focus141ValueUtils.instance.showAd(AdType.reward),
       result: (give){
         backFocus141();
         callback.call(mulDecimalFocus141(newUserAdd, 2));
@@ -53,6 +61,9 @@ class Focus141NewUserDialogCon extends Focus141Con{
 
   clickSingle(Function(double reard) callback){
     Focus141AdUtils.instance.showAdFocus141(
+      adType: AdType.interstitial,
+      focus141AdEnum: Focus141AdEnum.fkskv_newuser_wheel_int,
+      showAd: Focus141ValueUtils.instance.showAd(AdType.interstitial),
       result: (give){
         backFocus141();
         callback.call(newUserAdd.toDouble());

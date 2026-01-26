@@ -1,8 +1,12 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:focus111/focus141_enum/focus141_reward_type.dart';
 import 'package:focus111/focus141_page/focus141_con.dart';
+import 'package:focus111/focus141_utils/focus141_ad_enum.dart';
 import 'package:focus111/focus141_utils/focus141_ad_utils.dart';
+import 'package:focus111/focus141_utils/focus141_point_enum.dart';
+import 'package:focus111/focus141_utils/focus141_tba_utils.dart';
 import 'package:focus111/focus141_utils/focus141_utils.dart';
 import 'package:focus222/focus141_dialog/focus141_reward_dialog/focus141_reward_dialog.dart';
 import 'package:focus222/focus141_utils/focus141_value_utils.dart';
@@ -19,6 +23,7 @@ class Focus141WheelCon extends Focus141Con with GetSingleTickerProviderStateMixi
     super.onInit();
     var map = Get.arguments as Map<String, dynamic>;
     fromOldUser=map["fromOld"]??false;
+    Focus141TbaUtils.instance.uploadPoint(focus141PointEnum: Focus141PointEnum.wheel_pop,params: {"source_from":fromOldUser?"old":"quiz"});
     _initAnimator();
     _initWheelReward();
   }
@@ -52,23 +57,23 @@ class Focus141WheelCon extends Focus141Con with GetSingleTickerProviderStateMixi
   _wheelCompleted()async{
     await Future.delayed(Duration(milliseconds: 1000));
     Focus141AdUtils.instance.showAdFocus141(
+      adType: AdType.interstitial,
+      focus141AdEnum: fromOldUser?Focus141AdEnum.fkskv_olduser_wheelspin_int:Focus141AdEnum.fkskv_wheelspin_int,
+      showAd: Focus141ValueUtils.instance.showAd(AdType.interstitial),
       result: (give){
         canClick=true;
         if(fromOldUser){
           backFocus141(params: {"reward":wheelReward.toDouble()});
           return;
         }
-        Focus141AdUtils.instance.showAdFocus141(
-            result: (give){
-              showDialogFocus141(
-                child: Focus141RewardDialog(
-                  reward: wheelReward.toDouble(),
-                  callback: (){
-                    backFocus141(params: {});
-                  },
-                ),
-              );
-            }
+        showDialogFocus141(
+          child: Focus141RewardDialog(
+            focus141rewardType: Focus141RewardType.wheel,
+            reward: wheelReward.toDouble(),
+            callback: (){
+              backFocus141(params: {});
+            },
+          ),
         );
       },
     );

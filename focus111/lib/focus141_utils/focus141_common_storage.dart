@@ -1,6 +1,7 @@
 import 'package:flutter_android_ad_plugins/hep/ad_num_hep.dart';
 
 StorageData<bool> bUploadInstallEvent=StorageData<bool>(key: "bUploadInstallEvent", defaultValue: true);
+StorageData<bool> showOpenAd=StorageData<bool>(key: "showOpenAd", defaultValue: false);
 
 
 StorageData<String> bAdFirebaseConfig=StorageData<String>(key: "bAdFirebaseConfig", defaultValue: "");
