@@ -1,7 +1,10 @@
+import 'package:focus111/focus141_enum/focus141_cash_type_enum.dart';
 import 'package:focus111/focus141_event/focus141_event_code.dart';
 import 'package:focus111/focus141_event/focus141_event_utils.dart';
 import 'package:focus111/focus141_utils/focus141_utils.dart';
+import 'package:focus222/focus141_utils/focus141_cash_utils.dart';
 import 'package:focus222/focus141_utils/focus141_storage_data.dart';
+import 'package:focus222/focus141_utils/focus141_value_utils.dart';
 
 class Focus141InfoUtils {
   static final Focus141InfoUtils _focus141infoUtils=Focus141InfoUtils();
@@ -10,6 +13,19 @@ class Focus141InfoUtils {
   updateMoney(addNum){
     bFocus141Money.saveData(addDecimalFocus141(bFocus141Money.getData(), addNum));
     Focus141EventUtils.instance.sendMsg(focus141Code: Focus141EventCode.updateMoney);
+    if(addNum>0){
+      var currentMoney = bFocus141Money.getData();
+      var firstCashMoney = Focus141ValueUtils.instance.getCashList().first;
+      if(bShowReachCashMoneyDialog.getData()&&currentMoney>=firstCashMoney){
+        bShowReachCashMoneyDialog.saveData(false);
+        try{
+          Focus141CashUtils.instance.showReachCashMoneyDialog(firstCashMoney, Focus141CashTypeEnum.values.byName(bCashType.getData()));
+        }catch(e){
+
+        }
+      }
+      FlutterRiskControlPlugins.instance.handleUserMoneyChanged(currentMoney, firstCashMoney);
+    }
   }
 
   updateAnswerRightNum(){

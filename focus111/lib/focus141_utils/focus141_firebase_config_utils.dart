@@ -12,21 +12,21 @@ class Focus141FirebaseConfigUtils{
   int floatDis=10;
 
   initFirebaseConfig()async{
-    // try{
-    //   await Firebase.initializeApp();
-    //   var remoteConfig=FirebaseRemoteConfig.instance;
-    //   await remoteConfig.setConfigSettings(
-    //     RemoteConfigSettings(
-    //       fetchTimeout: const Duration(seconds: 10),
-    //       minimumFetchInterval: const Duration(seconds: 1),
-    //     ),
-    //   );
-    //   await remoteConfig.fetchAndActivate();
-    //   _getFirebaseConfig(remoteConfig);
-    // }catch(e){
-    //   await Future.delayed(const Duration(milliseconds: 1000));
-    //   initFirebaseConfig();
-    // }
+    try{
+      await Firebase.initializeApp();
+      var remoteConfig=FirebaseRemoteConfig.instance;
+      await remoteConfig.setConfigSettings(
+        RemoteConfigSettings(
+          fetchTimeout: const Duration(seconds: 10),
+          minimumFetchInterval: const Duration(seconds: 1),
+        ),
+      );
+      await remoteConfig.fetchAndActivate();
+      _getFirebaseConfig(remoteConfig);
+    }catch(e){
+      await Future.delayed(const Duration(milliseconds: 1000));
+      initFirebaseConfig();
+    }
   }
 
   _getFirebaseConfig(FirebaseRemoteConfig remoteConfig){
@@ -45,6 +45,7 @@ class Focus141FirebaseConfigUtils{
       Focus141FengUtils.instance.initFeng();
     }
     var float_dis = remoteConfig.getInt("float_dis");
+    print("kk====${float_dis}");
     if(float_dis>0){
       floatDis=float_dis;
     }

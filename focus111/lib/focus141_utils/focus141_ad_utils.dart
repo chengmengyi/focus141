@@ -14,6 +14,7 @@ import 'package:focus111/focus141_utils/focus141_point_enum.dart';
 import 'package:focus111/focus141_utils/focus141_tba_utils.dart';
 import 'package:focus111/focus141_utils/focus141_utils.dart';
 import 'package:focus111/focus141_utils/focus141_voice_utils.dart';
+import 'package:focus111/focus141_widget/focus_ad_load_fail_dialog/focus_ad_load_fail_dialog.dart';
 
 class Focus141AdUtils {
   static final Focus141AdUtils _focus141adUtils=Focus141AdUtils();
@@ -74,25 +75,25 @@ class Focus141AdUtils {
         result.call(true);
         return;
       }
-      // HissRoutersUtils.instance.showDialog(
-      //   child: LoadAdFailDialog(
-      //     tryAgainCallback: (){
-      //       var data = FlutterAndroidAdPlugins.instance.getCacheResultData(adType);
-      //       if(null==data){
-      //         result.call(adType==AdType.interstitial);
-      //         return;
-      //       }
-      //       _showAd(adType: adType, hissAdEnum: hissAdEnum, showAd: showAd, result: result,isOpen: isOpen,);
-      //     },
-      //     closeCallback: (){
-      //       result.call(adType==AdType.interstitial);
-      //     },
-      //   ),
-      // );
+      showDialogFocus141(
+        child: FocusAdLoadFailDialog(
+          tryAgainCallback: (bool tryAgain){
+            if(tryAgain){
+              var data = FlutterAndroidAdPlugins.instance.getCacheResultData(adType);
+              if(null==data){
+                result.call(adType==AdType.interstitial);
+                return;
+              }
+              _showAdFocus141(adType: adType, focus141AdEnum: focus141AdEnum, showAd: showAd, result: result,isOpenAd: isOpenAd,);
+            }else{
+              result.call(adType==AdType.interstitial);
+            }
+          },
+        ),
+      );
       return;
     }
     _showAdFocus141(adType: adType, focus141AdEnum: focus141AdEnum, showAd: showAd, result: result,isOpenAd: isOpenAd,);
-
   }
 
   _showAdFocus141({

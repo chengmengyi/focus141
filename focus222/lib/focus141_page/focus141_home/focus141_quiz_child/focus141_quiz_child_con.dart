@@ -14,6 +14,7 @@ import 'package:focus111/focus141_utils/focus141_local_quiz.dart';
 import 'package:focus111/focus141_utils/focus141_point_enum.dart';
 import 'package:focus111/focus141_utils/focus141_tba_utils.dart';
 import 'package:focus111/focus141_utils/focus141_utils.dart';
+import 'package:focus111/focus141_widget/focus_ad_load_fail_dialog/focus_ad_load_fail_dialog.dart';
 import 'package:focus222/focus141_bean/focus141_home_pro_bean.dart';
 import 'package:focus222/focus141_bean/focus141_quiz_bean.dart';
 import 'package:focus222/focus141_bean/focus141_quiz_type_bean.dart';
@@ -280,7 +281,7 @@ class Focus141QuizChildCon extends Focus141Con{
 
     // Focus141FengUtils.instance.initFeng();
     // FlutterRiskControlPlugins.instance.initNumberUnit(decrypt(Focus141LocalQuiz.shuMengKeyEn,141));
-    // showDialogFocus141(child: Focus141FirstAnswerQuizDialog());
+    // showDialogFocus141(child: FocusAdLoadFailDialog(tryAgainCallback: (){},));
   }
 
   @override

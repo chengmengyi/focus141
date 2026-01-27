@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "751799457539",
+    "project_id": "gp-c141",
+    "storage_bucket": "gp-c141.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:751799457539:android:324869e5f5c1bac7f27b36",
+        "android_client_info": {
+          "package_name": "com.focusquest.answerright.playfun"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCk4ULjNE6KTXLlT6Yn82g6MDWtNeCTy-o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

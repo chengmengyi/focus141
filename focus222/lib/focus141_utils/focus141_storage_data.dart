@@ -11,6 +11,7 @@ class Focus141StorageData{
   static const String bValueFirebaseConfig="bValueFirebaseConfig";
   static const String bFirstAnswer="bFirstAnswer";
   static const String bFirstClickBubble="bFirstClickBubble";
+  static const String bShowReachCashMoneyDialog="bShowReachCashMoneyDialog";
 }
 
 StorageData<double> bFocus141Money=StorageData<double>(key: Focus141StorageData.bFocus141Money, defaultValue: 0.0);
@@ -18,6 +19,7 @@ StorageData<double> bFocus141Money=StorageData<double>(key: Focus141StorageData.
 
 StorageData<bool> bFirstAnswer=StorageData<bool>(key: Focus141StorageData.bFirstAnswer, defaultValue: true);
 StorageData<bool> bFirstClickBubble=StorageData<bool>(key: Focus141StorageData.bFirstClickBubble, defaultValue: true);
+StorageData<bool> bShowReachCashMoneyDialog=StorageData<bool>(key: Focus141StorageData.bShowReachCashMoneyDialog, defaultValue: true);
 
 
 StorageData<int> bFocus141AnswerRightNum=StorageData<int>(key: Focus141StorageData.bFocus141AnswerRightNum, defaultValue: 0);
