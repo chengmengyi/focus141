@@ -6,3 +6,7 @@ StorageData<bool> showOpenAd=StorageData<bool>(key: "showOpenAd", defaultValue: 
 
 StorageData<String> bAdFirebaseConfig=StorageData<String>(key: "bAdFirebaseConfig", defaultValue: "");
 StorageData<String> bFengkongFirebaseConfig=StorageData<String>(key: "bFengkongFirebaseConfig", defaultValue: "");
+StorageData<String> bLastTimeShowNotificationTimer=StorageData<String>(key: "bLastTimeShowNotificationTimer", defaultValue: "");
+
+
+StorageData<double> bFocus141Money=StorageData<double>(key: "bFocus141Money", defaultValue: 0.0);

@@ -1,6 +1,8 @@
 import 'package:focus111/focus141_enum/focus141_cash_type_enum.dart';
 import 'package:focus111/focus141_event/focus141_event_code.dart';
 import 'package:focus111/focus141_event/focus141_event_utils.dart';
+import 'package:focus111/focus141_utils/focua141_notification/focus141_notification_utils.dart';
+import 'package:focus111/focus141_utils/focus141_common_storage.dart';
 import 'package:focus111/focus141_utils/focus141_utils.dart';
 import 'package:focus222/focus141_utils/focus141_cash_utils.dart';
 import 'package:focus222/focus141_utils/focus141_storage_data.dart';
@@ -26,6 +28,7 @@ class Focus141InfoUtils {
       }
       FlutterRiskControlPlugins.instance.handleUserMoneyChanged(currentMoney, firstCashMoney);
     }
+    Focus141NotificationUtils.instance.showForegroundNotification();
   }
 
   updateAnswerRightNum(){

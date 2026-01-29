@@ -45,7 +45,6 @@ class Focus141FirebaseConfigUtils{
       Focus141FengUtils.instance.initFeng();
     }
     var float_dis = remoteConfig.getInt("float_dis");
-    print("kk====${float_dis}");
     if(float_dis>0){
       floatDis=float_dis;
     }

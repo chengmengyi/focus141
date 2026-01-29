@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:focus111/focus141_page/focus141_con.dart';
 import 'package:focus111/focus141_routers/focus141_router_address.dart';
+import 'package:focus111/focus141_utils/focua141_notification/focus141_notification_utils.dart';
 import 'package:focus111/focus141_utils/focus141_ad_enum.dart';
 import 'package:focus111/focus141_utils/focus141_ad_utils.dart';
 import 'package:focus111/focus141_utils/focus141_check_adjust_utils.dart';
@@ -15,7 +16,6 @@ class Focus141LaunchController extends Focus141Con with GetSingleTickerProviderS
   @override
   void onInit() {
     super.onInit();
-    Focus141TbaUtils.instance.uploadPoint(focus141PointEnum: Focus141PointEnum.launch_page);
     controller=AnimationController(duration: const Duration(seconds: 13),vsync: this)
       ..addListener(() {
         update(["progress"]);
@@ -25,6 +25,9 @@ class Focus141LaunchController extends Focus141Con with GetSingleTickerProviderS
           _completed();
         }
       });
+    Focus141NotificationUtils.instance.initNotificationFocus141();
+    Focus141NotificationUtils.instance.uploadShowNumFocus141();
+    Focus141NotificationUtils.instance.checkClickByLaunchApp();
   }
 
   @override

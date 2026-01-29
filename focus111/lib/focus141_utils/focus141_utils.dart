@@ -24,6 +24,7 @@ export 'package:flutter_tba_info/flutter_tba_info.dart';
 export 'package:shake_animation_widget/shake_animation_widget.dart';
 export 'package:flutter_risk_control_plugins/flutter_risk_control_plugins.dart';
 export 'package:flutter_risk_control_plugins/bean/risk_control_ip_config_bean.dart';
+export 'package:connectivity_plus/connectivity_plus.dart';
 
 
 extension StringBase64 on String{

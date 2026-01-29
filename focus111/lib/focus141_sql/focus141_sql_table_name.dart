@@ -5,4 +5,5 @@ class Focus141SqlTableName{
   static const String cashQuiz50AndLogin7Info="cashQuiz50AndLogin7Info";
   static const String cashLoopTaskInfo="cashLoopTaskInfo";
   static const String cashAccountInfo="cashAccountInfo";
+  static const String tbaInfo="tbaInfo";
 }

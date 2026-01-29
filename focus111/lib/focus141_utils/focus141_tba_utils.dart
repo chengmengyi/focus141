@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter_android_ad_plugins/data/ad_info_data.dart';
@@ -5,6 +6,8 @@ import 'package:flutter_android_ad_plugins/data/ad_money_info_bean.dart';
 import 'package:flutter_android_ad_plugins/hep/hep.dart';
 import 'package:flutter_check_adjust/dio/dio_hep.dart';
 import 'package:flutter_tba_info/flutter_tba_info.dart';
+import 'package:focus111/focus141_sql/focus141_sql_table_name.dart';
+import 'package:focus111/focus141_sql/focus141_sql_utils.dart';
 import 'package:focus111/focus141_utils/focus141_ad_enum.dart';
 import 'package:focus111/focus141_utils/focus141_common_storage.dart';
 import 'package:focus111/focus141_utils/focus141_local_quiz.dart';
@@ -81,8 +84,12 @@ class Focus141TbaUtils {
     var dioResult = await DioHep.instance.requestPost(path: _getUrl(logId), data: map,header: _headMap());
     "tba--->ad--->result--->${dioResult.success}---->params--->$map".log();
     if(!dioResult.success){
-      await Future.delayed(Duration(milliseconds: 1000));
-      uploadAd(ad: ad, focus141AdEnum: focus141AdEnum, adInfoData: adInfoData,tryNum: tryNum-1);
+      if(tryNum>0){
+        await Future.delayed(Duration(milliseconds: 1000));
+        uploadAd(ad: ad, focus141AdEnum: focus141AdEnum, adInfoData: adInfoData,tryNum: tryNum-1);
+      }else{
+        _saveLocalData(map);
+      }
     }
   }
 
@@ -103,8 +110,12 @@ class Focus141TbaUtils {
     var dioResult = await DioHep.instance.requestPost(path: _getUrl(logId), data: map,header: _headMap());
     "tba--->point--->result--->${dioResult.success}---->params--->$map".log();
     if(!dioResult.success){
-      await Future.delayed(Duration(milliseconds: 1000));
-      uploadPoint(focus141PointEnum: focus141PointEnum,params: params,tryNum: tryNum-1);
+      if(tryNum>0){
+        await Future.delayed(Duration(milliseconds: 1000));
+        uploadPoint(focus141PointEnum: focus141PointEnum,params: params,tryNum: tryNum-1);
+      }else{
+        _saveLocalData(map);
+      }
     }
   }
 
@@ -142,4 +153,28 @@ class Focus141TbaUtils {
   };
 
   String _getUrl(String logId)=>"${Focus141LocalQuiz.tbaUrl}?skyward=${DateTime.now().millisecondsSinceEpoch}&squat=$logId";
+
+  uploadLocalData()async{
+    var database = await Focus141SqlUtils.instance.initSql();
+    var list = await database.query(Focus141SqlTableName.tbaInfo);
+    if(list.isEmpty){
+      return;
+    }
+    List<Map<String,dynamic>> resultList=[];
+    for (var value in list) {
+      var jsonMap = value["content"] as String;
+      resultList.add(jsonDecode(jsonMap));
+    }
+    var logId = await FlutterTbaInfo.instance.getLogId();
+    var headMap = _headMap();
+    headMap["Content-Encoding"]="gzip";
+    "tba--->uploadLocalData--->params--->${resultList.length}".log();
+    var dioResult = await DioHep.instance.requestPost(path: _getUrl(logId), data: resultList,header: headMap);
+    "tba--->uploadLocalData--->result--->${dioResult.success}".log();
+  }
+
+  _saveLocalData(Map<String,dynamic> map)async{
+    var database = await Focus141SqlUtils.instance.initSql();
+    database.insert(Focus141SqlTableName.tbaInfo, {"content":jsonEncode(map)});
+  }
 }

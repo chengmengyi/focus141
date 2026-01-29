@@ -40,6 +40,8 @@ dependencies:
   shake_animation_widget: 3.0.4
   flutter_risk_control_plugins:
     path: /Users/trinhquach/StudioProjects/flutter_risk_control_plugins
+  flutter_local_notifications:
+    path: plugins/common_notifications-master
 
 dev_dependencies:
   flutter_test:

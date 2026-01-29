@@ -14,7 +14,7 @@ class Focus141StorageData{
   static const String bShowReachCashMoneyDialog="bShowReachCashMoneyDialog";
 }
 
-StorageData<double> bFocus141Money=StorageData<double>(key: Focus141StorageData.bFocus141Money, defaultValue: 0.0);
+// StorageData<double> bFocus141Money=StorageData<double>(key: Focus141StorageData.bFocus141Money, defaultValue: 0.0);
 
 
 StorageData<bool> bFirstAnswer=StorageData<bool>(key: Focus141StorageData.bFirstAnswer, defaultValue: true);

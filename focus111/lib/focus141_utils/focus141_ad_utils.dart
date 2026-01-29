@@ -14,6 +14,7 @@ import 'package:focus111/focus141_utils/focus141_point_enum.dart';
 import 'package:focus111/focus141_utils/focus141_tba_utils.dart';
 import 'package:focus111/focus141_utils/focus141_utils.dart';
 import 'package:focus111/focus141_utils/focus141_voice_utils.dart';
+import 'package:focus111/focus141_widget/focus_ad_limit_dialog/focus_ad_limit_dialog.dart';
 import 'package:focus111/focus141_widget/focus_ad_load_fail_dialog/focus_ad_load_fail_dialog.dart';
 
 class Focus141AdUtils {
@@ -59,6 +60,15 @@ class Focus141AdUtils {
       result.call(adType==AdType.interstitial);
       return;
     }
+    if(Focus141FengUtils.instance.hasFeng()){
+      if(adType==AdType.reward){
+        showDialogFocus141(child: FocusAdLimitDialog(callback: (){},));
+        return;
+      }
+      result.call(true);
+      return;
+    }
+
     Focus141TbaUtils.instance.uploadPoint(focus141PointEnum: Focus141PointEnum.fkskv_ad_chance,params: {"ad_pos_id":focus141AdEnum.name});
 
     var resultData = FlutterAndroidAdPlugins.instance.getCacheResultData(adType);
