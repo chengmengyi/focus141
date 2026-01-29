@@ -171,10 +171,14 @@ class Focus141TbaUtils {
     "tba--->uploadLocalData--->params--->${resultList.length}".log();
     var dioResult = await DioHep.instance.requestPost(path: _getUrl(logId), data: resultList,header: headMap);
     "tba--->uploadLocalData--->result--->${dioResult.success}".log();
+    if(dioResult.success){
+      await database.delete(Focus141SqlTableName.tbaInfo);
+    }
   }
 
   _saveLocalData(Map<String,dynamic> map)async{
     var database = await Focus141SqlUtils.instance.initSql();
-    database.insert(Focus141SqlTableName.tbaInfo, {"content":jsonEncode(map)});
+    await database.insert(Focus141SqlTableName.tbaInfo, {"content":jsonEncode(map)});
+    print("kkkkk");
   }
 }

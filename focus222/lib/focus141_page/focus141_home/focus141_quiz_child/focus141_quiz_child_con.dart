@@ -286,7 +286,7 @@ class Focus141QuizChildCon extends Focus141Con{
 
     // Focus141FengUtils.instance.initFeng();
     // FlutterRiskControlPlugins.instance.initNumberUnit(decrypt(Focus141LocalQuiz.shuMengKeyEn,141));
-    showDialogFocus141(child: FocusOpenNotificationDialog());
+    // showDialogFocus141(child: FocusOpenNotificationDialog());
 
     // Focus141NotificationUtils.instance.test();
   }

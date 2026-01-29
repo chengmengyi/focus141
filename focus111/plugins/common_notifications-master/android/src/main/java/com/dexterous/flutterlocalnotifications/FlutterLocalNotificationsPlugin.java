@@ -2373,12 +2373,15 @@ public class FlutterLocalNotificationsPlugin
   }
 
   private void startForegroundService(MethodCall call, Result result) {
-    Map<String, Object> notificationData = call.argument("notificationData");
+    final Map<String, Object> notificationData = call.argument("notificationData");
+    if (notificationData == null) return;
+    final NotificationDetails notificationDetails = extractNotificationDetails(result, notificationData);
+    if (notificationDetails == null) return;
+    FlutterForePlugin.saveNotificationDetails(applicationContext, notificationDetails);
     Integer startType = call.<Integer>argument("startType");
     ArrayList<Integer> foregroundServiceTypes = call.argument("foregroundServiceTypes");
     if (foregroundServiceTypes == null || foregroundServiceTypes.size() != 0) {
-      if (notificationData != null && startType != null) {
-        NotificationDetails notificationDetails = extractNotificationDetails(result, notificationData);
+      if (startType != null) {
         if (notificationDetails != null) {
           if (notificationDetails.id != 0) {
             ForegroundServiceStartParameter parameter = new ForegroundServiceStartParameter(
