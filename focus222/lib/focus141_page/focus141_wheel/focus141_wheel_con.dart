@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:focus111/focus141_enum/focus141_loop_task_type_enum.dart';
 import 'package:focus111/focus141_enum/focus141_reward_type.dart';
 import 'package:focus111/focus141_page/focus141_con.dart';
 import 'package:focus111/focus141_utils/focus141_ad_enum.dart';
@@ -9,6 +10,7 @@ import 'package:focus111/focus141_utils/focus141_point_enum.dart';
 import 'package:focus111/focus141_utils/focus141_tba_utils.dart';
 import 'package:focus111/focus141_utils/focus141_utils.dart';
 import 'package:focus222/focus141_dialog/focus141_reward_dialog/focus141_reward_dialog.dart';
+import 'package:focus222/focus141_utils/focus141_cash_utils.dart';
 import 'package:focus222/focus141_utils/focus141_value_utils.dart';
 
 class Focus141WheelCon extends Focus141Con with GetSingleTickerProviderStateMixin{
@@ -62,6 +64,7 @@ class Focus141WheelCon extends Focus141Con with GetSingleTickerProviderStateMixi
       showAd: Focus141ValueUtils.instance.showAd(AdType.interstitial),
       result: (give){
         canClick=true;
+        Focus141CashUtils.instance.updateLoopTask(taskType: Focus141LoopTaskTypeEnum.wheel);
         if(fromOldUser){
           backFocus141(params: {"reward":wheelReward.toDouble()});
           return;

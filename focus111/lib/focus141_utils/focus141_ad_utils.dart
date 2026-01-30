@@ -21,6 +21,8 @@ class Focus141AdUtils {
   static final Focus141AdUtils _focus141adUtils=Focus141AdUtils();
   static Focus141AdUtils get instance => _focus141adUtils;
 
+  Function()? adShowSuccessCallback;
+
   initAdFocus141(){
     FlutterAndroidAdPlugins.instance.initMax(
       maxKey: Focus141LocalQuiz.maxKeyBase64.base64(),
@@ -117,6 +119,7 @@ class Focus141AdUtils {
       adType: adType,
       iosAdCallback: IosAdCallback(
         showSuccess: (ad,info){
+          adShowSuccessCallback?.call();
           Focus141VoiceUtils.instance.pauseBgmFocus141();
           FlutterRiskControlPlugins.instance.handleShowAdSuccess(adType==AdType.reward);
           Focus141CheckAdjustUtils.instance.uploadRevenueFocus141(ad);
