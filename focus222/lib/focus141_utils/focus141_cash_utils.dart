@@ -9,12 +9,16 @@ import 'package:focus111/focus141_utils/focus141_point_enum.dart';
 import 'package:focus111/focus141_utils/focus141_tba_utils.dart';
 import 'package:focus111/focus141_utils/focus141_utils.dart';
 import 'package:focus222/focus141_bean/focus141_cash_loop_task_info_bean.dart';
+import 'package:focus222/focus141_bean/focus141_cash_money_list_bean.dart';
 import 'package:focus222/focus141_bean/focus141_cash_queue_info_bean.dart';
 import 'package:focus222/focus141_bean/focus141_cash_quiz20_info_bean.dart';
 import 'package:focus222/focus141_bean/focus141_cash_quiz50_login_info_bean.dart';
 import 'package:focus222/focus141_dialog/focus141_ad_review_dialog/focus141_ad_review_dialog.dart';
 import 'package:focus222/focus141_dialog/focus141_ad_review_fail_dialog/focus141_ad_review_fail_dialog.dart';
+import 'package:focus222/focus141_dialog/focus141_cash_task_dialog/focus141_cash_task_dialog.dart';
 import 'package:focus222/focus141_dialog/focus141_input_account_dialog/focus141_input_account_dialog.dart';
+import 'package:focus222/focus141_dialog/focus141_loop_task_dialog/focus141_loop_task_dialog.dart';
+import 'package:focus222/focus141_dialog/focus141_queue_dialog/focus141_queue_dialog.dart';
 import 'package:focus222/focus141_dialog/focus141_reach_cash_money_dialog/focus141_reach_cash_money_dialog.dart';
 import 'package:focus222/focus141_utils/focus141_info_utils.dart';
 import 'package:focus222/focus141_utils/focus141_value_utils.dart';
@@ -100,29 +104,33 @@ class Focus141CashUtils{
   }
 
   //创建排队提现任务信息
-  insertQueueCashInfo(int money,String typeEnum)async{
+  Future<Focus141CashQueueInfoBean> insertQueueCashInfo(int money,String typeEnum)async{
     var database = await Focus141SqlUtils.instance.initSql();
     var list = await database.query(Focus141SqlTableName.cashQueueInfo,where: '"cashType" = ? AND "cashMoney" = ?',whereArgs: [typeEnum,money]);
     if(list.isNotEmpty){
-      return;
+      return Focus141CashQueueInfoBean.fromJson(list.first);
     }
+    var currentQueueNum = Focus141ValueUtils.instance.getCurrentQueueNum();
+    var allQueueNum = Focus141ValueUtils.instance.getAllQueueNum();
     var focus141cashQueueInfoBean = Focus141CashQueueInfoBean(
       cashType: typeEnum,
       cashMoney: money,
       cashStep: Focus141CashStepEnum.queue.name,
-      currentPro: Focus141ValueUtils.instance.getCurrentQueueNum(),
-      totalPro: Focus141ValueUtils.instance.getAllQueueNum(),
+      currentPro: currentQueueNum,
+      totalPro: allQueueNum,
     );
     await database.insert(Focus141SqlTableName.cashQueueInfo, focus141cashQueueInfoBean.toJson());
     Focus141TbaUtils.instance.uploadPoint(focus141PointEnum: Focus141PointEnum.cash_page_c,params: {"status":"queue"});
+    return focus141cashQueueInfoBean;
   }
 
+
   //创建答题50登录7天提现任务信息
-  insertQuiz50Login7CashInfo(int money,String typeEnum)async{
+  Future<Focus141CashQuiz50LoginInfoBean> insertQuiz50Login7CashInfo(int money,String typeEnum)async{
     var database = await Focus141SqlUtils.instance.initSql();
     var list = await database.query(Focus141SqlTableName.cashQuiz50AndLogin7Info,where: '"cashType" = ? AND "cashMoney" = ?',whereArgs: [typeEnum,money]);
     if(list.isNotEmpty){
-      return;
+      return Focus141CashQuiz50LoginInfoBean.fromJson(list.first);
     }
     var focus141cashQuiz50LoginInfoBean = Focus141CashQuiz50LoginInfoBean(
       cashType: typeEnum,
@@ -135,13 +143,14 @@ class Focus141CashUtils{
     );
     await database.insert(Focus141SqlTableName.cashQuiz50AndLogin7Info, focus141cashQuiz50LoginInfoBean.toJson());
     Focus141TbaUtils.instance.uploadPoint(focus141PointEnum: Focus141PointEnum.cash_page_c,params: {"status":"verify"});
+    return focus141cashQuiz50LoginInfoBean;
   }
 
-  insertLoopTaskCashInfo(int money,String typeEnum)async{
+  Future<Focus141CashLoopTaskInfoBean?> insertLoopTaskCashInfo(int money,String typeEnum)async{
     var database = await Focus141SqlUtils.instance.initSql();
     var list = await database.query(Focus141SqlTableName.cashLoopTaskInfo,where: '"cashType" = ? AND "cashMoney" = ?',whereArgs: [typeEnum,money]);
     if(list.isNotEmpty){
-      return;
+      return Focus141CashLoopTaskInfoBean.fromJson(list.first);
     }
     var tixianTask = Focus141ValueUtils.instance.getFirstTixianTask();
     var focus141cashLoopTaskInfoBean = Focus141CashLoopTaskInfoBean(
@@ -154,6 +163,7 @@ class Focus141CashUtils{
     );
     await database.insert(Focus141SqlTableName.cashLoopTaskInfo, focus141cashLoopTaskInfoBean.toJson());
     Focus141TbaUtils.instance.uploadPoint(focus141PointEnum: Focus141PointEnum.cash_page_c,params: {"status":"final"});
+    return focus141cashLoopTaskInfoBean;
   }
 
   Future<Focus141CashQuiz20InfoBean?> queryCashQuiz20Info(int money,Focus141CashTypeEnum typeEnum)async{
@@ -197,6 +207,7 @@ class Focus141CashUtils{
     var database = await Focus141SqlUtils.instance.initSql();
     //先更新20到题的
     var quiz20List = await database.query(Focus141SqlTableName.cashQuiz20Info);
+    Focus141CashQueueInfoBean? focus141cashQueueInfoBean;
     if(quiz20List.isNotEmpty){
       for (var value in quiz20List) {
         var id = value["id"];
@@ -205,13 +216,14 @@ class Focus141CashUtils{
         //题答完了，任务更新为排队，这条记录删除
         if((focus141cashQuiz20InfoBean.quizNum??0)>=(focus141cashQuiz20InfoBean.totalQuizNum??0)){
           await database.delete(Focus141SqlTableName.cashQuiz20Info,where: '"id" = ? ',whereArgs: [id]);
-          await insertQueueCashInfo(focus141cashQuiz20InfoBean.cashMoney??0,focus141cashQuiz20InfoBean.cashType??"");
+          focus141cashQueueInfoBean = await insertQueueCashInfo(focus141cashQuiz20InfoBean.cashMoney??0,focus141cashQuiz20InfoBean.cashType??"");
         }else{ //没有完成任务，增加进度
           await database.update(Focus141SqlTableName.cashQuiz20Info, focus141cashQuiz20InfoBean.toJson(),where: '"id" = ? ',whereArgs: [id]);
         }
       }
     }
     //再更新50道题7天登录的
+    Focus141CashLoopTaskInfoBean? focus141cashLoopTaskInfoBean;
     var quiz50Login7List = await database.query(Focus141SqlTableName.cashQuiz50AndLogin7Info);
     for (var value in quiz50Login7List) {
       var focus141cashQuiz50LoginInfoBean = Focus141CashQuiz50LoginInfoBean.fromJson(value);
@@ -220,7 +232,8 @@ class Focus141CashUtils{
         //登录7天够了,答题够了，删除这条记录，任务更新为循环任务
         if((focus141cashQuiz50LoginInfoBean.loginNum??0)>=(focus141cashQuiz50LoginInfoBean.loginTotalNum??0)&&(focus141cashQuiz50LoginInfoBean.quizNum??0)>=(focus141cashQuiz50LoginInfoBean.quizTotalNum??0)){
           await database.delete(Focus141SqlTableName.cashQuiz50AndLogin7Info,where: '"id" = ? ',whereArgs: [value["id"]]);
-          await insertLoopTaskCashInfo(focus141cashQuiz50LoginInfoBean.cashMoney??0,focus141cashQuiz50LoginInfoBean.cashType??"");
+          var result = await insertLoopTaskCashInfo(focus141cashQuiz50LoginInfoBean.cashMoney??0,focus141cashQuiz50LoginInfoBean.cashType??"");
+          focus141cashLoopTaskInfoBean ??= result;
         }else{
           await database.update(Focus141SqlTableName.cashQuiz50AndLogin7Info, focus141cashQuiz50LoginInfoBean.toJson(),where: '"id" = ? ',whereArgs: [value["id"]]);
         }
@@ -229,6 +242,23 @@ class Focus141CashUtils{
     //再更新循环任务
     await updateLoopTask(taskType: Focus141LoopTaskTypeEnum.quiz,sendEventMsg: false);
     Focus141EventUtils.instance.sendMsg(focus141Code: Focus141EventCode.updateCashInfo,);
+
+    if(null!=focus141cashQueueInfoBean){
+      showDialogFocus141(
+        child: Focus141QueueDialog(
+          bean: Focus141CashMoneyListBean(money: focus141cashQueueInfoBean.cashMoney??0,focus141cashQueueInfoBean: focus141cashQueueInfoBean),
+        ),
+      );
+      return;
+    }
+    if(null!=focus141cashLoopTaskInfoBean){
+      showDialogFocus141(
+        child: Focus141LoopTaskDialog(
+          bean: Focus141CashMoneyListBean(money: focus141cashLoopTaskInfoBean.cashMoney??0,focus141cashLoopTaskInfoBean: focus141cashLoopTaskInfoBean),
+        ),
+      );
+      return;
+    }
   }
 
   updateQueueTaskProgress(Focus141CashQueueInfoBean? bean)async{
@@ -239,21 +269,33 @@ class Focus141CashUtils{
     }
     var id = list.first["id"];
     var focus141cashQueueInfoBean = Focus141CashQueueInfoBean.fromJson(list.first);
-    focus141cashQueueInfoBean.currentPro=(focus141cashQueueInfoBean.currentPro??0)+Focus141ValueUtils.instance.getCurrentQueueReduce();
+    focus141cashQueueInfoBean.currentPro=(focus141cashQueueInfoBean.currentPro??0)-Focus141ValueUtils.instance.getCurrentQueueReduce();
     focus141cashQueueInfoBean.totalPro=(focus141cashQueueInfoBean.totalPro??0)-Focus141ValueUtils.instance.getAllQueueReduce();
+    Focus141CashQuiz50LoginInfoBean? focus141cashQuiz50LoginInfoBean;
     //排队任务完成了，任务更新为答题50道和登录7天，这条记录删除
-    if((focus141cashQueueInfoBean.currentPro??0)>=(focus141cashQueueInfoBean.totalPro??0)){
+    if((focus141cashQueueInfoBean.currentPro??0)<=1){
       await database.delete(Focus141SqlTableName.cashQueueInfo,where: '"id" = ? ',whereArgs: [id]);
-      await insertQuiz50Login7CashInfo(focus141cashQueueInfoBean.cashMoney??0,focus141cashQueueInfoBean.cashType??"");
+      focus141cashQuiz50LoginInfoBean = await insertQuiz50Login7CashInfo(focus141cashQueueInfoBean.cashMoney??0,focus141cashQueueInfoBean.cashType??"");
     }else{ //没有完成任务，增加进度
       await database.update(Focus141SqlTableName.cashQueueInfo, focus141cashQueueInfoBean.toJson(),where: '"id" = ? ',whereArgs: [id]);
     }
     Focus141EventUtils.instance.sendMsg(focus141Code: Focus141EventCode.updateCashInfo,);
+    if(null!=focus141cashQuiz50LoginInfoBean){
+      showDialogFocus141(
+        child: Focus141CashTaskDialog(
+          bean: Focus141CashMoneyListBean(
+            money: focus141cashQuiz50LoginInfoBean.cashMoney??0,
+            focus141cashQuiz50LoginInfoBean: focus141cashQuiz50LoginInfoBean,
+          ),
+        ),
+      );
+    }
   }
 
   updateLogin7TaskProgress()async{
     var database = await Focus141SqlUtils.instance.initSql();
     var list = await database.query(Focus141SqlTableName.cashQuiz50AndLogin7Info);
+    Focus141CashLoopTaskInfoBean? focus141cashLoopTaskInfoBean;
     for (var value in list) {
       var focus141cashQuiz50LoginInfoBean = Focus141CashQuiz50LoginInfoBean.fromJson(value);
       if((focus141cashQuiz50LoginInfoBean.loginNum??0)<(focus141cashQuiz50LoginInfoBean.loginTotalNum??0)){
@@ -261,13 +303,21 @@ class Focus141CashUtils{
         //登录7天够了,答题够了，删除这条记录，任务更新为循环任务
         if((focus141cashQuiz50LoginInfoBean.loginNum??0)>=(focus141cashQuiz50LoginInfoBean.loginTotalNum??0)&&(focus141cashQuiz50LoginInfoBean.quizNum??0)>=(focus141cashQuiz50LoginInfoBean.quizTotalNum??0)){
           await database.delete(Focus141SqlTableName.cashQuiz50AndLogin7Info,where: '"id" = ? ',whereArgs: [value["id"]]);
-          await insertLoopTaskCashInfo(focus141cashQuiz50LoginInfoBean.cashMoney??0,focus141cashQuiz50LoginInfoBean.cashType??"");
+          var result = await insertLoopTaskCashInfo(focus141cashQuiz50LoginInfoBean.cashMoney??0,focus141cashQuiz50LoginInfoBean.cashType??"");
+          focus141cashLoopTaskInfoBean ??= result;
         }else{
           await database.update(Focus141SqlTableName.cashQuiz50AndLogin7Info, focus141cashQuiz50LoginInfoBean.toJson(),where: '"id" = ? ',whereArgs: [value["id"]]);
         }
       }
     }
     Focus141EventUtils.instance.sendMsg(focus141Code: Focus141EventCode.updateCashInfo,);
+    if(null!=focus141cashLoopTaskInfoBean){
+      showDialogFocus141(
+        child: Focus141LoopTaskDialog(
+          bean: Focus141CashMoneyListBean(money: focus141cashLoopTaskInfoBean.cashMoney??0,focus141cashLoopTaskInfoBean: focus141cashLoopTaskInfoBean),
+        ),
+      );
+    }
   }
 
   //更新循环任务

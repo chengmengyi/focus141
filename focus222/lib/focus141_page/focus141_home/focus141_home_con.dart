@@ -7,6 +7,7 @@ import 'package:focus111/focus141_utils/focus141_tba_utils.dart';
 import 'package:focus222/focus141_bean/focus141_home_tab_bean.dart';
 import 'package:focus222/focus141_page/focus141_home/focus141_cash_child/focus141_cash_child.dart';
 import 'package:focus222/focus141_page/focus141_home/focus141_quiz_child/focus141_quiz_child.dart';
+import 'package:focus222/focus141_utils/focus141_user_guide_utils.dart';
 
 class Focus141HomeCon extends Focus141Con{
   var tabIndex=0;
@@ -21,6 +22,12 @@ class Focus141HomeCon extends Focus141Con{
     super.onInit();
     Focus141FengUtils.instance.initFeng();
     Focus141TbaUtils.instance.uploadPoint(focus141PointEnum: Focus141PointEnum.quiz_page,params: {"source_from":"inform"});
+  }
+
+  @override
+  void onReady() {
+    super.onReady();
+    Focus141UserGuideUtils.instance.showNewUserGuide();
   }
 
   clickTab(int index){
@@ -56,5 +63,4 @@ class Focus141HomeCon extends Focus141Con{
         break;
     }
   }
-
 }

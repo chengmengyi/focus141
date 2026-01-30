@@ -44,25 +44,26 @@ class Focus141QueueDialogCon extends Focus141Con{
     }
     var currentPro = myQueueInfo?.currentPro??99;
     var totalPro = myQueueInfo?.totalPro??300;
-    var myRank = totalPro-currentPro;
+    // var myRank = totalPro-currentPro;
     var myAccount = await Focus141CashUtils.instance.queryCashAccount(bean.focus141cashQueueInfoBean?.cashType);
+
     if(myAccount.isEmpty){
-      myAccount="${randomTwoLetters()}**.com";
+      myAccount=Random().nextBool()?"${randomTwoLetters()}**.com":generateRandomNumber();
     }
     rankList.clear();
     while(rankList.length<totalPro-1){
       rankList.add(
         Focus141RankListBean(
           userId: Random().nextInt(1000),
-          account: "${randomTwoLetters()}**.com",
+          account: Random().nextBool()?"${randomTwoLetters()}**.com":generateRandomNumber(),
           amount: Focus141ValueUtils.instance.getCashList().random(),
           isMe: false,
         ),
       );
     }
     var index=0;
-    if(myRank>1){
-      index=myRank-1;
+    if(currentPro>1){
+      index=currentPro-1;
     }
     rankList.insert(
       index,
@@ -81,18 +82,26 @@ class Focus141QueueDialogCon extends Focus141Con{
 
   int getMyRank(){
     var currentPro = myQueueInfo?.currentPro??99;
-    var totalPro = myQueueInfo?.totalPro??300;
-    var myRank = totalPro-currentPro;
-    if(myRank<=1){
-      return 1;
-    }
-    return myRank;
+    // var totalPro = myQueueInfo?.totalPro??300;
+    // var myRank = totalPro-currentPro;
+    // if(myRank<=1){
+    //   return 1;
+    // }
+    return currentPro;
   }
 
   String randomTwoLetters() {
     const letters = 'abcdefghijklmnopqrstuvwxyz';
     final random = Random();
     return String.fromCharCodes(List.generate(2, (_) => letters.codeUnitAt(random.nextInt(letters.length)),));
+  }
+
+  String generateRandomNumber() {
+    String result="";
+    while(result.length<10){
+      result="$result${Random().nextInt(9)}";
+    }
+    return "${result.substring(0,4)}****${result.substring(6,10)}";
   }
 
   clickSkip()async{

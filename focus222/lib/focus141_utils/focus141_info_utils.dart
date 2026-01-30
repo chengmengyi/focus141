@@ -16,6 +16,7 @@ class Focus141InfoUtils {
     bFocus141Money.saveData(addDecimalFocus141(bFocus141Money.getData(), addNum));
     Focus141EventUtils.instance.sendMsg(focus141Code: Focus141EventCode.updateMoney);
     if(addNum>0){
+      bFocus141AdCheckCoins.saveData(addDecimalFocus141(bFocus141AdCheckCoins.getData(), addNum));
       var currentMoney = bFocus141Money.getData();
       var firstCashMoney = Focus141ValueUtils.instance.getCashList().first;
       if(bShowReachCashMoneyDialog.getData()&&currentMoney>=firstCashMoney){
@@ -33,5 +34,9 @@ class Focus141InfoUtils {
 
   updateAnswerRightNum(){
     bFocus141AnswerRightNum.saveData(bFocus141AnswerRightNum.getData()+1);
+  }
+
+  updateAnswerRightNumToCheckAd(){
+    bAnswerRightNumToCheckAd.saveData(bAnswerRightNumToCheckAd.getData()+1);
   }
 }

@@ -102,7 +102,7 @@ class Focus141QuizChild extends Focus141Widget<Focus141QuizChildCon>{
       height: 100.h,
       alignment: Alignment.center,
       padding: EdgeInsets.only(left: 10.w,right: 10.w),
-      child: Focus141TextWidget(focus141TextContent: quizBean.question??"", focus141TextSize: 20.sp, focus141TextColor: Focus141Colors.color000000,),
+      child: Focus141TextWidget(focus141TextContent: quizBean.question??"", focus141TextSize: 20.sp, focus141TextColor: Focus141Colors.color000000,focus141Height: 1.0,),
     ),
   );
 
@@ -300,6 +300,7 @@ class Focus141QuizChild extends Focus141Widget<Focus141QuizChildCon>{
                         width: 30.w,
                         height: 30.w,
                         alignment: Alignment.center,
+                        key: index==2?focus141Con.firstBoxGlobalKey:null,
                         child: Focus141LocalImagesWidget(
                           focus141ImagesName: focus141Con.getProIcon(bean,selected),
                           focus141Width: 30.w,

@@ -155,7 +155,7 @@ class Focus141QueueDialog extends Focus141Widget<Focus141QueueDialogCon>{
                           Expanded(
                             child: Center(
                               child: Focus141TextWidget(
-                                focus141TextContent: "${bean.userId??0}",
+                                focus141TextContent: "${index+1}",
                                 focus141TextSize: 12.sp,
                                 focus141TextColor: bean.isMe==true?Focus141Colors.colorEC2428:Focus141Colors.color000000,
                                 focus141Height: 1.0,
@@ -175,7 +175,7 @@ class Focus141QueueDialog extends Focus141Widget<Focus141QueueDialogCon>{
                           Expanded(
                             child: Center(
                               child: Focus141TextWidget(
-                                focus141TextContent: "${bean.amount??0}",
+                                focus141TextContent: "\$${bean.amount??0}",
                                 focus141TextSize: 12.sp,
                                 focus141TextColor: bean.isMe==true?Focus141Colors.colorEC2428:Focus141Colors.color000000,
                                 focus141Height: 1.0,

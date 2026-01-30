@@ -7,16 +7,18 @@ import 'package:focus111/focus141_utils/focus141_tba_utils.dart';
 import 'package:focus111/focus141_utils/focus141_utils.dart';
 import 'package:focus222/focus141_bean/focus141_cash_money_list_bean.dart';
 
-class Focus141CashTaskDialogCon extends Focus141Con{
+class Focus141LoopTaskDialogCon extends Focus141Con{
+
   Focus141CashMoneyListBean bean;
-  Focus141CashTaskDialogCon({
+  Focus141LoopTaskDialogCon({
     required this.bean,
   });
+
 
   @override
   void onInit() {
     super.onInit();
-    Focus141TbaUtils.instance.uploadPoint(focus141PointEnum: Focus141PointEnum.ad_verify_pop);
+    Focus141TbaUtils.instance.uploadPoint(focus141PointEnum: Focus141PointEnum.one_last_step_pop);
   }
 
   clickClose(){
@@ -24,7 +26,7 @@ class Focus141CashTaskDialogCon extends Focus141Con{
   }
 
   clickContinue(){
-    Focus141TbaUtils.instance.uploadPoint(focus141PointEnum: Focus141PointEnum.ad_verify_pop_c);
+    Focus141TbaUtils.instance.uploadPoint(focus141PointEnum: Focus141PointEnum.one_last_step_pop_c);
     backFocus141();
     Focus141EventUtils.instance.sendMsg(focus141Code: Focus141EventCode.updateHomeTab,focus141Int: 0);
   }

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:math';
 
+import 'package:flutter/foundation.dart';
 import 'package:focus111/focus141_utils/focus141_common_storage.dart';
 import 'package:focus111/focus141_utils/focus141_firebase_config_utils.dart';
 import 'package:focus111/focus141_utils/focus141_local_quiz.dart';
@@ -13,6 +14,7 @@ class Focus141ValueUtils{
   static Focus141ValueUtils get instance => _focus141valueUtils;
 
   Focus141ValueBean? _valueBean;
+  int _lastInterAdRandomNum=0,_lastRvAdRandomNum=0;
 
   initValue(){
     Focus141FirebaseConfigUtils.instance.valueConfigCallback=(String s){
@@ -46,6 +48,57 @@ class Focus141ValueUtils{
   List<int> getCashList()=>_valueBean?.qlandRange??[800, 1000, 1500, 2000];
 
   bool showAd(AdType adType){
+    // if(kDebugMode){
+    //   return false;
+    // }
+    var coins = bFocus141AdCheckCoins.getData();
+    var answerRight = bAnswerRightNumToCheckAd.getData();
+    var list = adType==AdType.interstitial?(_valueBean?.intadPoint??[]):(_valueBean?.rvadPoint??[]);
+    var last = list.last;
+    if(coins>=(last.endNumber??0)){
+      return _checkShowAd(last.number??[],adType,answerRight);
+    }
+    for (var value in list) {
+      if(coins>=(value.firstNumber??0)&&coins<(value.endNumber??0)){
+        return _checkShowAd(value.number??[],adType,answerRight);
+      }
+    }
+    return true;
+  }
+
+  bool _checkShowAd(List<int> number,AdType adType,int answerRight){
+    if(number.isEmpty){
+      return true;
+    }
+    if(adType==AdType.reward&&_lastRvAdRandomNum==0){
+      _lastRvAdRandomNum=number.random();
+    }
+    if(adType==AdType.interstitial&&_lastInterAdRandomNum==0){
+      _lastInterAdRandomNum=number.random();
+    }
+
+    if(adType==AdType.reward){
+      if(kDebugMode){
+        print("当前校验广告已答对题数:$answerRight--->随机到的数:$_lastRvAdRandomNum--->number 列表:$number");
+      }
+      if(answerRight==_lastRvAdRandomNum){
+        _lastRvAdRandomNum=number.random();
+        bAnswerRightNumToCheckAd.saveData(0);
+        return true;
+      }
+      return false;
+    }
+    if(adType==AdType.interstitial){
+      if(kDebugMode){
+        print("当前校验广告已答对提数:$bAnswerRightNumToCheckAd--->随机到的数:$_lastInterAdRandomNum");
+      }
+      if(answerRight==_lastInterAdRandomNum){
+        _lastInterAdRandomNum=number.random();
+        bAnswerRightNumToCheckAd.saveData(0);
+        return true;
+      }
+      return false;
+    }
     return true;
   }
 

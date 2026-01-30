@@ -1,10 +1,12 @@
 import 'dart:async';
 
+import 'package:flutter/material.dart';
 import 'package:focus111/focus141_event/focus141_event_utils.dart';
 import 'package:get/get.dart';
 
 abstract class Focus141Con extends GetxController{
   StreamSubscription<Map>? _streamSubscription;
+  late BuildContext context;
 
   @override
   void onInit() {

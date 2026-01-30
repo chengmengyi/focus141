@@ -48,10 +48,13 @@ class Focus141QuizChildCon extends Focus141Con{
   Offset? fingerOffset;
   GlobalKey answerAGlobalKey=GlobalKey();
   GlobalKey answerBGlobalKey=GlobalKey();
+  GlobalKey firstBoxGlobalKey=GlobalKey();
 
   @override
   void onInit() {
     super.onInit();
+    quizIndex=bCurrentQuizIndex.getData();
+    quizTypeIndex=bCurrentQuizTypeIndex.getData();
     firstAnswerQuiz=bFirstAnswer.getData();
     _initProgressList();
   }
@@ -177,6 +180,8 @@ class Focus141QuizChildCon extends Focus141Con{
     var result = quizBean.answer==index;
     Focus141TbaUtils.instance.uploadPoint(focus141PointEnum: result?Focus141PointEnum.answer_true:Focus141PointEnum.answer_wrong,);
     if(result){
+      Focus141CashUtils.instance.updateQuizTaskProgress();
+      Focus141InfoUtils.instance.updateAnswerRightNumToCheckAd();
       if(firstAnswerQuiz){
         firstAnswerQuiz=false;
         bFirstAnswer.saveData(false);
@@ -184,9 +189,7 @@ class Focus141QuizChildCon extends Focus141Con{
           child: Focus141FirstAnswerQuizDialog(
             reward: Focus141ValueUtils.instance.getQuizReward(),
             callback: (){
-              _updateNextQuiz(typeBean);
-              Focus141InfoUtils.instance.updateAnswerRightNum();
-              update(["progress"]);
+              _answerRightCall(typeBean);
             },
           ),
         );
@@ -196,15 +199,33 @@ class Focus141QuizChildCon extends Focus141Con{
             focus141rewardType: Focus141RewardType.quiz,
             reward: Focus141ValueUtils.instance.getQuizReward(),
             callback: (){
-              _updateNextQuiz(typeBean);
-              Focus141InfoUtils.instance.updateAnswerRightNum();
-              update(["progress"]);
+              _answerRightCall(typeBean);
             },
           ),
         );
       }
     }else{
       _updateNextQuiz(typeBean);
+    }
+  }
+
+  _answerRightCall(Focus141QuizTypeBean typeBean){
+    _updateNextQuiz(typeBean);
+    Focus141InfoUtils.instance.updateAnswerRightNum();
+    update(["progress"]);
+    _jumpProgress();
+    if(bShowBoxGuide.getData()&&bFocus141AnswerRightNum.getData()>=2){
+      bShowBoxGuide.saveData(false);
+      Focus141UserGuideUtils.instance.showBoxGuide(
+        context: context,
+        key: firstBoxGlobalKey,
+        callback: (){
+          var indexWhere = progressList.indexWhere((value)=>value.type==Focus141HomeProType.box);
+          if(indexWhere>=0){
+            clickProgress(progressList[indexWhere]);
+          }
+        },
+      );
     }
   }
 
@@ -217,11 +238,14 @@ class Focus141QuizChildCon extends Focus141Con{
         quizIndex=0;
         quizTypeIndex=0;
       }else{
+        quizIndex=0;
         quizTypeIndex++;
       }
     }else{
       quizIndex++;
     }
+    bCurrentQuizIndex.saveData(quizIndex);
+    bCurrentQuizTypeIndex.saveData(quizTypeIndex);
     _canClick=true;
     update(["quiz"]);
     _startRightAnswerTimer();
@@ -269,7 +293,9 @@ class Focus141QuizChildCon extends Focus141Con{
     // Focus141InfoUtils.instance.updateMoney(2000);
     // Focus141CashUtils.instance.showReachCashMoneyDialog(800,Focus141CashTypeEnum.cashapp);
     // Focus141CashUtils.instance.updateLoopTask(taskType: Focus141LoopTaskTypeEnum.wheel);
-    // Focus141CashUtils.instance.updateQuizTaskProgress();
+    Focus141CashUtils.instance.updateQuizTaskProgress();
+    // Focus141CashUtils.instance.updateLogin7TaskProgress();
+    // Focus141CashUtils.instance.updateQueueTaskProgress(bean);
     // Focus141EventUtils.instance.sendMsg(focus141Code: Focus141EventCode.showMoneyReward,focus141Dynamic: 220);
     // Focus141UserGuideUtils.instance.showNewUserGuide();
     // Focus141TbaUtils.instance.uploadSession();
@@ -289,6 +315,23 @@ class Focus141QuizChildCon extends Focus141Con{
     // showDialogFocus141(child: FocusOpenNotificationDialog());
 
     // Focus141NotificationUtils.instance.test();
+    // Focus141UserGuideUtils.instance.showNewUserGuide();
+
+    // quizIndex=22;
+    // quizTypeIndex=4;
+    // update(["quiz"]);
+    // print("kk===${quizTypeList.length}===${quizTypeIndex}==${quizIndex}");
+
+    // Focus141InfoUtils.instance.updateAnswerRightNumToCheckAd();
+    // // Focus141ValueUtils.instance.showAd(AdType.reward);
+    // showDialogFocus141(
+    //   child: Focus141RewardDialog(
+    //     focus141rewardType: Focus141RewardType.quiz,
+    //     reward: Focus141ValueUtils.instance.getQuizReward(),
+    //     callback: (){
+    //     },
+    //   ),
+    // );
   }
 
   @override

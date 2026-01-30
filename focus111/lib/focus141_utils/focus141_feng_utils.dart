@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_risk_control_plugins/call/risk_control_callback.dart';
 import 'package:flutter_risk_control_plugins/flutter_risk_control_plugins.dart';
 import 'package:flutter_risk_control_plugins/utis/risk_control_tag_enum.dart';
@@ -40,6 +41,9 @@ class Focus141FengUtils{
   }
 
   bool hasFeng(){
+    if(kDebugMode){
+      return false;
+    }
     return FlutterRiskControlPlugins.instance.checkHasFk();
   }
 }

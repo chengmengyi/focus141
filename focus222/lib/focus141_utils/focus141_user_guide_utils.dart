@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:focus111/focus141_event/focus141_event_code.dart';
 import 'package:focus111/focus141_event/focus141_event_utils.dart';
 import 'package:focus111/focus141_routers/focus141_router_address.dart';
@@ -10,10 +11,13 @@ import 'package:focus222/focus141_dialog/focus141_sign_reward_dialog/focus141_si
 import 'package:focus222/focus141_dialog/focus141_wheel_sign_reward_dialog/focus141_wheel_sign_reward_dialog.dart';
 import 'package:focus222/focus141_utils/focus141_cash_utils.dart';
 import 'package:focus222/focus141_utils/focus141_storage_data.dart';
+import 'package:focus222/focus141_widget/focus141_box_guide_widget.dart';
 
 class Focus141UserGuideUtils {
   static final Focus141UserGuideUtils _focus141userGuideUtils=Focus141UserGuideUtils();
   static Focus141UserGuideUtils get instance => _focus141userGuideUtils;
+
+  OverlayEntry? _overlayEntry;
 
   showNewUserGuide(){
     var newUserTime = bNewUserGuideTime.getData();
@@ -54,5 +58,37 @@ class Focus141UserGuideUtils {
         child: Focus141WheelSignRewardDialog(wheelReward: reward),
       );
     }
+  }
+
+  showBoxGuide({
+    required BuildContext context,
+    required GlobalKey key,
+    required Function() callback,
+  }){
+    var renderBox = key.currentContext?.findRenderObject() as RenderBox;
+    var offset = renderBox.localToGlobal(Offset.zero);
+    showOverlay(
+      context: context,
+      widget: Focus141BoxGuideWidget(
+        offset: offset,
+        clickCallback: (){
+          hideOverlay();
+          callback.call();
+        },
+      ),
+    );
+  }
+
+  showOverlay({
+    required BuildContext context,
+    required Widget widget,
+  }){
+    _overlayEntry=OverlayEntry(builder: (_)=>widget);
+    Overlay.of(context).insert(_overlayEntry!);
+  }
+
+  hideOverlay(){
+    _overlayEntry?.remove();
+    _overlayEntry=null;
   }
 }

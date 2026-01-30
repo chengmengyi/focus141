@@ -473,7 +473,7 @@ class Focus141CashChild extends Focus141Widget<Focus141CashChildCon>{
                           ),
                           //Complete 20 Spins
                           TextSpan(
-                            text: "${(getProgress(bean.focus141cashQueueInfoBean?.currentPro??0, bean.focus141cashQueueInfoBean?.totalPro??0)*100).toInt()}%",
+                            text: "${(focus141Con.getQueueProgress(bean.focus141cashQueueInfoBean)*100).toInt()}%",
                             style: TextStyle(
                               fontSize: 15.sp,
                               fontFamily: "woff",
@@ -502,7 +502,7 @@ class Focus141CashChild extends Focus141Widget<Focus141CashChildCon>{
                                     borderRadius: BorderRadius.circular(20.w),
                                   ),
                                   child: Container(
-                                    width: width*getProgress(bean.focus141cashQueueInfoBean?.currentPro??0, bean.focus141cashQueueInfoBean?.totalPro??0),
+                                    width: width*focus141Con.getQueueProgress(bean.focus141cashQueueInfoBean),
                                     height: 16.h,
                                     decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(20.w),
@@ -515,7 +515,7 @@ class Focus141CashChild extends Focus141Widget<Focus141CashChildCon>{
                                   ),
                                 ),
                                 Focus141TextWidget(
-                                  focus141TextContent: "${(getProgress(bean.focus141cashQueueInfoBean?.currentPro??0, bean.focus141cashQueueInfoBean?.totalPro??0)*100).toInt()}%",
+                                  focus141TextContent: "${(focus141Con.getQueueProgress(bean.focus141cashQueueInfoBean)*100).toInt()}%",
                                   focus141TextSize: 14.sp,
                                   focus141TextColor: Focus141Colors.colorFFFFFF,
                                   focus141LineColor: Focus141Colors.color000000,

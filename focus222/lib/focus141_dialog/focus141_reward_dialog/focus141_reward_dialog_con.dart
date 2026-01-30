@@ -11,6 +11,7 @@ import 'package:focus222/focus141_utils/focus141_value_utils.dart';
 
 class Focus141RewardDialogCon extends Focus141Con{
   Focus141RewardType focus141rewardType;
+  var showRewardAd=Focus141ValueUtils.instance.showAd(AdType.reward);
   Focus141RewardDialogCon({
     required this.focus141rewardType,
   });
@@ -27,7 +28,7 @@ class Focus141RewardDialogCon extends Focus141Con{
       Focus141TbaUtils.instance.uploadPoint(focus141PointEnum: Focus141PointEnum.coin_pop_c,params: {"source_from":focus141rewardType.name});
       Focus141AdUtils.instance.showAdFocus141(
         adType: AdType.reward,
-        showAd: Focus141ValueUtils.instance.showAd(AdType.reward),
+        showAd: showRewardAd,
         focus141AdEnum: _getDoubleAdEnum(),
         result: (give){
           if(give){

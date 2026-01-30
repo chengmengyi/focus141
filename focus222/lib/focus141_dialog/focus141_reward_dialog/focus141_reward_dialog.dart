@@ -80,6 +80,7 @@ class Focus141RewardDialog extends Focus141Widget<Focus141RewardDialogCon>{
                 reward: reward,
                 width: 230.w,
                 height: 50.h,
+                showAdIcon: focus141Con.showRewardAd,
                 onTap: (){
                   focus141Con.clickDouble(reward,callback);
                 },

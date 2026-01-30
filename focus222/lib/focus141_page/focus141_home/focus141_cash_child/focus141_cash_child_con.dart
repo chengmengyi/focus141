@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:focus111/focus141_enum/focus141_cash_type_enum.dart';
 import 'package:focus111/focus141_enum/focus141_loop_task_type_enum.dart';
 import 'package:focus111/focus141_event/focus141_event_code.dart';
@@ -11,9 +12,12 @@ import 'package:focus111/focus141_utils/focus141_tba_utils.dart';
 import 'package:focus111/focus141_utils/focus141_utils.dart';
 import 'package:focus222/focus141_bean/focus141_cash_loop_task_info_bean.dart';
 import 'package:focus222/focus141_bean/focus141_cash_money_list_bean.dart';
+import 'package:focus222/focus141_bean/focus141_cash_queue_info_bean.dart';
 import 'package:focus222/focus141_dialog/focus141_cash_task_dialog/focus141_cash_task_dialog.dart';
+import 'package:focus222/focus141_dialog/focus141_loop_task_dialog/focus141_loop_task_dialog.dart';
 import 'package:focus222/focus141_dialog/focus141_no_money_dialog/focus141_no_money_dialog.dart';
 import 'package:focus222/focus141_dialog/focus141_queue_dialog/focus141_queue_dialog.dart';
+import 'package:focus222/focus141_dialog/focus141_quiz20_cask_task_dialog/focus141_quiz20_cask_task_dialog.dart';
 import 'package:focus222/focus141_utils/focus141_cash_utils.dart';
 import 'package:focus222/focus141_utils/focus141_storage_data.dart';
 import 'package:focus222/focus141_utils/focus141_value_utils.dart';
@@ -59,6 +63,10 @@ class Focus141CashChildCon extends Focus141Con{
   }
 
   clickQueueBtn(Focus141CashMoneyListBean bean){
+    if(kDebugMode){
+      Focus141CashUtils.instance.updateQueueTaskProgress(bean.focus141cashQueueInfoBean);
+      return;
+    }
     Focus141TbaUtils.instance.uploadPoint(focus141PointEnum: Focus141PointEnum.cash_page_speedup,);
     Focus141AdUtils.instance.showAdFocus141(
       adType: AdType.reward,
@@ -77,15 +85,31 @@ class Focus141CashChildCon extends Focus141Con{
   }
 
   clickCashItem(Focus141CashMoneyListBean bean){
-    if(null!=bean.focus141cashQueueInfoBean){
-      showDialogFocus141(
-        child: Focus141QueueDialog(bean: bean),
-      );
-      return;
+    if(null!=bean.focus141cashQuiz20InfoBean){
+      showDialogFocus141(child: Focus141Quiz20CaskTaskDialog());
     }
-    showDialogFocus141(
-      child: Focus141CashTaskDialog(bean: bean),
-    );
+    if(null!=bean.focus141cashQueueInfoBean){
+      showDialogFocus141(child: Focus141QueueDialog(bean: bean));
+    }
+    if(null!=bean.focus141cashQuiz50LoginInfoBean){
+      showDialogFocus141(
+        child: Focus141CashTaskDialog(bean: bean),
+      );
+    }
+    if(null!=bean.focus141cashLoopTaskInfoBean){
+      showDialogFocus141(
+        child: Focus141LoopTaskDialog(bean: bean),
+      );
+    }
+  }
+
+  double getQueueProgress(Focus141CashQueueInfoBean? bean){
+    var currentPro = bean?.currentPro??0;
+    var totalPro = bean?.totalPro??0;
+    if(totalPro<=0){
+      return 0.0;
+    }
+    return getProgress(totalPro-currentPro, totalPro);
   }
 
   _initCashMoneyList()async{

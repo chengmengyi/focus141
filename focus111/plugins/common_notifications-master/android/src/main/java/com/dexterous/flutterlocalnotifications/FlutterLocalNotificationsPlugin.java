@@ -1745,6 +1745,7 @@ public class FlutterLocalNotificationsPlugin
   private void repeat(MethodCall call, Result result) {
     NotificationDetails notificationDetails = extractNotificationDetails(result, call.arguments());
     if (notificationDetails != null) {
+      notificationDetails.scheduleMode = ScheduleMode.inexactAllowWhileIdle;
       try {
         repeatNotification(applicationContext, notificationDetails, true);
         result.success(null);

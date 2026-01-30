@@ -57,7 +57,7 @@ class Focus141AdUtils {
     bool isOpenAd=false,
   }){
     if(!showAd){
-      result.call(adType==AdType.interstitial);
+      result.call(true);
       return;
     }
     if(Focus141FengUtils.instance.hasFeng()){

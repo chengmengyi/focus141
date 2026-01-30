@@ -15,6 +15,7 @@ abstract class Focus141Widget<T extends Focus141Con> extends StatelessWidget{
       _init=false;
     }
     ctx=context;
+    focus141Con.context=context;
     switch(initFocus141Type()){
       case Focus141WidgetType.page: return _pageWidget();
       case Focus141WidgetType.child: return initFocus141Widget();

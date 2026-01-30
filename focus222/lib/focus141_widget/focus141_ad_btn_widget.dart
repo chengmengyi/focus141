@@ -9,12 +9,14 @@ class Focus141AdBtnWidget extends StatelessWidget{
   double reward;
   double width;
   double height;
+  bool showAdIcon;
   Function() onTap;
   Focus141AdBtnWidget({
     required this.reward,
     required this.width,
     required this.height,
     required this.onTap,
+    this.showAdIcon=true,
 });
 
   @override
@@ -30,8 +32,13 @@ class Focus141AdBtnWidget extends StatelessWidget{
           Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Focus141LocalImagesWidget(focus141ImagesName: "icon_video", focus141Width: 24.w, focus141Height: 24.w),
-              SizedBox(width: 2.w,),
+              Visibility(
+                visible: showAdIcon,
+                child: Container(
+                  margin: EdgeInsets.only(right: 2.w),
+                  child: Focus141LocalImagesWidget(focus141ImagesName: "icon_video", focus141Width: 24.w, focus141Height: 24.w),
+                ),
+              ),
               Focus141TextWidget(
                 focus141TextContent: "Claim\$${mulDecimalFocus141(reward, 2)}",
                 focus141TextSize: 20.sp,
