@@ -23,8 +23,10 @@ class Focus141WheelCon extends Focus141Con with GetSingleTickerProviderStateMixi
   @override
   void onInit() {
     super.onInit();
-    var map = Get.arguments as Map<String, dynamic>;
-    fromOldUser=map["fromOld"]??false;
+    if(null!=Get.arguments){
+      var map = Get.arguments as Map<String, dynamic>;
+      fromOldUser=map["fromOld"]??false;
+    }
     Focus141TbaUtils.instance.uploadPoint(focus141PointEnum: Focus141PointEnum.wheel_pop,params: {"source_from":fromOldUser?"old":"quiz"});
     _initAnimator();
     _initWheelReward();

@@ -293,7 +293,7 @@ class Focus141QuizChildCon extends Focus141Con{
     // Focus141InfoUtils.instance.updateMoney(2000);
     // Focus141CashUtils.instance.showReachCashMoneyDialog(800,Focus141CashTypeEnum.cashapp);
     // Focus141CashUtils.instance.updateLoopTask(taskType: Focus141LoopTaskTypeEnum.wheel);
-    Focus141CashUtils.instance.updateQuizTaskProgress();
+    // Focus141CashUtils.instance.updateQuizTaskProgress();
     // Focus141CashUtils.instance.updateLogin7TaskProgress();
     // Focus141CashUtils.instance.updateQueueTaskProgress(bean);
     // Focus141EventUtils.instance.sendMsg(focus141Code: Focus141EventCode.showMoneyReward,focus141Dynamic: 220);
@@ -332,6 +332,9 @@ class Focus141QuizChildCon extends Focus141Con{
     //     },
     //   ),
     // );
+
+    Focus141InfoUtils.instance.updateAnswerRightNum();
+    update(["progress"]);
   }
 
   @override
