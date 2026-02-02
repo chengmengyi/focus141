@@ -221,4 +221,5 @@ class Focus141ValueUtils{
     double value = min + random.nextDouble() * (max - min);
     return value.toStringAsFixed(2).toDouble();
   }
+
 }

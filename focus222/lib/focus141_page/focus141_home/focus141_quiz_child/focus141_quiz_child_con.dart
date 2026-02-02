@@ -83,8 +83,8 @@ class Focus141QuizChildCon extends Focus141Con{
     }
   }
 
-  clickProgress(Focus141HomeProBean bean)async{
-    if(bean.received==1){
+  clickProgress(Focus141HomeProBean bean,)async{
+    if(bean.received==1||bFocus141AnswerRightNum.getData()<(bean.step??0)){
       return;
     }
     if(bean.type==Focus141HomeProType.box){
@@ -175,6 +175,7 @@ class Focus141QuizChildCon extends Focus141Con{
     _canClick=false;
     currentChooseAnswer=index;
     fingerOffset = null;
+    _endRightAnswerTimer();
     update(["answer","finger"]);
     await Future.delayed(Duration(milliseconds: 1000));
     var result = quizBean.answer==index;
@@ -290,7 +291,7 @@ class Focus141QuizChildCon extends Focus141Con{
     // Focus141InfoUtils.instance.updateAnswerRightNum();
     // update(["progress"]);
     // Focus141ValueUtils.instance.initValue();
-    // Focus141InfoUtils.instance.updateMoney(2000);
+    Focus141InfoUtils.instance.updateMoney(20);
     // Focus141CashUtils.instance.showReachCashMoneyDialog(800,Focus141CashTypeEnum.cashapp);
     // Focus141CashUtils.instance.updateLoopTask(taskType: Focus141LoopTaskTypeEnum.wheel);
     // Focus141CashUtils.instance.updateQuizTaskProgress();
@@ -332,9 +333,10 @@ class Focus141QuizChildCon extends Focus141Con{
     //     },
     //   ),
     // );
+    //
+    // Focus141InfoUtils.instance.updateAnswerRightNum();
+    // update(["progress"]);
 
-    Focus141InfoUtils.instance.updateAnswerRightNum();
-    update(["progress"]);
   }
 
   @override

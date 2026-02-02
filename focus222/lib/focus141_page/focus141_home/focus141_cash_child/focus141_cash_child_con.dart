@@ -142,6 +142,7 @@ class Focus141CashChildCon extends Focus141Con{
         _initCashMoneyList();
         break;
       case Focus141EventCode.updateMoney:
+        _initCashMoneyList();
         update(["money"]);
         break;
       case Focus141EventCode.changeCashType:

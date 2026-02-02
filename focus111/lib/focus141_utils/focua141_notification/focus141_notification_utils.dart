@@ -5,6 +5,7 @@ import 'package:focus111/focus141_utils/focus141_point_enum.dart';
 import 'package:focus111/focus141_utils/focus141_tba_utils.dart';
 import 'package:focus111/focus141_utils/focus141_utils.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:focus111/focus141_widget/focus_open_notification_dialog/focus_open_notification_dialog.dart';
 
 class Focus141NotificationUtils{
   static final Focus141NotificationUtils _focus141notificationUtils=Focus141NotificationUtils();
@@ -27,7 +28,7 @@ class Focus141NotificationUtils{
     final status = await Permission.notification.status;
     if (!status.isGranted) {
       bLastTimeShowNotificationTimer.saveData(getTodayTime());
-
+      showDialogFocus141(child: FocusOpenNotificationDialog());
     }
   }
 

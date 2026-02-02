@@ -12,10 +12,13 @@ class Focus141InfoUtils {
   static final Focus141InfoUtils _focus141infoUtils=Focus141InfoUtils();
   static Focus141InfoUtils get instance => _focus141infoUtils;
 
-  updateMoney(addNum){
+  updateMoney(addNum)async{
     bFocus141Money.saveData(addDecimalFocus141(bFocus141Money.getData(), addNum));
-    Focus141EventUtils.instance.sendMsg(focus141Code: Focus141EventCode.updateMoney);
     if(addNum>0){
+      Focus141EventUtils.instance.sendMsg(focus141Code: Focus141EventCode.showMoneyAnimator);
+      await Future.delayed(Duration(milliseconds: 1500));
+      Focus141EventUtils.instance.sendMsg(focus141Code: Focus141EventCode.updateMoney);
+
       bFocus141AdCheckCoins.saveData(addDecimalFocus141(bFocus141AdCheckCoins.getData(), addNum));
       var currentMoney = bFocus141Money.getData();
       var firstCashMoney = Focus141ValueUtils.instance.getCashList().first;

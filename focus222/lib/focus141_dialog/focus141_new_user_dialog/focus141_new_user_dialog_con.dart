@@ -51,7 +51,7 @@ class Focus141NewUserDialogCon extends Focus141Con{
     Focus141AdUtils.instance.showAdFocus141(
       adType: AdType.reward,
       focus141AdEnum: Focus141AdEnum.fkskv_newuser_wheel_rv,
-      showAd: Focus141ValueUtils.instance.showAd(AdType.reward),
+      showAd: true,
       result: (give){
         backFocus141();
         callback.call(mulDecimalFocus141(newUserAdd, 2));

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:focus111/focus141_enum/focus141_loop_task_type_enum.dart';
 import 'package:focus111/focus141_event/focus141_event_code.dart';
 import 'package:focus111/focus141_page/focus141_con.dart';
+import 'package:focus111/focus141_utils/focua141_notification/focus141_notification_utils.dart';
 import 'package:focus111/focus141_utils/focus141_ad_utils.dart';
 import 'package:focus111/focus141_utils/focus141_feng_utils.dart';
 import 'package:focus111/focus141_utils/focus141_point_enum.dart';
@@ -28,6 +29,7 @@ class Focus141HomeCon extends Focus141Con{
     Focus141AdUtils.instance.adShowSuccessCallback=(){
       Focus141CashUtils.instance.updateLoopTask(taskType: Focus141LoopTaskTypeEnum.video);
     };
+    Focus141NotificationUtils.instance.checkHasNotification();
   }
 
   @override

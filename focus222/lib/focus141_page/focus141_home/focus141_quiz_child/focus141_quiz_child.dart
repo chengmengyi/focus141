@@ -6,6 +6,7 @@ import 'package:focus111/focus141_utils/focus141_utils.dart';
 import 'package:focus111/focus141_widget/focus141_click_widget.dart';
 import 'package:focus111/focus141_widget/focus141_finger_widget.dart';
 import 'package:focus111/focus141_widget/focus141_local_images_widget.dart';
+import 'package:focus111/focus141_widget/focus141_spine_widget.dart';
 import 'package:focus111/focus141_widget/focus141_text_widget.dart';
 import 'package:focus222/focus141_bean/focus141_home_pro_bean.dart';
 import 'package:focus222/focus141_bean/focus141_quiz_bean.dart';
@@ -13,6 +14,7 @@ import 'package:focus222/focus141_bean/focus141_quiz_type_bean.dart';
 import 'package:focus222/focus141_page/focus141_home/focus141_quiz_child/focus141_quiz_child_con.dart';
 import 'package:focus222/focus141_utils/focus141_storage_data.dart';
 import 'package:focus222/focus141_widget/focus141_bubble_widget.dart';
+import 'package:focus222/focus141_widget/focus141_money_animator_widget.dart';
 import 'package:focus222/focus141_widget/focus141_money_widget.dart';
 
 class Focus141QuizChild extends Focus141Widget<Focus141QuizChildCon>{
@@ -38,6 +40,7 @@ class Focus141QuizChild extends Focus141Widget<Focus141QuizChildCon>{
       ),
       _fingerWidget(),
       Focus141BubbleWidget(),
+      Focus141MoneyAnimatorWidget(),
     ],
   );
 
