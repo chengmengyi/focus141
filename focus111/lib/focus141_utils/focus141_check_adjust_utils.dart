@@ -38,10 +38,10 @@ class Focus141CheckAdjustUtils{
       referrerConfList: [],
       requestAdjustCallback: RequestAdjustCallback(
         startRequestAdjust: (){
-          // HissPointUtils.instance.pointEvent(hissPointEnum: HissPointEnum.adjust_req);
+          Focus141TbaUtils.instance.uploadPoint(focus141PointEnum: Focus141PointEnum.adjust_req);
         },
         requestSuccess: (bool isB){
-          // HissPointUtils.instance.pointEvent(hissPointEnum: HissPointEnum.adjust_suc,params: {"cloak_user":isB?1:0});
+          Focus141TbaUtils.instance.uploadPoint(focus141PointEnum: Focus141PointEnum.adjust_suc,params: {"cloak_user":isB?1:0});
           // _delayCheckUser();
         },
         firstRequestAdjustB: (){
