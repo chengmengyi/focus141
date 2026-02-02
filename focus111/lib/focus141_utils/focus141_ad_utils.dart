@@ -62,7 +62,7 @@ class Focus141AdUtils {
       result.call(true);
       return;
     }
-    if(Focus141FengUtils.instance.hasFeng()){
+    if(Focus141FengUtils.instance.hasFeng()||AdNumHep.instance.notLoad()){
       if(adType==AdType.reward){
         showDialogFocus141(child: FocusAdLimitDialog(callback: (){},));
         return;

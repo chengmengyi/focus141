@@ -11,10 +11,12 @@ import 'package:focus222/focus141_utils/focus141_value_utils.dart';
 
 class Focus141RewardDialogCon extends Focus141Con{
   Focus141RewardType focus141rewardType;
-  var showRewardAd=Focus141ValueUtils.instance.showAd(AdType.reward);
+  var showRewardAd=false;
   Focus141RewardDialogCon({
     required this.focus141rewardType,
-  });
+  }){
+    showRewardAd=Focus141ValueUtils.instance.showAd(AdType.reward,fromQuiz: focus141rewardType==Focus141RewardType.quiz);
+  }
 
   @override
   void onInit() {

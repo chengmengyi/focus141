@@ -41,7 +41,7 @@ class Focus141CheckAdjustUtils{
           Focus141TbaUtils.instance.uploadPoint(focus141PointEnum: Focus141PointEnum.adjust_req);
         },
         requestSuccess: (bool isB){
-          Focus141TbaUtils.instance.uploadPoint(focus141PointEnum: Focus141PointEnum.adjust_suc,params: {"cloak_user":isB?1:0});
+          Focus141TbaUtils.instance.uploadPoint(focus141PointEnum: Focus141PointEnum.adjust_suc,params: {"adjust_user":isB?1:0});
           // _delayCheckUser();
         },
         firstRequestAdjustB: (){

@@ -47,10 +47,13 @@ class Focus141ValueUtils{
 
   List<int> getCashList()=>_valueBean?.qlandRange??[800, 1000, 1500, 2000];
 
-  bool showAd(AdType adType){
+  bool showAd(AdType adType,{bool fromQuiz=false,}){
     // if(kDebugMode){
     //   return false;
     // }
+    if(adType==AdType.reward&&!fromQuiz){
+      return true;
+    }
     var coins = bFocus141AdCheckCoins.getData();
     var answerRight = bAnswerRightNumToCheckAd.getData();
     var list = adType==AdType.interstitial?(_valueBean?.intadPoint??[]):(_valueBean?.rvadPoint??[]);

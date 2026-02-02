@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:focus111/focus141_page/focus141_widget.dart';
 import 'package:focus111/focus141_page/focus141_widget_type.dart';
+import 'package:focus111/focus141_routers/focus141_router_address.dart';
 import 'package:focus111/focus141_utils/focus141_colors.dart';
 import 'package:focus111/focus141_utils/focus141_utils.dart';
 import 'package:focus111/focus141_widget/focus141_click_widget.dart';
@@ -275,7 +276,6 @@ class Focus141QuizChild extends Focus141Widget<Focus141QuizChildCon>{
               scrollDirection: Axis.horizontal,
               itemCount: focus141Con.progressList.length,
               controller: focus141Con.scrollController,
-              physics: NeverScrollableScrollPhysics(),
               itemBuilder: (context,index){
                 var bean = focus141Con.progressList[index];
                 var selected = data>=(bean.step??0);
@@ -345,6 +345,9 @@ class Focus141QuizChild extends Focus141Widget<Focus141QuizChildCon>{
         ),
       ),
       Focus141ClickWidget(
+        focus141OnTap: (){
+          Get.toNamed(Focus141RouterAddress.bSet);
+        },
         child: Focus141LocalImagesWidget(focus141ImagesName: "icon_set", focus141Width: 30.w, focus141Height: 30.w,),
       ),
       SizedBox(width: 10.w,),
