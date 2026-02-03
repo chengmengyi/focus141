@@ -76,9 +76,9 @@ class Focus141QuizChildCon extends Focus141Con{
   _jumpProgress(){
     var lastIndexWhere = progressList.lastIndexWhere((value)=>value.received==1);
     if(lastIndexWhere>=0){
-      var emptyCount = progressList.take(lastIndexWhere+1).where((e) => e.type == Focus141HomeProType.empty).length;
+      // var emptyCount = progressList.take(lastIndexWhere+1).where((e) => e.type == Focus141HomeProType.empty).length;
       var otherCount = progressList.take(lastIndexWhere+1).where((e) => e.type != Focus141HomeProType.empty).length;
-      var distance = (25.w)*emptyCount+(30.w)*otherCount;
+      var distance = (80.w)*otherCount;
       scrollController.animateTo(distance, duration: Duration(milliseconds: 300), curve: Curves.easeInOut);
     }
   }
@@ -177,10 +177,13 @@ class Focus141QuizChildCon extends Focus141Con{
     fingerOffset = null;
     _endRightAnswerTimer();
     update(["answer","finger"]);
-    await Future.delayed(Duration(milliseconds: 1000));
     var result = quizBean.answer==index;
+    Focus141InfoUtils.instance.updateAnswerRightNum();
+    update(["progress"]);
+    await Future.delayed(Duration(milliseconds: 1000));
     Focus141TbaUtils.instance.uploadPoint(focus141PointEnum: result?Focus141PointEnum.answer_true:Focus141PointEnum.answer_wrong,);
     if(result){
+
       Focus141CashUtils.instance.updateQuizTaskProgress();
       Focus141InfoUtils.instance.updateAnswerRightNumToCheckAd();
       if(firstAnswerQuiz){
@@ -212,8 +215,6 @@ class Focus141QuizChildCon extends Focus141Con{
 
   _answerRightCall(Focus141QuizTypeBean typeBean){
     _updateNextQuiz(typeBean);
-    Focus141InfoUtils.instance.updateAnswerRightNum();
-    update(["progress"]);
     _jumpProgress();
     if(bShowBoxGuide.getData()&&bFocus141AnswerRightNum.getData()>=2){
       bShowBoxGuide.saveData(false);
@@ -291,7 +292,7 @@ class Focus141QuizChildCon extends Focus141Con{
     // Focus141InfoUtils.instance.updateAnswerRightNum();
     // update(["progress"]);
     // Focus141ValueUtils.instance.initValue();
-    Focus141InfoUtils.instance.updateMoney(20);
+    // Focus141InfoUtils.instance.updateMoney(20);
     // Focus141CashUtils.instance.showReachCashMoneyDialog(800,Focus141CashTypeEnum.cashapp);
     // Focus141CashUtils.instance.updateLoopTask(taskType: Focus141LoopTaskTypeEnum.wheel);
     // Focus141CashUtils.instance.updateQuizTaskProgress();
@@ -325,9 +326,9 @@ class Focus141QuizChildCon extends Focus141Con{
 
     // Focus141InfoUtils.instance.updateAnswerRightNumToCheckAd();
     // // Focus141ValueUtils.instance.showAd(AdType.reward);
-    showDialogFocus141(
-      child: Focus141BoxDialog(reward: 100, callback: (){}),
-    );
+    // showDialogFocus141(
+    //   child: Focus141BoxDialog(reward: 100, callback: (){}),
+    // );
     //
     // Focus141InfoUtils.instance.updateAnswerRightNum();
     // update(["progress"]);
@@ -335,6 +336,11 @@ class Focus141QuizChildCon extends Focus141Con{
     // print("kk==${Focus141FengUtils.instance.hasFeng()}");
 
     // Focus141NotificationUtils.instance.test();
+
+    // Focus141InfoUtils.instance.updateAnswerRightNum();
+    // update(["progress"]);
+
+    Focus141NotificationUtils.instance.test();
   }
 
   @override

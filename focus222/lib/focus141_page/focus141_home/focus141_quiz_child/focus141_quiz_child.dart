@@ -32,10 +32,11 @@ class Focus141QuizChild extends Focus141Widget<Focus141QuizChildCon>{
         child: Column(
           children: [
             _topWidget(),
-            SizedBox(height: 48.h,),
+            SizedBox(height: 28.h,),
             _progressWidget(),
             SizedBox(height: 26.h,),
             _quizWidget(),
+            SizedBox(height: 10.h,),
           ],
         ),
       ),
@@ -233,7 +234,7 @@ class Focus141QuizChild extends Focus141Widget<Focus141QuizChildCon>{
       Container(
         width: double.infinity,
         height: 26.h,
-        margin: EdgeInsets.only(left: 16.w,right: 16.w,top: 4.h,),
+        margin: EdgeInsets.only(left: 16.w,right: 16.w,top: 24.h,),
         child: Stack(
           children: [
             Container(
@@ -279,7 +280,7 @@ class Focus141QuizChild extends Focus141Widget<Focus141QuizChildCon>{
             var data = bFocus141AnswerRightNum.getData();
             return Container(
               width: double.infinity,
-              height: 50.h,
+              height: 80.w,
               margin: EdgeInsets.only(left: 16.w,right: 16.w),
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
@@ -289,35 +290,36 @@ class Focus141QuizChild extends Focus141Widget<Focus141QuizChildCon>{
                   var bean = focus141Con.progressList[index];
                   var selected = data>=(bean.step??0);
                   if(bean.type==Focus141HomeProType.empty){
-                    return Container(
-                      width: 34.w,
-                      height: 18.h,
-                      alignment: Alignment.topLeft,
-                      child: Visibility(
-                        visible: selected,
-                        child: Container(
-                          margin: EdgeInsets.only(top: 8.h),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.only(
-                              topLeft: index==0?Radius.circular(20.w):Radius.zero,
-                              bottomLeft: index==0?Radius.circular(20.w):Radius.zero,
-                              topRight: index==focus141Con.progressList.length-1?Radius.circular(20.w):Radius.zero,
-                              bottomRight: index==focus141Con.progressList.length-1?Radius.circular(20.w):Radius.zero,
-                            ),
-                            child: Focus141LocalImagesWidget(focus141ImagesName: "pro_duan", focus141Width: 34.w, focus141Height: 18.h),
-                          ),
-                        ),
-                      ),
-
-                    );
+                    return Container();
+                    // return Container(
+                    //   width: 70.w,
+                    //   height: 18.h,
+                    //   alignment: Alignment.topLeft,
+                    //   child: Visibility(
+                    //     visible: selected,
+                    //     child: Container(
+                    //       margin: EdgeInsets.only(top: 18.h),
+                    //       child: ClipRRect(
+                    //         borderRadius: BorderRadius.only(
+                    //           topLeft: index==0?Radius.circular(20.w):Radius.zero,
+                    //           bottomLeft: index==0?Radius.circular(20.w):Radius.zero,
+                    //           topRight: index==focus141Con.progressList.length-1?Radius.circular(20.w):Radius.zero,
+                    //           bottomRight: index==focus141Con.progressList.length-1?Radius.circular(20.w):Radius.zero,
+                    //         ),
+                    //         child: Focus141LocalImagesWidget(focus141ImagesName: "pro_duan", focus141Width: 70.w, focus141Height: 18.h),
+                    //       ),
+                    //     ),
+                    //   ),
+                    //
+                    // );
                   }
                   return Focus141ClickWidget(
                     focus141OnTap: (){
                       focus141Con.clickProgress(bean);
                     },
                     child: Container(
-                      width: 34.w,
-                      height: 50.w,
+                      width: 80.w,
+                      height: 80.w,
                       alignment: Alignment.topCenter,
                       child: Stack(
                         children: [
@@ -326,15 +328,35 @@ class Focus141QuizChild extends Focus141Widget<Focus141QuizChildCon>{
                             child: Visibility(
                               visible: selected,
                               child: Container(
-                                margin: EdgeInsets.only(top: 8.h),
-                                child: Focus141LocalImagesWidget(focus141ImagesName: "pro_duan", focus141Width: 34.w, focus141Height: 18.h),
+                                margin: EdgeInsets.only(top: 28.h),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: index==0?Radius.circular(20.w):Radius.zero,
+                                    bottomLeft: index==0?Radius.circular(20.w):Radius.zero,
+                                    topRight: index==focus141Con.progressList.length-1?Radius.circular(20.w):Radius.zero,
+                                    bottomRight: index==focus141Con.progressList.length-1?Radius.circular(20.w):Radius.zero,
+                                  ),
+                                  child: Focus141LocalImagesWidget(focus141ImagesName: "pro_duan", focus141Width: 80.w, focus141Height: 18.h),
+                                ),
+                                // child: Focus141LocalImagesWidget(focus141ImagesName: "pro_duan", focus141Width: 80.w, focus141Height: 18.h),
                               ),
+                            ),
+                          ),
+                          Visibility(
+                            visible: selected&&bean.received!=1,
+                            child: Focus141SpineWidget(
+                              focus141Atlas: "skeleton",
+                              focus141Json: "skeleton",
+                              focus141AnimatorName: "animation",
+                              focus141Folder: "CD7",
+                              focus141Width: 80.w,
+                              focus141Height: 80.w,
                             ),
                           ),
                           Align(
                             alignment: Alignment.topCenter,
                             child: Container(
-                              margin: EdgeInsets.only(top: 26.w),
+                              margin: EdgeInsets.only(top: 46.w),
                               child: Focus141TextWidget(
                                 focus141TextContent: "${bean.step??0}",
                                 focus141TextSize: 20.sp,
@@ -349,6 +371,7 @@ class Focus141QuizChild extends Focus141Widget<Focus141QuizChildCon>{
                             child: Container(
                               width: 34.w,
                               height: 34.w,
+                              margin: EdgeInsets.only(top: 20.h),
                               alignment: Alignment.center,
                               key: index==2?focus141Con.firstBoxGlobalKey:null,
                               child:
@@ -371,7 +394,7 @@ class Focus141QuizChild extends Focus141Widget<Focus141QuizChildCon>{
                             child: Visibility(
                               visible: bean.received==1,
                               child: Container(
-                                margin: EdgeInsets.only(top: 12.h),
+                                margin: EdgeInsets.only(top: 32.h),
                                 child: Focus141LocalImagesWidget(
                                   focus141ImagesName: "icon_gou",
                                   focus141Width: 20.w,

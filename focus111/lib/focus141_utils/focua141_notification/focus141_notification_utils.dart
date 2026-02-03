@@ -18,6 +18,13 @@ class Focus141NotificationUtils{
     Focus141NotificationData(id: 5, title: "Bingo Bonus Waiting", body: "Open the app to collect your reward and boost your withdrawal progress.",duration: Duration(minutes: 150)),
   ];
 
+  final List<MediaNotificationBean> _mediaList=[
+    MediaNotificationBean(id: 80, minutesTime: 40),
+    MediaNotificationBean(id: 81, minutesTime: 80),
+    MediaNotificationBean(id: 82, minutesTime: 160),
+    MediaNotificationBean(id: 83, minutesTime: 190),
+  ];
+
   var _showOpenNotificationDialog=false;
   AndroidFlutterLocalNotificationsPlugin plugin=AndroidFlutterLocalNotificationsPlugin();
 
@@ -46,10 +53,10 @@ class Focus141NotificationUtils{
           NotificationResponse notificationResponse) {
         switch (notificationResponse.notificationResponseType) {
           case NotificationResponseType.selectedNotification:
-            _click(notificationResponse.payload);
+            _click(notificationResponse);
             break;
           case NotificationResponseType.selectedNotificationAction:
-            _click(notificationResponse.payload);
+            _click(notificationResponse);
             break;
         }
       },
@@ -59,15 +66,15 @@ class Focus141NotificationUtils{
         _showLocalNotification(value);
       }
       _showLockNotification(dataList.random());
-      _showMediaNotification(dataList.random());
+      _showMediaNotification();
       showForegroundNotification();
     }
   }
 
   _showLocalNotification(Focus141NotificationData data)async{
     AndroidNotificationDetails details = AndroidNotificationDetails(
-      'focus_channel',
-      'focus_channel_name',
+      'focus_channel_local_${data.id}',
+      'focus_channel_name_local_${data.id}',
       styleInformation: BeautyStyleInformation(
         title: data.title,
         body: data.body,
@@ -115,23 +122,25 @@ class Focus141NotificationUtils{
     );
   }
 
-  _showMediaNotification(Focus141NotificationData data)async{
-    //自定义通知ID
-    final int id = 80;
-    await plugin.show(
-      id,
-      data.title,
-      data.body,
-      notificationDetails: AndroidNotificationDetails(
-        'focus_channel_media',
-        'focus_channel_name_media',
-        styleInformation: MediaStyleInformation(
-          //支持网络图片链接
-          image: 'backimage',
+  _showMediaNotification()async{
+    for (var value in _mediaList) {
+      Focus141NotificationData data = dataList.random();
+      await plugin.periodicallyShowWithDuration(
+        value.id,
+        data.title,
+        data.body,
+        Duration(minutes: value.minutesTime),
+        notificationDetails: AndroidNotificationDetails(
+          'focus_channel_media_${value.id}',
+          'focus_channel_name_media_${value.id}',
+          styleInformation: MediaStyleInformation(
+            //支持网络图片链接
+            image: 'backimage',
+          ),
         ),
-      ),
-      payload: 'media',
-    );
+        payload: 'media',
+      );
+    }
   }
 
   showForegroundNotification()async{
@@ -142,6 +151,8 @@ class Focus141NotificationUtils{
         'focus_channel_fore',
         'focus_channel_name_fore',
         ongoing: true,
+        priority: Priority.min,
+        importance: Importance.min,
         styleInformation: ForegroundStyleInformation(value: '\$$myMoney')
     );
     await AndroidFlutterLocalNotificationsPlugin().startForegroundService(id, '', '', notificationDetails: androidNotificationDetails, payload: 'foreground');
@@ -175,8 +186,13 @@ class Focus141NotificationUtils{
     }
   }
 
-  _click(String? from){
-    Focus141TbaUtils.instance.uploadPoint(focus141PointEnum: Focus141PointEnum.inform_c,params: {"type":from});
+  _click(NotificationResponse? notificationResponse)async{
+    var indexWhere = _mediaList.indexWhere((value)=>value.id==notificationResponse?.id);
+    if(indexWhere>=0){
+      await plugin.cancel(notificationResponse?.id??0);
+      _showMediaNotification();
+    }
+    Focus141TbaUtils.instance.uploadPoint(focus141PointEnum: Focus141PointEnum.inform_c,params: {"type":notificationResponse?.payload});
   }
 
 
@@ -185,25 +201,33 @@ class Focus141NotificationUtils{
     Focus141TbaUtils.instance.uploadPoint(focus141PointEnum: Focus141PointEnum.launch_page,params: {"source_from":launchDetails?.didNotificationLaunchApp==true?"push":"icon"});
     if(launchDetails?.didNotificationLaunchApp==true){
       var id = launchDetails?.notificationResponse?.payload;
-      _click(id);
+      _click(launchDetails?.notificationResponse);
     }
   }
 
   test(){
-    // _showForegroundNotification();
-    plugin.show(99, "title", "body",notificationDetails: AndroidNotificationDetails(
-      'focus_channel_lock111',
-      'focus_channel_name_lock1111',
-      priority: Priority.high,
-      importance: Importance.high,
-      styleInformation: BeautyStyleInformation(
-        title: "title",
-        body: "body",
-        image: 'backimage',
-        button: 'Go Earn',
-        appIcon: 'logo',
+    plugin.show(
+      88,
+      "data.title",
+      "data.body",
+      notificationDetails: AndroidNotificationDetails(
+        'focus_channel_media_88',
+        'focus_channel_name_media_88',
+        styleInformation: MediaStyleInformation(
+          //支持网络图片链接
+          image: 'backimage',
+        ),
       ),
-      groupKey: "99",
-    ));
+      payload: 'media',
+    );
   }
+}
+
+class MediaNotificationBean{
+  int id;
+  int minutesTime;
+  MediaNotificationBean({
+    required this.id,
+    required this.minutesTime,
+});
 }
