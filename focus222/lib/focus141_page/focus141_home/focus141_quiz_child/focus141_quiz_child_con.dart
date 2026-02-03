@@ -111,12 +111,12 @@ class Focus141QuizChildCon extends Focus141Con{
   String getProIcon(Focus141HomeProBean bean, bool selected){
     switch(bean.type){
       case Focus141HomeProType.box:
-        if(bean.received==1||!selected){
+        if(bean.received==1){
           return "box_uns";
         }
         return "box_sel";
       case Focus141HomeProType.wheel:
-        if(bean.received==1||!selected){
+        if(bean.received==1){
           return "wheel_uns";
         }
         return "wheel_sel";

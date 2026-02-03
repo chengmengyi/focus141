@@ -5,6 +5,7 @@ import 'package:focus111/focus141_utils/focus141_colors.dart';
 import 'package:focus111/focus141_utils/focus141_utils.dart';
 import 'package:focus111/focus141_widget/focus141_click_widget.dart';
 import 'package:focus111/focus141_widget/focus141_local_images_widget.dart';
+import 'package:focus111/focus141_widget/focus141_spine_widget.dart';
 import 'package:focus111/focus141_widget/focus141_text_widget.dart';
 import 'package:focus222/focus141_dialog/focus141_box_dialog/focus141_box_dialog_controller.dart';
 import 'package:focus222/focus141_widget/focus141_ad_btn_widget.dart';
@@ -39,15 +40,32 @@ class Focus141BoxDialog extends Focus141Widget<Focus141BoxDialogController>{
     child: Stack(
       alignment: Alignment.topCenter,
       children: [
-        Focus141LocalImagesWidget(focus141ImagesName: "box_guang", focus141Width: double.infinity, focus141Height: double.infinity,),
-        Container(
-          margin: EdgeInsets.only(top: 185.w),
-          child: Focus141TextWidget(
-            focus141TextContent: "\$$reward",
-            focus141TextSize: 48.sp,
-            focus141FontWeight: FontWeight.bold,
-            focus141TextColor: Focus141Colors.color9EF356,
-            focus141LineColor: Focus141Colors.color055305,
+        // Focus141LocalImagesWidget(focus141ImagesName: "box_guang", focus141Width: double.infinity, focus141Height: double.infinity,),
+        SizedBox(
+          width: 356.w,
+          height: 356.h,
+          child: Focus141SpineWidget(
+            focus141Atlas: "zibaoxiangkaiqi",
+            focus141Json: "zibaoxiangkaiqi",
+            focus141AnimatorName: "open",
+            focus141Folder: "CD1",
+            focus141Controller: focus141Con.spineWidgetController,
+          ),
+        ),
+        GetBuilder<Focus141BoxDialogController>(
+          id: "money",
+          builder: (_)=>Visibility(
+            visible: focus141Con.showMoney,
+            child: Container(
+              margin: EdgeInsets.only(top: 185.w),
+              child: Focus141TextWidget(
+                focus141TextContent: "\$$reward",
+                focus141TextSize: 48.sp,
+                focus141FontWeight: FontWeight.bold,
+                focus141TextColor: Focus141Colors.color9EF356,
+                focus141LineColor: Focus141Colors.color055305,
+              ),
+            ),
           ),
         ),
       ],
