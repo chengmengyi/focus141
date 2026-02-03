@@ -41,6 +41,6 @@ class Focus141LocalQuiz{
 
   static const String adjustKeyBase64="bmpneW9qcHo3YnBj";
 
-  static const String privacy="";
-  static const String email="";
+  static const String privacy="https://sites.google.com/view/focusquiz-pp/home";
+  static const String email="hassan.elmaghribi1@gmail.com";
 }

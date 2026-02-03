@@ -15,7 +15,6 @@ enum NewUserDialogShowView{
 class Focus141NewUserDialogCon extends Focus141Con{
   var newUserAdd=Focus141ValueUtils.instance.getNewUserReward();
   NewUserDialogShowView newUserDialogShowView=NewUserDialogShowView.box;
-  ShakeAnimationController shakeAnimationController=ShakeAnimationController();
   late SpineWidgetController spineWidgetController;
 
   @override
@@ -29,12 +28,6 @@ class Focus141NewUserDialogCon extends Focus141Con{
         // controller.animationState.setAnimationByName(0, "open", true);
       },
     );
-  }
-
-  @override
-  void onReady() {
-    super.onReady();
-    shakeAnimationController.start(shakeCount: 0);
   }
 
   clickBox()async{

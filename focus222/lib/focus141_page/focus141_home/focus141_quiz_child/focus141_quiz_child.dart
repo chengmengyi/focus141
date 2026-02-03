@@ -42,6 +42,13 @@ class Focus141QuizChild extends Focus141Widget<Focus141QuizChildCon>{
       _fingerWidget(),
       Focus141BubbleWidget(),
       Focus141MoneyAnimatorWidget(),
+
+      Focus141SpineWidget(
+        focus141Atlas: "skeleton",
+        focus141Json: "skeleton",
+        focus141AnimatorName: "animation",
+        focus141Folder: "CD1",
+      )
     ],
   );
 
@@ -286,42 +293,69 @@ class Focus141QuizChild extends Focus141Widget<Focus141QuizChildCon>{
                   focus141OnTap: (){
                     focus141Con.clickProgress(bean);
                   },
-                  child: Stack(
+                  child: Container(
+                    width: 40.w,
+                    height: 50.w,
                     alignment: Alignment.topCenter,
-                    children: [
-                      Container(
-                        margin: EdgeInsets.only(top: 25.w),
-                        child: Focus141TextWidget(
-                          focus141TextContent: "${bean.step??0}",
-                          focus141TextSize: 14.sp,
-                          focus141FontWeight: FontWeight.bold,
-                          focus141TextColor: bean.received==1||!selected?Focus141Colors.colorA9A9A9:Focus141Colors.colorFFD023,
-                          focus141LineColor: bean.received==1||!selected?Focus141Colors.color3F3F3F:Focus141Colors.colorD5391B,
-                        ),
-                      ),
-                      Container(
-                        width: 30.w,
-                        height: 30.w,
-                        alignment: Alignment.center,
-                        key: index==2?focus141Con.firstBoxGlobalKey:null,
-                        child: Focus141LocalImagesWidget(
-                          focus141ImagesName: focus141Con.getProIcon(bean,selected),
-                          focus141Width: 30.w,
-                          focus141Height: bean.type==Focus141HomeProType.wheel?30.w:24.h,
-                        ),
-                      ),
-                      Visibility(
-                        visible: bean.received==1,
-                        child: Container(
-                          margin: EdgeInsets.only(top: 12.h),
-                          child: Focus141LocalImagesWidget(
-                            focus141ImagesName: "icon_gou",
-                            focus141Width: 20.w,
-                            focus141Height: 15.h,
+                    child: Stack(
+                      children: [
+                        Align(
+                          alignment: Alignment.topCenter,
+                          child: Container(
+                            margin: EdgeInsets.only(top: 25.w),
+                            child: Focus141TextWidget(
+                              focus141TextContent: "${bean.step??0}",
+                              focus141TextSize: 14.sp,
+                              focus141FontWeight: FontWeight.bold,
+                              focus141TextColor: bean.received==1||!selected?Focus141Colors.colorA9A9A9:Focus141Colors.colorFFD023,
+                              focus141LineColor: bean.received==1||!selected?Focus141Colors.color3F3F3F:Focus141Colors.colorD5391B,
+                            ),
                           ),
                         ),
-                      ),
-                    ],
+                        Align(
+                          alignment: Alignment.topCenter,
+                          child: Container(
+                            width: 30.w,
+                            height: 30.w,
+                            alignment: Alignment.center,
+                            key: index==2?focus141Con.firstBoxGlobalKey:null,
+                            child: bean.received==1||!selected?
+                            Focus141LocalImagesWidget(
+                              focus141ImagesName: focus141Con.getProIcon(bean,selected),
+                              focus141Width: 30.w,
+                              focus141Height: bean.type==Focus141HomeProType.wheel?30.w:24.h,
+                            ):
+                            Focus141SpineWidget(
+                              focus141Atlas: "skeleton",
+                              focus141Json: "skeleton",
+                              focus141AnimatorName: "animation",
+                              focus141Folder: "CD4",
+                            ),
+                          ),
+                        ),
+                        Align(
+                          alignment: Alignment.topCenter,
+                          child: Visibility(
+                            visible: bean.received==1,
+                            child: Container(
+                              margin: EdgeInsets.only(top: 12.h),
+                              child: Focus141LocalImagesWidget(
+                                focus141ImagesName: "icon_gou",
+                                focus141Width: 20.w,
+                                focus141Height: 15.h,
+                              ),
+                            ),
+                          ),
+                        ),
+                        Align(
+                          alignment: Alignment.bottomRight,
+                          child: Offstage(
+                            offstage: bean.received==1||!selected,
+                            child: Focus141FingerWidget(focus141Width: 30.w, focus141Height: 30.w),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 );
               },

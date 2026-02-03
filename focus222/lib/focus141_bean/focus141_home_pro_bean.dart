@@ -1,3 +1,5 @@
+import 'package:focus111/focus141_utils/focus141_utils.dart';
+
 class Focus141HomeProType{
   static const String box="box";
   static const String wheel="wheel";
@@ -8,7 +10,8 @@ class Focus141HomeProBean {
   Focus141HomeProBean({
       this.type, 
       this.step, 
-      this.received,});
+      this.received,
+  });
 
   Focus141HomeProBean.fromJson(dynamic json) {
     type = json['type'];

@@ -6,6 +6,7 @@ import 'package:focus111/focus141_utils/focus141_colors.dart';
 import 'package:focus111/focus141_utils/focus141_utils.dart';
 import 'package:focus111/focus141_widget/focus141_click_widget.dart';
 import 'package:focus111/focus141_widget/focus141_local_images_widget.dart';
+import 'package:focus111/focus141_widget/focus141_spine_widget.dart';
 import 'package:focus111/focus141_widget/focus141_text_widget.dart';
 import 'package:focus222/focus141_dialog/focus141_reach_cash_money_dialog/focus141_reach_cash_money_dialog_con.dart';
 import 'package:focus222/focus141_widget/focus141_cash_type_money_widget.dart';
@@ -43,7 +44,14 @@ class Focus141ReachCashMoneyDialog extends Focus141Widget<Focus141ReachCashMoney
   _moneyWidget()=>Stack(
     alignment: Alignment.center,
     children: [
-      Focus141LocalImagesWidget(focus141ImagesName: "guang_bg", focus141Width: 262.w, focus141Height: 262.w,),
+      Focus141SpineWidget(
+        focus141Atlas: "skeleton",
+        focus141Json: "skeleton",
+        focus141AnimatorName: "animation",
+        focus141Folder: "CD7",
+        focus141Width: 262.w,
+        focus141Height: 262.w,
+      ),
       Focus141CashTypeMoneyWidget(typeEnum: typeEnum, money: money, width: 194.w, height: 88.h),
     ],
   );

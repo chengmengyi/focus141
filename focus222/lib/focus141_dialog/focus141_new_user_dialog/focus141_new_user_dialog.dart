@@ -63,17 +63,19 @@ class Focus141NewUserDialog extends Focus141Widget<Focus141NewUserDialogCon>{
                   focus141OnTap: (){
                     focus141Con.clickBox();
                   },
-                  child: ShakeAnimationWidget(
-                    shakeAnimationController: focus141Con.shakeAnimationController,
-                    shakeAnimationType: ShakeAnimationType.RoateShake,
-                    isForward: false,
-                    shakeCount: 4,
-                    shakeRange: 0.1,
-                    child: Focus141LocalImagesWidget(focus141ImagesName: "new_user3", focus141Width: 236.w, focus141Height: 118.h),
+                  child: SizedBox(
+                    width: 236.w,
+                    height: 118.h,
+                    child: Focus141SpineWidget(
+                      focus141Atlas: "skeleton",
+                      focus141Json: "skeleton",
+                      focus141AnimatorName: "animation",
+                      focus141Folder: "CD6",
+                    ),
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.only(top: 100.h),
+                  margin: EdgeInsets.only(top: 160.h,),
                   child: Focus141ClickWidget(
                     focus141OnTap: (){
                       focus141Con.clickBox();

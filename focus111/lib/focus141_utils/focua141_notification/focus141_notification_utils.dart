@@ -18,11 +18,12 @@ class Focus141NotificationUtils{
     Focus141NotificationData(id: 5, title: "Bingo Bonus Waiting", body: "Open the app to collect your reward and boost your withdrawal progress.",duration: Duration(minutes: 150)),
   ];
 
+  var _showOpenNotificationDialog=false;
   AndroidFlutterLocalNotificationsPlugin plugin=AndroidFlutterLocalNotificationsPlugin();
 
 
   checkHasNotification()async{
-    if(bLastTimeShowNotificationTimer.getData()==getTodayTime()){
+    if(bLastTimeShowNotificationTimer.getData()==getTodayTime()||!_showOpenNotificationDialog){
       return;
     }
     final status = await Permission.notification.status;
@@ -35,6 +36,7 @@ class Focus141NotificationUtils{
   initNotificationFocus141()async{
     var status = await Permission.notification.request();
     if(!status.isGranted){
+      _showOpenNotificationDialog=true;
       return;
     }
     Focus141TbaUtils.instance.uploadPoint(focus141PointEnum: Focus141PointEnum.push_status);
