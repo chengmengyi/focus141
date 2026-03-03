@@ -12,6 +12,7 @@ import 'package:focus111/focus141_routers/focus141_router_address.dart';
 import 'package:focus111/focus141_utils/focua141_notification/focus141_notification_data.dart';
 import 'package:focus111/focus141_utils/focua141_notification/focus141_notification_utils.dart';
 import 'package:focus111/focus141_utils/focus141_feng_utils.dart';
+import 'package:focus111/focus141_utils/focus141_firebase_config_utils.dart';
 import 'package:focus111/focus141_utils/focus141_local_quiz.dart';
 import 'package:focus111/focus141_utils/focus141_point_enum.dart';
 import 'package:focus111/focus141_utils/focus141_tba_utils.dart';
@@ -339,8 +340,9 @@ class Focus141QuizChildCon extends Focus141Con{
     // Focus141InfoUtils.instance.updateAnswerRightNum();
     // update(["progress"]);
 
-    // Focus141NotificationUtils.instance.test();
-    await Get.toNamed(Focus141RouterAddress.bWheel);
+    Focus141NotificationUtils.instance.test();
+    // await Get.toNamed(Focus141RouterAddress.bWheel);
+    // Focus141FirebaseConfigUtils.instance.initFirebaseConfig();
   }
 
   @override

@@ -40,7 +40,6 @@ class Focus141FirebaseConfigUtils{
       Focus141AdUtils.instance.updateAdInfo();
     }
     var risk_control = remoteConfig.getString("risk_control");
-    print("kk====${risk_control}");
     if(risk_control.isNotEmpty){
       bFengkongFirebaseConfig.saveData(risk_control);
       Focus141FengUtils.instance.initFeng();

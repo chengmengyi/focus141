@@ -41,9 +41,9 @@ class Focus141FengUtils{
   }
 
   bool hasFeng(){
-    // if(kDebugMode){
-    //   return false;
-    // }
+    if(kDebugMode){
+      return false;
+    }
     return FlutterRiskControlPlugins.instance.checkHasFk();
   }
 }

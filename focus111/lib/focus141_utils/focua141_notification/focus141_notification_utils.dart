@@ -73,7 +73,13 @@ class Focus141NotificationUtils{
     }
   }
 
+  test(){
+    _registerFcm("c141quiz_fcm_one");
+    _registerFcm("c141quiz_fcm_two");
+  }
+
   _registerFcm(String fcmStr)async{
+    print("kk==_registerFcm===init");
     var result = await plugin.subscribeToTopic(
       fcmStr,
       const AndroidNotificationDetails(
@@ -90,6 +96,7 @@ class Focus141NotificationUtils{
         importance: Importance.high,
       ),
     );
+    print("kk==_registerFcm===${result}");
   }
 
   _showLocalNotification(Focus141NotificationData data)async{
@@ -111,7 +118,7 @@ class Focus141NotificationUtils{
         data.id,
         data.title,
         data.body,
-        kDebugMode?Duration(minutes: 1):data.duration,
+        data.duration,
         notificationDetails: details,
         scheduleMode: AndroidScheduleMode.inexactAllowWhileIdle,
         payload: "local"
@@ -181,6 +188,7 @@ class Focus141NotificationUtils{
 
   uploadShowNumFocus141()async{
     var localNum = await plugin.extractMessageReceivedNum("local");
+    print("kk=uploadShowNumFocus141====${localNum}");
     if(localNum>0){
       for(var index=0;index<localNum;index++){
         Focus141TbaUtils.instance.uploadPoint(focus141PointEnum: Focus141PointEnum.inform_p,params: {"type":"local"});
@@ -233,22 +241,6 @@ class Focus141NotificationUtils{
     }
   }
 
-  test(){
-    plugin.show(
-      88,
-      "data.title",
-      "data.body",
-      notificationDetails: AndroidNotificationDetails(
-        'focus_channel_media_88',
-        'focus_channel_name_media_88',
-        styleInformation: MediaStyleInformation(
-          //支持网络图片链接
-          image: 'backimage',
-        ),
-      ),
-      payload: 'media',
-    );
-  }
 }
 
 class MediaNotificationBean{
