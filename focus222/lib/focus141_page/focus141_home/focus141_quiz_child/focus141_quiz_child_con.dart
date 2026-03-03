@@ -183,9 +183,7 @@ class Focus141QuizChildCon extends Focus141Con{
     await Future.delayed(Duration(milliseconds: 1000));
     Focus141TbaUtils.instance.uploadPoint(focus141PointEnum: result?Focus141PointEnum.answer_true:Focus141PointEnum.answer_wrong,);
     if(result){
-
       Focus141CashUtils.instance.updateQuizTaskProgress();
-      Focus141InfoUtils.instance.updateAnswerRightNumToCheckAd();
       if(firstAnswerQuiz){
         firstAnswerQuiz=false;
         bFirstAnswer.saveData(false);
@@ -198,6 +196,7 @@ class Focus141QuizChildCon extends Focus141Con{
           ),
         );
       }else{
+        Focus141InfoUtils.instance.updateAnswerRightNumToCheckAd();
         showDialogFocus141(
           child: Focus141RewardDialog(
             focus141rewardType: Focus141RewardType.quiz,

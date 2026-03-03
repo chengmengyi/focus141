@@ -61,4 +61,7 @@ enum Focus141PointEnum {
   try_again_pop,
   try_again_pop_c,
   no_network_pop,
+  wheel_pop_c,
+  new_box_c,
+  new_box_pop_close,
 }

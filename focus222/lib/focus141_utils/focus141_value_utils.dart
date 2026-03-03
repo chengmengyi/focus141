@@ -47,7 +47,7 @@ class Focus141ValueUtils{
 
   List<int> getCashList()=>_valueBean?.qlandRange??[800, 1000, 1500, 2000];
 
-  bool showAd(AdType adType,{bool fromQuiz=false,}){
+  bool showAd(AdType adType,{bool fromQuiz=false,bool resetRandom=true}){
     // if(kDebugMode){
     //   return false;
     // }
@@ -59,17 +59,17 @@ class Focus141ValueUtils{
     var list = adType==AdType.interstitial?(_valueBean?.intadPoint??[]):(_valueBean?.rvadPoint??[]);
     var last = list.last;
     if(coins>=(last.endNumber??0)){
-      return _checkShowAd(last.number??[],adType,answerRight);
+      return _checkShowAd(last.number??[],adType,answerRight,resetRandom);
     }
     for (var value in list) {
       if(coins>=(value.firstNumber??0)&&coins<(value.endNumber??0)){
-        return _checkShowAd(value.number??[],adType,answerRight);
+        return _checkShowAd(value.number??[],adType,answerRight,resetRandom);
       }
     }
     return true;
   }
 
-  bool _checkShowAd(List<int> number,AdType adType,int answerRight){
+  bool _checkShowAd(List<int> number,AdType adType,int answerRight, bool resetRandom){
     if(number.isEmpty){
       return true;
     }
@@ -84,20 +84,24 @@ class Focus141ValueUtils{
       if(kDebugMode){
         print("当前校验广告已答对题数:$answerRight--->随机到的数:$_lastRvAdRandomNum--->number 列表:$number");
       }
-      if(answerRight==_lastRvAdRandomNum){
-        _lastRvAdRandomNum=number.random();
-        bAnswerRightNumToCheckAd.saveData(0);
+      if(answerRight>=_lastRvAdRandomNum){
+        if(resetRandom){
+          _lastRvAdRandomNum=number.random();
+          bAnswerRightNumToCheckAd.saveData(0);
+        }
         return true;
       }
       return false;
     }
     if(adType==AdType.interstitial){
       if(kDebugMode){
-        print("当前校验广告已答对提数:$bAnswerRightNumToCheckAd--->随机到的数:$_lastInterAdRandomNum");
+        print("当前校验广告已答对提数:$answerRight--->随机到的数:$_lastInterAdRandomNum");
       }
-      if(answerRight==_lastInterAdRandomNum){
-        _lastInterAdRandomNum=number.random();
-        bAnswerRightNumToCheckAd.saveData(0);
+      if(answerRight>=_lastInterAdRandomNum){
+        if(resetRandom){
+          _lastInterAdRandomNum=number.random();
+          bAnswerRightNumToCheckAd.saveData(0);
+        }
         return true;
       }
       return false;

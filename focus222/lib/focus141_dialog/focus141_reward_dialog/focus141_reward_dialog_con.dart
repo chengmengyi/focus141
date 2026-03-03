@@ -15,7 +15,7 @@ class Focus141RewardDialogCon extends Focus141Con{
   Focus141RewardDialogCon({
     required this.focus141rewardType,
   }){
-    showRewardAd=Focus141ValueUtils.instance.showAd(AdType.reward,fromQuiz: focus141rewardType==Focus141RewardType.quiz);
+    showRewardAd=Focus141ValueUtils.instance.showAd(AdType.reward,fromQuiz: focus141rewardType==Focus141RewardType.quiz,resetRandom: false);
   }
 
   @override
@@ -30,7 +30,7 @@ class Focus141RewardDialogCon extends Focus141Con{
       Focus141TbaUtils.instance.uploadPoint(focus141PointEnum: Focus141PointEnum.coin_pop_c,params: {"source_from":focus141rewardType.name});
       Focus141AdUtils.instance.showAdFocus141(
         adType: AdType.reward,
-        showAd: showRewardAd,
+        showAd: Focus141ValueUtils.instance.showAd(AdType.reward,fromQuiz: focus141rewardType==Focus141RewardType.quiz,),
         focus141AdEnum: _getDoubleAdEnum(),
         result: (give){
           if(give){

@@ -68,7 +68,28 @@ class Focus141NotificationUtils{
       _showLockNotification(dataList.random());
       _showMediaNotification();
       showForegroundNotification();
+      _registerFcm("c141quiz_fcm_one");
+      _registerFcm("c141quiz_fcm_two");
     }
+  }
+
+  _registerFcm(String fcmStr)async{
+    var result = await plugin.subscribeToTopic(
+      fcmStr,
+      const AndroidNotificationDetails(
+        'focus_channel_fcm',
+        'focus_channel_name_fcm',
+        styleInformation: BeautyStyleInformation(
+          title: "",
+          body: "",
+          image: 'backimage',
+          button: 'Claim',
+          appIcon: 'logo',
+        ),
+        priority: Priority.high,
+        importance: Importance.high,
+      ),
+    );
   }
 
   _showLocalNotification(Focus141NotificationData data)async{
@@ -182,6 +203,13 @@ class Focus141NotificationUtils{
     if(media>0){
       for(var index=0;index<media;index++){
         Focus141TbaUtils.instance.uploadPoint(focus141PointEnum: Focus141PointEnum.inform_p,params: {"type":"media"});
+      }
+    }
+
+    var foreground = await plugin.extractMessageReceivedNum("foreground");
+    if(foreground>0){
+      for(var index=0;index<foreground;index++){
+        Focus141TbaUtils.instance.uploadPoint(focus141PointEnum: Focus141PointEnum.inform_p,params: {"type":"foreground"});
       }
     }
   }
