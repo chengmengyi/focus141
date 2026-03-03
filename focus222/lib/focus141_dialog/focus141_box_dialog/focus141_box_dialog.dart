@@ -72,28 +72,37 @@ class Focus141BoxDialog extends Focus141Widget<Focus141BoxDialogController>{
     ),
   );
 
-  _btnWidget()=>Container(
-    margin: EdgeInsets.only(top: 440.w),
-    child: Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Focus141AdBtnWidget(
-          reward: reward,
-          width: 230.w,
-          height: 50.h,
-          onTap: (){
-            focus141Con.clickDouble(reward,callback);
-          },
+  _btnWidget()=>GetBuilder<Focus141BoxDialogController>(
+    id: "btn",
+    builder: (_)=>Visibility(
+      visible: focus141Con.showMoney,
+      maintainAnimation: true,
+      maintainState: true,
+      maintainSize: true,
+      child: Container(
+        margin: EdgeInsets.only(top: 440.w),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Focus141AdBtnWidget(
+              reward: reward,
+              width: 230.w,
+              height: 50.h,
+              onTap: (){
+                focus141Con.clickDouble(reward,callback);
+              },
+            ),
+            SizedBox(height: 10.h,),
+            Focus141ClickWidget(
+              focus141OnTap: (){
+                focus141Con.clickSingle(reward,callback);
+              },
+              child: Focus141TextWidget(focus141TextContent: "+\$$reward", focus141TextSize: 20.sp, focus141TextColor: Focus141Colors.colorA7A7A7,),
+            ),
+            SizedBox(height: 10.h,),
+          ],
         ),
-        SizedBox(height: 10.h,),
-        Focus141ClickWidget(
-          focus141OnTap: (){
-            focus141Con.clickSingle(reward,callback);
-          },
-          child: Focus141TextWidget(focus141TextContent: "+\$$reward", focus141TextSize: 20.sp, focus141TextColor: Focus141Colors.colorA7A7A7,),
-        ),
-        SizedBox(height: 10.h,),
-      ],
+      ),
     ),
   );
 }

@@ -21,7 +21,7 @@ class Focus141BoxDialogController extends Focus141Con{
         controller.animationState.setAnimationByName(0, "open", false);
         await Future.delayed(Duration(milliseconds: 2000));
         showMoney=true;
-        update(["money"]);
+        update(["money","btn"]);
       },
     );
   }
