@@ -326,7 +326,7 @@ class Focus141QuizChildCon extends Focus141Con{
     // Focus141InfoUtils.instance.updateAnswerRightNumToCheckAd();
     // // Focus141ValueUtils.instance.showAd(AdType.reward);
     // showDialogFocus141(
-    //   child: Focus141BoxDialog(reward: 100, callback: (){}),
+    //   child: Focus141OldUserDialog(callback: (a){}),
     // );
     //
     // Focus141InfoUtils.instance.updateAnswerRightNum();
@@ -339,7 +339,8 @@ class Focus141QuizChildCon extends Focus141Con{
     // Focus141InfoUtils.instance.updateAnswerRightNum();
     // update(["progress"]);
 
-    Focus141NotificationUtils.instance.test();
+    // Focus141NotificationUtils.instance.test();
+    await Get.toNamed(Focus141RouterAddress.bWheel);
   }
 
   @override

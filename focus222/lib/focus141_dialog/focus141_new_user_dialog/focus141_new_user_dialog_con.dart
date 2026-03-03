@@ -31,6 +31,7 @@ class Focus141NewUserDialogCon extends Focus141Con{
   }
 
   clickBox()async{
+    Focus141TbaUtils.instance.uploadPoint(focus141PointEnum: Focus141PointEnum.new_box_c);
     newUserDialogShowView=NewUserDialogShowView.animator;
     update(["box"]);
     spineWidgetController.animationState.setAnimationByName(0, "open", false);
@@ -53,6 +54,7 @@ class Focus141NewUserDialogCon extends Focus141Con{
   }
 
   clickSingle(Function(double reard) callback){
+    Focus141TbaUtils.instance.uploadPoint(focus141PointEnum: Focus141PointEnum.new_box_pop_close);
     Focus141AdUtils.instance.showAdFocus141(
       adType: AdType.interstitial,
       focus141AdEnum: Focus141AdEnum.fkskv_newuser_wheel_int,

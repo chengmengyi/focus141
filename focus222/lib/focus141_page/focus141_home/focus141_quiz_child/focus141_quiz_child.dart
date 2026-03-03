@@ -48,7 +48,7 @@ class Focus141QuizChild extends Focus141Widget<Focus141QuizChildCon>{
       //   focus141Atlas: "skeleton",
       //   focus141Json: "skeleton",
       //   focus141AnimatorName: "animation",
-      //   focus141Folder: "CD1",
+      //   focus141Folder: "CD8",
       // )
     ],
   );
@@ -381,11 +381,18 @@ class Focus141QuizChild extends Focus141Widget<Focus141QuizChildCon>{
                                 focus141Width: 34.w,
                                 focus141Height: bean.type==Focus141HomeProType.wheel?34.w:28.h,
                               ):
+                              bean.type==Focus141HomeProType.box?
                               Focus141SpineWidget(
                                 focus141Atlas: "skeleton",
                                 focus141Json: "skeleton",
                                 focus141AnimatorName: "animation",
                                 focus141Folder: "CD4",
+                              ):
+                              Focus141SpineWidget(
+                                focus141Atlas: "skeleton",
+                                focus141Json: "skeleton",
+                                focus141AnimatorName: "animation",
+                                focus141Folder: "CD8",
                               ),
                             ),
                           ),

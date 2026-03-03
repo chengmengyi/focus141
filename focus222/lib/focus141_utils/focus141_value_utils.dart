@@ -82,7 +82,7 @@ class Focus141ValueUtils{
 
     if(adType==AdType.reward){
       if(kDebugMode){
-        print("当前校验广告已答对题数:$answerRight--->随机到的数:$_lastRvAdRandomNum--->number 列表:$number");
+        print("当前校验广告已答对题数:--->激励--->$answerRight--->随机到的数:$_lastRvAdRandomNum--->number 列表:$number");
       }
       if(answerRight>=_lastRvAdRandomNum){
         if(resetRandom){
@@ -95,7 +95,7 @@ class Focus141ValueUtils{
     }
     if(adType==AdType.interstitial){
       if(kDebugMode){
-        print("当前校验广告已答对提数:$answerRight--->随机到的数:$_lastInterAdRandomNum");
+        print("当前校验广告已答对题数:--->插屏--->$answerRight--->随机到的数:$_lastInterAdRandomNum");
       }
       if(answerRight>=_lastInterAdRandomNum){
         if(resetRandom){
